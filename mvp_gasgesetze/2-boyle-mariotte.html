@@ -45,8 +45,9 @@
     <ul>
         <li><a href="index.html">Startseite</a></li>
         <li><a href="1-grundlagen.html">1. Grundlagen</a></li>
-        <li><a href="2-boyle-mariotte.html" class="active">2. Boyle-Mariotte</a></li>
+        <li><a href="2-boyle-mariotte.html">2. Boyle-Mariotte</a></li>
         <li><a href="3-allgemeines-gasgesetz.html">3. Das allgemeine Gasgesetz</a></li>
+        <li><a href="4-uebungen.html">4. Übungen</a></li>
     </ul>
 </nav>
 
@@ -82,11 +83,14 @@
 
         <h2>Beispiel aus der Praxis</h2>
         <p>Ein Kompressor saugt 100 Liter Luft bei 1 bar an. Er verdichtet die Luft auf ein Volumen von 10 Litern. Welcher Druck herrscht im Kessel (ohne Temperaturänderung)?</p>
-        <p>$$p_2 = \frac{p_1 \cdot V_1}{V_2} = \frac{1 \text{ bar} \cdot 100 \text{ l}}{10 \text{ l}} = 10 \text{ bar}$$</p>
+        
+        <!-- Korrektur: MathJax außerhalb von <p> und Skript hinzugefügt -->
+        $$p_2 = \frac{p_1 \cdot V_1}{V_2} = \frac{1 \text{ bar} \cdot 100 \text{ l}}{10 \text{ l}} = 10 \text{ bar}$$
 
     </article>
 </main>
 
+<!-- Simulation Logic -->
 <script>
     const slider = document.getElementById('pressureSlider');
     const pDisplay = document.getElementById('pressureValue');
@@ -116,6 +120,16 @@
         piston.style.backgroundColor = `rgb(0, ${100}, ${255 - intensity/2})`;
     });
 </script>
+
+<!-- MathJax Configuration & Loader (Hinzugefügt für Formeldarstellung) -->
+<script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 </body>
 </html>

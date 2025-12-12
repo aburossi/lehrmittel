@@ -44,6 +44,7 @@
                 
                 <p><strong>Lösungsweg:</strong><br>
                 Da die Temperatur konstant ist, gilt Boyle-Mariotte: $p_1 \cdot V_1 = p_2 \cdot V_2$</p>
+                <p>Umstellen nach $p_2$:</p>
                 <p>$$p_2 = \frac{p_1 \cdot V_1}{V_2} = \frac{6 \text{ bar} \cdot 400 \text{ cm}^3}{150 \text{ cm}^3}$$</p>
                 <p><strong>Ergebnis:</strong> $p_2 = 16 \text{ bar}$</p>
             </div>
@@ -65,6 +66,7 @@
                 
                 <p><strong>Lösungsweg:</strong><br>
                 Gesetz von Amontons (Isochor): $\frac{p_1}{T_1} = \frac{p_2}{T_2}$</p>
+                <p>Umstellen nach $p_2$:</p>
                 <p>$$p_2 = \frac{p_1 \cdot T_2}{T_1} = \frac{18 \text{ bar} \cdot 318.15 \text{ K}}{283.15 \text{ K}}$$</p>
                 <p><strong>Ergebnis:</strong> $p_2 \approx 20.22 \text{ bar}$</p>
             </div>
@@ -82,7 +84,7 @@
             <div id="sol3" class="solution-content">
                 <p><strong>Gegeben (Zustand 1 - Ansaugen):</strong><br>
                 $p_1 = 1 \text{ bar}$<br>
-                $T_1 = 293.15 \text{ K}$<br>
+                $T_1 = 20 \text{ °C} = 293.15 \text{ K}$<br>
                 $V_1 = ?$ (Gesucht)</p>
                 
                 <p><strong>Gegeben (Zustand 2 - Behälter):</strong><br>
@@ -94,7 +96,8 @@
                 $$\frac{p_1 \cdot V_1}{T_1} = \frac{p_2 \cdot V_2}{T_2}$$
                 Umstellen nach $V_1$:
                 $$V_1 = \frac{p_2 \cdot V_2 \cdot T_1}{T_2 \cdot p_1}$$
-                $$V_1 = \frac{10 \cdot 50 \cdot 293.15}{353.15 \cdot 1}$$</p>
+                Einsetzen:
+                $$V_1 = \frac{10 \text{ bar} \cdot 50 \text{ l} \cdot 293.15 \text{ K}}{353.15 \text{ K} \cdot 1 \text{ bar}}$$</p>
                 
                 <p><strong>Ergebnis:</strong> $V_1 \approx 415.06 \text{ Liter}$</p>
                 <p><em>Interpretation: Der Kompressor muss über 400 Liter Außenluft ansaugen, um den 50-Liter-Tank auf 10 bar zu füllen.</em></p>
@@ -104,8 +107,15 @@
     </article>
 </main>
 
-<!-- MathJax for formulas -->
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<!-- MathJax Configuration (Must be before loading MathJax) -->
+<script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+        }
+    };
+</script>
+<!-- MathJax Loader -->
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <script>
