@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4. Übungen - Gasgesetze</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+    <h2>Inhalt</h2>
+    <ul>
+        <li><a href="index.html">Startseite</a></li>
+        <li><a href="1-grundlagen.html">1. Grundlagen</a></li>
+        <li><a href="2-boyle-mariotte.html">2. Boyle-Mariotte</a></li>
+        <li><a href="3-allgemeines-gasgesetz.html">3. Das allgemeine Gasgesetz</a></li>
+        <li><a href="4-uebungen.html" class="active">4. Übungen</a></li>
+    </ul>
+</nav>
+
+<main>
+    <article>
+        <h1>4. Übungen und Praxisfälle</h1>
+        
+        <p>Hier können Sie Ihr Wissen testen. Versuchen Sie, die Aufgaben zuerst selbstständig zu lösen, bevor Sie die Lösung aufklappen. Ein Taschenrechner ist erforderlich.</p>
+
+        <!-- Exercise 1 -->
+        <div class="exercise-box">
+            <div class="exercise-title">Aufgabe 1: Der Pneumatikzylinder (Boyle-Mariotte)</div>
+            <p>Ein einfachwirkender Pneumatikzylinder ist zur Hälfte ausgefahren. Das eingeschlossene Luftvolumen beträgt <strong>400 cm³</strong> bei einem Druck von <strong>6 bar</strong>.</p>
+            <p>Durch eine äussere Kraft wird der Kolben hineingedrückt, sodass sich das Volumen auf <strong>150 cm³</strong> verringert. Die Temperatur bleibt konstant.</p>
+            <p><strong>Frage:</strong> Welcher Druck herrscht nun im Zylinder?</p>
+            
+            <button class="btn-solution" onclick="toggle('sol1', this)">Lösung anzeigen</button>
+            
+            <div id="sol1" class="solution-content">
+                <p><strong>Gegeben:</strong><br>
+                $p_1 = 6 \text{ bar}$<br>
+                $V_1 = 400 \text{ cm}^3$<br>
+                $V_2 = 150 \text{ cm}^3$</p>
+                
+                <p><strong>Gesucht:</strong> $p_2$</p>
+                
+                <p><strong>Lösungsweg:</strong><br>
+                Da die Temperatur konstant ist, gilt Boyle-Mariotte: $p_1 \cdot V_1 = p_2 \cdot V_2$</p>
+                <p>$$p_2 = \frac{p_1 \cdot V_1}{V_2} = \frac{6 \text{ bar} \cdot 400 \text{ cm}^3}{150 \text{ cm}^3}$$</p>
+                <p><strong>Ergebnis:</strong> $p_2 = 16 \text{ bar}$</p>
+            </div>
+        </div>
+
+        <!-- Exercise 2 -->
+        <div class="exercise-box">
+            <div class="exercise-title">Aufgabe 2: Gasflasche in der Werkstatt (Isochore Zustandsänderung)</div>
+            <p>Eine Acetylen-Gasflasche steht morgens bei <strong>10 °C</strong> in der Werkstatt. Das Manometer zeigt einen Druck von <strong>18 bar</strong> an.</p>
+            <p>Im Laufe des Tages scheint die Sonne direkt auf die Flasche, und sie erwärmt sich auf <strong>45 °C</strong>.</p>
+            <p><strong>Frage:</strong> Welchen Druck zeigt das Manometer jetzt an? (Das Volumen der Stahlflasche bleibt konstant).</p>
+            
+            <button class="btn-solution" onclick="toggle('sol2', this)">Lösung anzeigen</button>
+            
+            <div id="sol2" class="solution-content">
+                <p><strong>Achtung:</strong> Zuerst Temperaturen in Kelvin umrechnen!</p>
+                <p>$T_1 = 10 \text{ °C} + 273.15 = 283.15 \text{ K}$<br>
+                   $T_2 = 45 \text{ °C} + 273.15 = 318.15 \text{ K}$</p>
+                
+                <p><strong>Lösungsweg:</strong><br>
+                Gesetz von Amontons (Isochor): $\frac{p_1}{T_1} = \frac{p_2}{T_2}$</p>
+                <p>$$p_2 = \frac{p_1 \cdot T_2}{T_1} = \frac{18 \text{ bar} \cdot 318.15 \text{ K}}{283.15 \text{ K}}$$</p>
+                <p><strong>Ergebnis:</strong> $p_2 \approx 20.22 \text{ bar}$</p>
+            </div>
+        </div>
+
+        <!-- Exercise 3 -->
+        <div class="exercise-box">
+            <div class="exercise-title">Aufgabe 3: Kompressorleistung (Allgemeines Gasgesetz)</div>
+            <p>Ein Kompressor saugt Umgebungsluft an ($p_1 = 1 \text{ bar}$, $T_1 = 20 \text{ °C}$) und verdichtet sie in einen Druckbehälter.</p>
+            <p>Nach der Verdichtung herrscht im Behälter ein Druck von <strong>10 bar</strong> und die Luft hat sich durch die Reibung und Verdichtung auf <strong>80 °C</strong> erwärmt.</p>
+            <p><strong>Frage:</strong> Wie viel Liter Umgebungsluft müssen angesaugt werden, um den <strong>50 Liter</strong> Druckbehälter unter diesen Bedingungen zu füllen?</p>
+            
+            <button class="btn-solution" onclick="toggle('sol3', this)">Lösung anzeigen</button>
+            
+            <div id="sol3" class="solution-content">
+                <p><strong>Gegeben (Zustand 1 - Ansaugen):</strong><br>
+                $p_1 = 1 \text{ bar}$<br>
+                $T_1 = 293.15 \text{ K}$<br>
+                $V_1 = ?$ (Gesucht)</p>
+                
+                <p><strong>Gegeben (Zustand 2 - Behälter):</strong><br>
+                $p_2 = 10 \text{ bar}$<br>
+                $T_2 = 80 \text{ °C} = 353.15 \text{ K}$<br>
+                $V_2 = 50 \text{ Liter}$</p>
+                
+                <p><strong>Lösungsweg:</strong><br>
+                $$\frac{p_1 \cdot V_1}{T_1} = \frac{p_2 \cdot V_2}{T_2}$$
+                Umstellen nach $V_1$:
+                $$V_1 = \frac{p_2 \cdot V_2 \cdot T_1}{T_2 \cdot p_1}$$
+                $$V_1 = \frac{10 \cdot 50 \cdot 293.15}{353.15 \cdot 1}$$</p>
+                
+                <p><strong>Ergebnis:</strong> $V_1 \approx 415.06 \text{ Liter}$</p>
+                <p><em>Interpretation: Der Kompressor muss über 400 Liter Außenluft ansaugen, um den 50-Liter-Tank auf 10 bar zu füllen.</em></p>
+            </div>
+        </div>
+
+    </article>
+</main>
+
+<!-- MathJax for formulas -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<script>
+    function toggle(id, btn) {
+        var x = document.getElementById(id);
+        if (x.style.display === "block") {
+            x.style.display = "none";
+            btn.innerText = "Lösung anzeigen";
+            btn.style.backgroundColor = "#6c757d"; // Reset to grey
+        } else {
+            x.style.display = "block";
+            btn.innerText = "Lösung verbergen";
+            btn.style.backgroundColor = "#2ecc71"; // Green when open
+            btn.style.borderColor = "transparent";
+        }
+    }
+</script>
+
+</body>
+</html>

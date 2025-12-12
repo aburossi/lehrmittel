@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2. Gesetz von Boyle-Mariotte</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific styles for the visualization */
+        #cylinder-container {
+            width: 100%;
+            height: 200px;
+            background: #eee;
+            position: relative;
+            margin-top: 20px;
+            border: 1px solid #999;
+        }
+        #piston {
+            width: 50px; /* Represents volume visually */
+            height: 100%;
+            background: #3498db;
+            transition: width 0.1s;
+            position: absolute;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            overflow: hidden;
+        }
+        #gas-particles {
+            position: absolute;
+            top: 0; left: 0; bottom: 0;
+            width: 100%;
+            pointer-events: none; 
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <h2>Inhalt</h2>
+    <ul>
+        <li><a href="index.html">Startseite</a></li>
+        <li><a href="1-grundlagen.html">1. Grundlagen</a></li>
+        <li><a href="2-boyle-mariotte.html" class="active">2. Boyle-Mariotte</a></li>
+        <li><a href="3-allgemeines-gasgesetz.html">3. Das allgemeine Gasgesetz</a></li>
+    </ul>
+</nav>
+
+<main>
+    <article>
+        <h1>2. Isotherme Zustandsänderung (Boyle-Mariotte)</h1>
+        
+        <p>Das Gesetz von Boyle-Mariotte beschreibt das Verhalten idealer Gase bei <strong>konstanter Temperatur</strong> (isotherm).</p>
+        
+        <div class="definition-box">
+            <strong>Merksatz:</strong> Wenn man das Volumen eines Gases halbiert, verdoppelt sich der Druck (solange die Temperatur gleich bleibt).
+        </div>
+
+        <div class="formula-box">
+            p<sub>1</sub> · V<sub>1</sub> = p<sub>2</sub> · V<sub>2</sub> = konstant
+        </div>
+
+        <h2>Interaktive Simulation</h2>
+        <p>Verändern Sie den Druck am Kolben, um zu sehen, wie sich das Volumen verhält.</p>
+
+        <div class="interactive-tool">
+            <div class="tool-header">Simulation: Zylinder & Kolben</div>
+            
+            <label for="pressureSlider">Druck (p): <span id="pressureValue">1.0</span> bar</label>
+            <input type="range" id="pressureSlider" min="0.5" max="4.0" step="0.1" value="1.0" style="width: 100%;">
+            
+            <div id="cylinder-container">
+                <div id="piston" style="width: 100%;">V = 100%</div>
+            </div>
+            
+            <p>Berechnetes Volumen (V): <strong><span id="volumeValue">100</span> %</strong></p>
+        </div>
+
+        <h2>Beispiel aus der Praxis</h2>
+        <p>Ein Kompressor saugt 100 Liter Luft bei 1 bar an. Er verdichtet die Luft auf ein Volumen von 10 Litern. Welcher Druck herrscht im Kessel (ohne Temperaturänderung)?</p>
+        <p>$$p_2 = \frac{p_1 \cdot V_1}{V_2} = \frac{1 \text{ bar} \cdot 100 \text{ l}}{10 \text{ l}} = 10 \text{ bar}$$</p>
+
+    </article>
+</main>
+
+<script>
+    const slider = document.getElementById('pressureSlider');
+    const pDisplay = document.getElementById('pressureValue');
+    const vDisplay = document.getElementById('volumeValue');
+    const piston = document.getElementById('piston');
+
+    // Initial constant (p * V)
+    // Let's assume starting point: p=1, V=100%. Product = 100.
+    const k = 100; 
+
+    slider.addEventListener('input', function() {
+        const p = parseFloat(this.value);
+        
+        // Calculate V based on Boyle-Mariotte: V = k / p
+        const v = k / p;
+
+        // Update UI
+        pDisplay.innerText = p.toFixed(1);
+        vDisplay.innerText = v.toFixed(1);
+        
+        // Update visual piston width
+        piston.style.width = v + "%";
+        piston.innerText = "V=" + v.toFixed(0) + "%";
+        
+        // Visual feedback: change color intensity with pressure
+        const intensity = Math.min(255, p * 50); 
+        piston.style.backgroundColor = `rgb(0, ${100}, ${255 - intensity/2})`;
+    });
+</script>
+
+</body>
+</html>

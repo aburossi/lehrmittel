@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3. Das allgemeine Gasgesetz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+    <h2>Inhalt</h2>
+    <ul>
+        <li><a href="index.html">Startseite</a></li>
+        <li><a href="1-grundlagen.html">1. Grundlagen</a></li>
+        <li><a href="2-boyle-mariotte.html">2. Boyle-Mariotte</a></li>
+        <li><a href="3-allgemeines-gasgesetz.html" class="active">3. Das allgemeine Gasgesetz</a></li>
+    </ul>
+</nav>
+
+<main>
+    <article>
+        <h1>3. Das allgemeine Gasgesetz</h1>
+        
+        <p>In der Realität ändern sich oft Druck, Volumen und Temperatur gleichzeitig. Für Polymechaniker/innen ist die Kombination der Gasgesetze das wichtigste Werkzeug.</p>
+
+        <div class="formula-box">
+            <span style="font-size: 1.2em;">
+                $$ \frac{p_1 \cdot V_1}{T_1} = \frac{p_2 \cdot V_2}{T_2} $$
+            </span>
+        </div>
+
+        <div class="definition-box">
+            <strong>Hinweis:</strong> Die Temperaturen T<sub>1</sub> und T<sub>2</sub> müssen zwingend in <strong>Kelvin</strong> eingesetzt werden!
+        </div>
+
+        <h2>Interaktiver Löser</h2>
+        <p>Verwenden Sie diesen Rechner, um eine fehlende Grösse zu berechnen. Lassen Sie das Feld, das Sie suchen, leer.</p>
+
+        <div class="interactive-tool">
+            <div class="tool-header">Zustand 1 (Ausgangslage)</div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <div><label>p1 (bar):</label><br><input type="number" id="p1" placeholder="1.0"></div>
+                <div><label>V1 (Liter):</label><br><input type="number" id="v1" placeholder="10"></div>
+                <div><label>T1 (Kelvin):</label><br><input type="number" id="t1" placeholder="293"></div>
+            </div>
+
+            <div class="tool-header" style="margin-top:20px;">Zustand 2 (Endlage)</div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <div><label>p2 (bar):</label><br><input type="number" id="p2"></div>
+                <div><label>V2 (Liter):</label><br><input type="number" id="v2"></div>
+                <div><label>T2 (Kelvin):</label><br><input type="number" id="t2"></div>
+            </div>
+
+            <br>
+            <button onclick="calculateGas()">Berechnen</button>
+            <button onclick="clearFields()" style="background:#777;">Reset</button>
+            
+            <p id="result" style="font-weight:bold; color: var(--primary-color); margin-top:15px;"></p>
+        </div>
+
+    </article>
+</main>
+
+<!-- Load MathJax for the pretty fraction -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<script>
+    function calculateGas() {
+        // Get values
+        let p1 = parseFloat(document.getElementById('p1').value);
+        let v1 = parseFloat(document.getElementById('v1').value);
+        let t1 = parseFloat(document.getElementById('t1').value);
+        
+        let p2 = parseFloat(document.getElementById('p2').value);
+        let v2 = parseFloat(document.getElementById('v2').value);
+        let t2 = parseFloat(document.getElementById('t2').value);
+
+        let missing = 0;
+        let target = "";
+
+        // Check which one is missing (NaN)
+        if (isNaN(p1)) { missing++; target="p1"; }
+        if (isNaN(v1)) { missing++; target="v1"; }
+        if (isNaN(t1)) { missing++; target="t1"; }
+        if (isNaN(p2)) { missing++; target="p2"; }
+        if (isNaN(v2)) { missing++; target="v2"; }
+        if (isNaN(t2)) { missing++; target="t2"; }
+
+        const output = document.getElementById('result');
+
+        if (missing !== 1) {
+            output.innerText = "Fehler: Bitte genau ein Feld leer lassen, um es zu berechnen.";
+            return;
+        }
+
+        // Formula: (p1 * v1) / t1 = (p2 * v2) / t2
+        // Let K = (p1 * v1) / t1  (if left side is complete)
+        // Or K = (p2 * v2) / t2 (if right side is complete)
+
+        let result = 0;
+
+        try {
+            if (target === "p2") {
+                // p2 = (p1 * v1 * t2) / (t1 * v2)
+                result = (p1 * v1 * t2) / (t1 * v2);
+                document.getElementById('p2').value = result.toFixed(2);
+                output.innerText = "Berechnet: p2 = " + result.toFixed(2) + " bar";
+            }
+            else if (target === "v2") {
+                // v2 = (p1 * v1 * t2) / (t1 * p2)
+                result = (p1 * v1 * t2) / (t1 * p2);
+                document.getElementById('v2').value = result.toFixed(2);
+                output.innerText = "Berechnet: V2 = " + result.toFixed(2) + " Liter";
+            }
+            else if (target === "t2") {
+                // t2 = (p2 * v2 * t1) / (p1 * v1)
+                result = (p2 * v2 * t1) / (p1 * v1);
+                document.getElementById('t2').value = result.toFixed(2);
+                output.innerText = "Berechnet: T2 = " + result.toFixed(2) + " K";
+            }
+            // Logic works symmetrically for p1, v1, t1, but for MVP we assume solving for state 2 is most common.
+            else {
+                 output.innerText = "Für diesen Prototypen bitte eine Variable auf der rechten Seite (Zustand 2) leer lassen.";
+            }
+
+        } catch (e) {
+            output.innerText = "Fehler bei der Berechnung.";
+        }
+    }
+
+    function clearFields() {
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => input.value = '');
+        document.getElementById('result').innerText = '';
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1. Grundlagen - Gasgesetze</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+    <h2>Inhalt</h2>
+    <ul>
+        <li><a href="index.html">Startseite</a></li>
+        <li><a href="1-grundlagen.html" class="active">1. Grundlagen</a></li>
+        <li><a href="2-boyle-mariotte.html">2. Boyle-Mariotte</a></li>
+        <li><a href="3-allgemeines-gasgesetz.html">3. Das allgemeine Gasgesetz</a></li>
+    </ul>
+</nav>
+
+<main>
+    <article>
+        <h1>1. Physikalische Grundlagen</h1>
+        
+        <p>Bevor wir mit komplexen Gasgesetzen arbeiten, müssen wir die drei entscheidenden Zustandsgrössen definieren: Druck, Temperatur und Volumen.</p>
+
+        <h2>Die Temperatur (T)</h2>
+        <p>Im Alltag messen wir Temperatur in Grad Celsius (°C). In der Thermodynamik und Physik müssen wir jedoch fast immer mit der absoluten Temperatur in <strong>Kelvin (K)</strong> rechnen.</p>
+        
+        <div class="definition-box">
+            <strong>Wichtig:</strong> 0 Kelvin ist der absolute Nullpunkt. Es gibt keine negativen Kelvin-Werte.
+            <br>
+            0 K = -273.15 °C
+        </div>
+
+        <div class="formula-box">
+            T<sub>(Kelvin)</sub> = T<sub>(Celsius)</sub> + 273.15
+        </div>
+
+        <!-- Interactive Tool: Converter -->
+        <div class="interactive-tool">
+            <div class="tool-header">Werkzeug: Temperatur-Umrechner</div>
+            <p>Geben Sie einen Wert in Celsius ein, um den Kelvin-Wert für Ihre Formeln zu erhalten.</p>
+            
+            <label for="celsius">Temperatur in °C:</label>
+            <input type="number" id="celsius" placeholder="z.B. 20" oninput="convertTemp()">
+            
+            <p>Ergebnis: <strong><span id="kelvin-output">---</span> K</strong></p>
+        </div>
+
+        <h2>Der Druck (p)</h2>
+        <p>Der Druck ist definiert als Kraft pro Fläche ($F/A$). In der Pneumatik verwenden wir oft die Einheit <strong>bar</strong>, in Formeln nutzen wir jedoch die SI-Einheit <strong>Pascal (Pa)</strong> oder Newton pro Quadratmeter.</p>
+        <ul>
+            <li>1 bar = 100'000 Pa = 10<sup>5</sup> Pa</li>
+            <li>1 bar ≈ Umgebungsdruck auf Meereshöhe</li>
+        </ul>
+
+    </article>
+</main>
+
+<script>
+    function convertTemp() {
+        const c = parseFloat(document.getElementById('celsius').value);
+        if (isNaN(c)) {
+            document.getElementById('kelvin-output').innerText = "---";
+        } else {
+            const k = c + 273.15;
+            document.getElementById('kelvin-output').innerText = k.toFixed(2);
+        }
+    }
+</script>
+
+</body>
+</html>
