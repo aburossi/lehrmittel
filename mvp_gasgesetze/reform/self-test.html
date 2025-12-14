@@ -66,6 +66,7 @@
     </div>
 
     <script>
+        // Note: Use DOUBLE BACKSLASH (\\) for LaTeX commands inside JS strings
         const questions = [
             {
                 tag: "Grundlagen",
@@ -107,6 +108,7 @@
 
             html += `</div><div class="feedback-area" id="feedback"></div></div>`;
             container.innerHTML = html;
+            // Force MathJax to scan the new content
             if(window.MathJax) MathJax.typesetPromise();
         }
 
@@ -130,6 +132,9 @@
                 feedbackEl.style.display = 'block';
                 feedbackEl.innerHTML = `<strong>Leider nein.</strong> ${q.options[idx].feedback}`;
             }
+            
+            // Re-render MathJax inside feedback if necessary
+            if(window.MathJax) MathJax.typesetPromise();
 
             const nextBtn = document.getElementById('nextBtn');
             if (currentQIndex < questions.length - 1) {

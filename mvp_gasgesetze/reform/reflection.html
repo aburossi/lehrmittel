@@ -2,80 +2,94 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abschluss & Reflexion</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };</script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        :root { --brand: #0f172a; --accent: #3b82f6; --bg: #f8fafc; }
+        :root { --brand: #0f172a; --accent: #3b82f6; --bg: #f8fafc; --success: #10b981; --error: #ef4444; --radius: 8px; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
         .container { max-width: 700px; margin: 0 auto; }
         
         /* Nav */
         .progress-nav { background: white; border-radius: 8px; padding: 15px; display: flex; gap: 15px; align-items: center; margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .nav-item { font-size: 0.85rem; font-weight: 600; color: #94a3b8; }
-        .nav-item.done { color: #10b981; }
+        .nav-item { font-size: 0.85rem; font-weight: 600; color: #94a3b8; text-decoration: none; }
+        .nav-item.done { color: var(--success); cursor: pointer; }
         .nav-item.active { color: var(--brand); font-weight: 800; text-decoration: underline; }
 
         /* Card */
         .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px; }
         h1 { margin-top: 0; color: var(--brand); }
         
-        textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0 20px 0; border: 1px solid #cbd5e1; border-radius: 4px; font-family: sans-serif; }
+        textarea { width: 100%; height: 100px; padding: 10px; margin: 10px 0 20px 0; border: 1px solid #cbd5e1; border-radius: 4px; font-family: sans-serif; resize: vertical; }
+        label { font-weight: bold; font-size: 0.9rem; display: block; margin-top: 15px; }
+
+        /* Teacher Layer */
+        .teacher-note { display: none; border: 2px dashed #f59e0b; background: #fffbeb; padding: 15px; margin-bottom: 20px; border-radius: var(--radius); font-size: 0.9rem; color: #92400e; }
+        body.instructor-active .teacher-note { display: block; animation: fadein 0.5s; }
         
-        /* Self Test Area */
+        /* Quiz in Reflection */
         .quiz-section { background: #f1f5f9; padding: 20px; border-radius: 8px; margin-top: 20px; }
-        .option-btn { background: white; width: 100%; text-align: left; padding: 10px; margin-bottom: 5px; border: 1px solid #cbd5e1; cursor: pointer; border-radius: 4px; }
+        .option-btn { background: white; width: 100%; text-align: left; padding: 12px; margin-bottom: 8px; border: 1px solid #cbd5e1; cursor: pointer; border-radius: 4px; transition: 0.2s; }
         .option-btn:hover { border-color: var(--accent); }
-        .option-btn.correct { background: #dcfce7; border-color: #10b981; color: #064e3b; }
-        .option-btn.wrong { background: #fee2e2; border-color: #ef4444; color: #7f1d1d; }
+        .option-btn.correct { background: #dcfce7; border-color: var(--success); color: #064e3b; }
+        .option-btn.wrong { background: #fee2e2; border-color: var(--error); color: #7f1d1d; }
         
-        .finish-btn { background: var(--brand); color: white; padding: 15px 30px; border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; display: block; width: 100%; margin-top: 30px; }
+        .finish-btn { background: var(--brand); color: white; padding: 15px 30px; border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; display: block; width: 100%; margin-top: 30px; transition: 0.2s; }
+        .finish-btn:hover { background: #1e293b; transform: translateY(-2px); }
+
+        @keyframes fadein { from { opacity:0; } to { opacity:1; } }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div class="progress-nav">
-            <span class="nav-item done">✓ Start</span> ›
-            <span class="nav-item done">✓ Wissen</span> ›
-            <span class="nav-item done">✓ Planung</span> ›
-            <span class="nav-item active">4. Abschluss & Reflexion</span>
+            <a href="index.html" class="nav-item done">✓ Start</a> ›
+            <a href="knowledge-base.html" class="nav-item done">✓ Wissen</a> ›
+            <a href="engineering-tool.html" class="nav-item done">✓ Planung</a> ›
+            <span class="nav-item active">4. Abschluss</span>
+        </div>
+
+        <div class="teacher-note">
+            <strong>👨‍🏫 Didaktik: Ergebnissicherung</strong><br>
+            Das Textfeld "Logbucheintrag" zwingt die Schüler, ihre technische Berechnung in eine verständliche Antwort für den Kunden zu übersetzen. Das ist die Kernkompetenz der Reform.
         </div>
 
         <div class="card">
-            <h1>Logbucheintrag</h1>
-            <p>Fassen Sie kurz zusammen, was die Lösung für den Kunden ist. (Vernetzung).</p>
+            <h1>Logbucheintrag (Vernetzung)</h1>
+            <p>Sie haben berechnet, dass der Speicher <strong>nicht</strong> für 60 Minuten reicht. Formulieren Sie eine Antwort an den Kunden.</p>
             
-            <label><strong>Fazit für den Kunden:</strong></label>
-            <textarea placeholder="Sehr geehrter Herr Müller, der 50L Speicher reicht für ca. 25 Minuten. Um 60 Minuten zu überbrücken, empfehlen wir..."></textarea>
+            <label>Fazit & Empfehlung:</label>
+            <textarea placeholder="Sehr geehrter Herr Müller, unsere Berechnung zeigt, dass der aktuelle Speicher nur ca. 25 Minuten überbrückt. Um die geforderte Stunde zu erreichen, empfehlen wir einen zweiten Speicher mit..."></textarea>
 
-            <label><strong>Transfer:</strong></label>
-            <p style="font-size:0.9rem; color:#64748b;">Wo in Ihrem Lehrbetrieb haben Sie schon Druckspeicher gesehen? Welcher Druck herrscht dort?</p>
+            <label>Transfer in den Betrieb:</label>
+            <p style="font-size:0.9rem; color:#64748b; margin-top:0;">Wo in Ihrem Lehrbetrieb haben Sie schon Druckspeicher gesehen? Welcher Druck herrscht dort?</p>
             <textarea placeholder="Bei uns an der CNC-Maschine..."></textarea>
         </div>
 
         <div class="card">
             <h2>⚡ Quick-Check: Wissen sichern</h2>
             <div class="quiz-section">
-                <p>1. Welche Formel beschreibt die isotherme Zustandsänderung?</p>
+                <p><strong>1. Welche Formel beschreibt die isotherme Zustandsänderung?</strong></p>
                 <button class="option-btn" onclick="check(this, false)">$p \cdot T = konstant$</button>
                 <button class="option-btn" onclick="check(this, true)">$p \cdot V = konstant$</button>
                 <button class="option-btn" onclick="check(this, false)">$V / T = konstant$</button>
             </div>
 
             <div class="quiz-section">
-                <p>2. Warum dürfen wir nicht mit dem Manometerdruck rechnen?</p>
-                <button class="option-btn" onclick="check(this, true)">Weil die Gasgesetze auf dem absoluten Nullpunkt basieren.</button>
-                <button class="option-btn" onclick="check(this, false)">Weil Manometer ungenau sind.</button>
+                <p><strong>2. Warum dürfen wir nicht mit dem Manometerdruck rechnen?</strong></p>
+                <button class="option-btn" onclick="check(this, true)">Weil Gasgesetze auf dem absoluten Nullpunkt basieren (Vakuum).</button>
+                <button class="option-btn" onclick="check(this, false)">Weil Manometer immer ungenau sind.</button>
             </div>
         </div>
 
-        <button class="finish-btn" onclick="alert('Lektion abgeschlossen! Gut gemacht.')">Lektion beenden</button>
+        <a href="self-test.html" class="finish-btn" style="text-decoration:none; text-align:center;">Zum grossen Abschlusstest →</a>
     </div>
 
     <script>
+        if(localStorage.getItem('instructorMode') === 'true') document.body.classList.add('instructor-active');
+
         function check(btn, isCorrect) {
             if(isCorrect) {
                 btn.classList.add('correct');

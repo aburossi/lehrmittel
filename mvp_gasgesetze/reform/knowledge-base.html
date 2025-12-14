@@ -7,64 +7,127 @@
     <script>window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };</script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        :root { --brand: #0f172a; --accent: #3b82f6; --bg: #f8fafc; }
+        :root { --brand: #0f172a; --accent: #3b82f6; --bg: #f8fafc; --success: #10b981; --error: #ef4444; --radius: 8px; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; }
         
         .progress-nav { background: white; border-bottom: 1px solid #e2e8f0; padding: 15px 20px; display: flex; gap: 20px; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .nav-item { font-size: 0.85rem; font-weight: 600; color: #94a3b8; }
+        .nav-item { font-size: 0.85rem; font-weight: 600; color: #94a3b8; text-decoration: none; }
         .nav-item.active { color: var(--accent); }
-        .nav-item.done { color: #10b981; cursor: pointer; }
+        .nav-item.done { color: var(--success); cursor: pointer; }
         .nav-arrow { color: #cbd5e1; }
 
         .container { max-width: 800px; margin: 30px auto; padding: 0 20px; }
-        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card { background: white; padding: 40px; border-radius: var(--radius); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
+        /* Teacher Layer */
+        .teacher-note { display: none; border: 2px dashed #f59e0b; background: #fffbeb; padding: 15px; margin-bottom: 20px; border-radius: var(--radius); font-size: 0.9rem; color: #92400e; }
+        body.instructor-active .teacher-note { display: block; animation: fadein 0.5s; }
+
         /* Tech Tooltip */
-        .tech-term { border-bottom: 2px dotted var(--accent); cursor: help; position: relative; font-weight: 600; }
-        .tech-term:hover::after { content: attr(data-tooltip); position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 8px 12px; border-radius: 4px; font-size: 0.8rem; width: 200px; z-index: 10; }
+        .tech-term { border-bottom: 2px dotted var(--accent); cursor: help; position: relative; font-weight: 600; color: var(--brand); }
+        .tech-term:hover::after { content: attr(data-tooltip); position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 8px 12px; border-radius: 4px; font-size: 0.8rem; width: 220px; z-index: 10; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+
+        /* Flip Cards */
+        .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0; }
+        .flip-card { perspective: 1000px; height: 140px; cursor: pointer; }
+        .flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
+        .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-direction: column; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .flip-front { background: #f1f5f9; border: 1px solid #cbd5e1; color: var(--brand); font-weight: bold; }
+        .flip-back { background: var(--brand); color: white; transform: rotateY(180deg); font-family: 'Roboto Mono'; padding: 10px; text-align: center; }
+        .hint-text { font-size: 0.7rem; color: #64748b; margin-top: 5px; font-weight: normal; }
 
         /* Sim */
-        .sim-box { background: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #cbd5e1; }
-        .visualizer { height: 80px; background: #cbd5e1; position: relative; border-radius: 4px; overflow: hidden; }
-        .gas { height: 100%; position: absolute; right: 0; background: rgba(59, 130, 246, 0.4); }
-        .piston { height: 100%; width: 5px; background: #334155; position: absolute; }
+        .sim-box { background: #f1f5f9; padding: 20px; border-radius: 8px; margin: 30px 0; border: 1px solid #cbd5e1; }
+        .visualizer { height: 80px; background: #cbd5e1; position: relative; border-radius: 4px; overflow: hidden; margin-bottom: 15px; }
+        .gas { height: 100%; position: absolute; right: 0; background: rgba(59, 130, 246, 0.4); transition: width 0.1s, background 0.1s; }
+        .piston { height: 100%; width: 5px; background: #334155; position: absolute; transition: left 0.1s; }
+
+        /* Inline Quiz */
+        .inline-quiz { background: #eff6ff; border: 1px solid #bfdbfe; padding: 20px; border-radius: 6px; margin: 30px 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .quiz-input { border: 1px solid #cbd5e1; padding: 6px; border-radius: 4px; font-size: 0.9rem; }
+        .quiz-feedback { font-size: 0.9rem; font-weight: bold; }
+        .quiz-feedback.correct { color: var(--success); }
+        .quiz-feedback.wrong { color: var(--error); }
+
+        @keyframes fadein { from { opacity:0; } to { opacity:1; } }
     </style>
 </head>
 <body>
 
     <div class="progress-nav">
-        <a href="index.html" class="nav-item done" style="text-decoration:none;">✓ 1. Start</a>
+        <a href="index.html" class="nav-item done">✓ 1. Start</a>
         <div class="nav-arrow">›</div>
         <div class="nav-item active">2. Wissen (SOL)</div>
         <div class="nav-arrow">›</div>
-        <div class="nav-item">3. Planung & Berechnung</div>
+        <a href="engineering-tool.html" class="nav-item">3. Planung & Berechnung</a>
         <div class="nav-arrow">›</div>
         <div class="nav-item">4. Reflexion</div>
     </div>
 
     <div class="container">
-        <div class="card">
-            <h1>Grundlagen: Verhalten von Gasen</h1>
-            <p>Luft ist <span class="tech-term" data-tooltip="Volumen verringert sich bei Druck.">komprimierbar</span>. Wenn wir Gas verdichten, ändern sich die Zustandsgrössen.</p>
+        
+        <div class="teacher-note">
+            <strong>👨‍🏫 Coach-Hinweis:</strong>
+            Beobachten Sie, ob die Schüler die "Formel-Karten" nutzen. Wenn nicht, erinnern Sie sie daran, dass sie diese Formeln gleich für den Rechner brauchen. Die Simulation unten visualisiert $p \cdot V = k$.
+        </div>
 
-            <h3>Das Gesetz von Boyle-Mariotte</h3>
-            <p>$$ p_1 \cdot V_1 = p_2 \cdot V_2 $$</p>
+        <div class="card">
+            <h1>Grundlagen der Gasphysik</h1>
+            <p>Im Gegensatz zu Hydrauliköl ist Luft <span class="tech-term" data-tooltip="Das Volumen verringert sich, wenn der Druck steigt.">komprimierbar</span>. Um den Speicher zu berechnen, brauchen wir zwei Werkzeuge.</p>
+
+            <h3>⚡ Interaktive Formelsammlung (Klicken)</h3>
+            <div class="card-grid">
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-inner">
+                        <div class="flip-front">
+                            Boyle-Mariotte Gesetz
+                            <span class="hint-text">(Bei konstanter Temp.)</span>
+                        </div>
+                        <div class="flip-back">$$ p_1 \cdot V_1 = p_2 \cdot V_2 $$</div>
+                    </div>
+                </div>
+                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                    <div class="flip-inner">
+                        <div class="flip-front">
+                            Absolutdruck
+                            <span class="hint-text">(WICHTIG!)</span>
+                        </div>
+                        <div class="flip-back">$$ p_{abs} = p_{manometer} + 1 \text{ bar} $$</div>
+                    </div>
+                </div>
+            </div>
 
             <div class="sim-box">
-                <h4>Simulation</h4>
+                <h4 style="margin-top:0">Simulation: Isotherme Verdichtung</h4>
                 <div class="visualizer">
                     <div id="piston" class="piston" style="left:0"></div>
                     <div id="gas" class="gas" style="width:100%"></div>
                 </div>
                 <input type="range" min="1" max="10" value="1" id="slider" style="width:100%">
-                <div style="font-family:'Roboto Mono'; margin-top:10px;">
-                    Druck: <span id="pVal">1.0</span> bar | Volumen: <span id="vVal">100</span> %
+                <div style="font-family:'Roboto Mono'; margin-top:10px; display:flex; justify-content:space-between;">
+                    <span>Druck: <strong id="pVal">1.0</strong> bar (abs)</span>
+                    <span>Volumen: <strong id="vVal">100</strong> %</span>
                 </div>
             </div>
 
-            <div style="background:#fff7ed; border-left:4px solid #f97316; padding:15px; margin-top:20px;">
-                <strong>⚠️ Achtung: Absolutdruck</strong><br>
-                Rechnen Sie immer mit $p_{abs} = p_{manometer} + 1 \text{ bar}$.
+            <div class="inline-quiz">
+                <strong>Verständnis-Check:</strong>
+                Wenn ich das Volumen im Zylinder halbiere, dann 
+                <select id="quizSelect" class="quiz-input" onchange="checkInlineQuiz()">
+                    <option value="">...</option>
+                    <option value="sinkt">sinkt</option>
+                    <option value="steigt">steigt</option>
+                    <option value="gleich">bleibt gleich</option>
+                </select>
+                der Druck.
+                <span id="inlineFeedback" class="quiz-feedback"></span>
+            </div>
+
+            <div style="background:#fff7ed; border-left:4px solid #f97316; padding:15px; margin-top:30px;">
+                <strong>⚠️ Die "Absolutdruck-Falle"</strong><br>
+                Technische Manometer zeigen den Überdruck ($p_e$) an (0 bar = Umgebungsdruck).
+                Physikalisch rechnen wir aber immer mit dem <strong>Absolutdruck</strong> (0 bar = Vakuum).
             </div>
 
             <a href="engineering-tool.html" style="display:block; text-align:center; background:#0f172a; color:white; padding:15px; border-radius:6px; margin-top:20px; text-decoration:none; font-weight:bold;">Weiter zur Berechnung →</a>
@@ -72,6 +135,12 @@
     </div>
 
     <script>
+        // Check Instructor Mode
+        if(localStorage.getItem('instructorMode') === 'true') {
+            document.body.classList.add('instructor-active');
+        }
+
+        // Simulation Logic
         const slider = document.getElementById('slider');
         const pVal = document.getElementById('pVal');
         const vVal = document.getElementById('vVal');
@@ -87,6 +156,21 @@
             piston.style.left = (100 - V) + "%";
             gas.style.backgroundColor = `rgba(59, 130, 246, ${0.3 + (P/15)})`;
         });
+
+        // Inline Quiz Logic
+        function checkInlineQuiz() {
+            const val = document.getElementById('quizSelect').value;
+            const fb = document.getElementById('inlineFeedback');
+            if(val === 'steigt') {
+                fb.innerText = "Korrekt! (Indirekte Proportionalität)";
+                fb.className = "quiz-feedback correct";
+            } else if (val !== "") {
+                fb.innerText = "Falsch. Schauen Sie auf die Simulation.";
+                fb.className = "quiz-feedback wrong";
+            } else {
+                fb.innerText = "";
+            }
+        }
     </script>
 </body>
 </html>
