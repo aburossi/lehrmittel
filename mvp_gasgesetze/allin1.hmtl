@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lernmodul: Thermodynamik & Pneumatik</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --tech-blue: #0056b3;
+            --tech-dark: #1e293b;
+            --tech-light: #f1f5f9;
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-error: #ef4444;
+            --radius: 8px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--tech-light);
+            color: var(--tech-dark);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* --- Header / Dashboard --- */
+        .app-header {
+            background: var(--tech-dark);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .brand {
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        /* Toggle Switch for Instructor Mode */
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        
+        .mode-toggle input { display: none; }
+        .toggle-track {
+            width: 36px; height: 20px; background: #64748b;
+            border-radius: 20px; position: relative; transition: 0.3s;
+        }
+        .toggle-thumb {
+            width: 16px; height: 16px; background: white;
+            border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: 0.3s;
+        }
+        .mode-toggle input:checked + .toggle-track { background: var(--accent-warning); }
+        .mode-toggle input:checked + .toggle-track .toggle-thumb { transform: translateX(16px); }
+
+        /* --- Main Content Layout --- */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* --- Cards (Micro-Learning) --- */
+        .learning-card {
+            background: white;
+            border-radius: var(--radius);
+            border-left: 5px solid var(--tech-blue);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            padding: 2rem;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .learning-card:hover {
+            transform: translateY(-2px);
+        }
+
+        h2 { margin-top: 0; color: var(--tech-dark); font-size: 1.5rem; }
+        .badge {
+            background: #e0f2fe; color: var(--tech-blue);
+            padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        /* --- Teacher Notes (Hidden by default) --- */
+        .teacher-note {
+            display: none; /* Hidden unless toggled */
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            color: #92400e;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+        }
+        .teacher-note::before { content: "👨‍🏫 Instructor Insight: "; font-weight: bold; }
+        
+        body.instructor-mode .teacher-note { display: block; animation: fadeIn 0.5s; }
+
+        /* --- Interactive Simulation (Pneumatic Cylinder) --- */
+        .sim-container {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .cylinder-visual {
+            width: 100%;
+            height: 100px;
+            background: #ddd;
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+            border: 2px solid #94a3b8;
+        }
+
+        .piston {
+            height: 100%;
+            background: linear-gradient(90deg, #64748b 0%, #334155 100%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: width 0.3s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .air-chamber {
+            position: absolute;
+            top: 0; right: 0; bottom: 0;
+            background: rgba(56, 189, 248, 0.2); /* Light Blue Gas */
+            transition: width 0.3s ease-out, background-color 0.3s;
+        }
+
+        input[type="range"] { width: 100%; cursor: pointer; }
+
+        /* --- Problem Solving (Gamified) --- */
+        .problem-box {
+            background: var(--tech-dark);
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-top: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            border-radius: 4px;
+            border: none;
+            flex: 1;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        button.action-btn {
+            background: var(--tech-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        button.action-btn:hover { background: #004494; }
+
+        /* Feedback UI */
+        .feedback-msg {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: 500;
+            display: none;
+        }
+        .feedback-msg.error { background: #fee2e2; color: #991b1b; display: block; }
+        .feedback-msg.hint { background: #fff7ed; color: #9a3412; display: block; }
+        .feedback-msg.success { background: #dcfce7; color: #166534; display: block; }
+
+        /* Animation */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Progress Bar */
+        .mastery-bar-container {
+            width: 100px;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .mastery-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--accent-success);
+            transition: width 0.5s;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="brand">
+            <span>⚙️ ThermoSim</span>
+            <span style="font-size: 0.8rem; opacity: 0.7; margin-left: 10px;">| Polymechaniker/in</span>
+        </div>
+        <div class="header-controls">
+            <div style="text-align: right;">
+                <div style="font-size: 0.7rem; text-transform: uppercase;">Mastery</div>
+                <div class="mastery-bar-container">
+                    <div class="mastery-bar" id="masteryBar"></div>
+                </div>
+            </div>
+            
+            <label class="mode-toggle">
+                <span>Lehrermodus</span>
+                <input type="checkbox" id="teacherToggle">
+                <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            </label>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="learning-card" id="card-1">
+            <span class="badge">Grundlagen</span>
+            <h2>Isotherme Zustandsänderung (Boyle-Mariotte)</h2>
+            <p>Ein Pneumatikzylinder wird zusammengedrückt. Die Temperatur bleibt konstant ($T = konst$). Was passiert mit dem Druck?</p>
+
+            <div class="formula-box" style="font-family: 'Roboto Mono'; background: #f1f5f9; padding: 10px; border-radius: 4px; text-align: center;">
+                $$ p_1 \cdot V_1 = p_2 \cdot V_2 $$
+            </div>
+
+            <div class="sim-container">
+                <div class="cylinder-visual">
+                    <div class="piston" id="simPiston" style="width: 10%;"></div>
+                    <div class="air-chamber" id="simGas" style="width: 90%; left: 10%;"></div>
+                </div>
+                
+                <label style="font-weight: bold; display: block; margin-bottom: 10px;">
+                    Volumen komprimieren (Kolbenkraft $F$)
+                </label>
+                <input type="range" min="10" max="90" value="10" id="compressionSlider">
+                
+                <div style="display: flex; justify-content: space-around; margin-top: 15px; font-family: 'Roboto Mono';">
+                    <div>Volumen: <span id="valVol">100</span> %</div>
+                    <div>Druck: <span id="valPress">1.0</span> bar</div>
+                </div>
+            </div>
+
+            <div class="teacher-note">
+                <strong>Didaktischer Hinweis:</strong> Lassen Sie die Lernenden den Schieberegler schnell bewegen. Diskutieren Sie: "Ist das in der Realität wirklich isotherm?" (Nein, adiabatische Erwärmung). Dies ist der perfekte Übergang zum allgemeinen Gasgesetz.
+            </div>
+        </section>
+
+        <section class="learning-card" id="card-2">
+            <span class="badge">Anwendung</span>
+            <h2>Praxisbeispiel: Der Kompressor</h2>
+            <p>Ein Kompressor saugt Luft bei <strong>20°C</strong> an. Nach der Verdichtung auf <strong>8 bar</strong> beträgt die Temperatur <strong>150°C</strong>.</p>
+            <p>Wie gross ist das Volumenverhältnis, wenn wir ideale Bedingungen annehmen?</p>
+
+            <div class="problem-box">
+                <label>Berechneter Druck $p_2$ (nur als Test):</label>
+                <p style="font-size: 0.9rem; color: #cbd5e1;">(Vereinfacht: Berechnen Sie den Enddruck, wenn $V$ halbiert wird und $T$ von 20°C auf 40°C steigt. Startdruck: 1 bar).</p>
+                
+                <div class="input-group">
+                    <input type="number" id="userAnswer" placeholder="Ergebnis in bar...">
+                    <button class="action-btn" onclick="checkAnswer()">Prüfen</button>
+                </div>
+                
+                <div id="feedbackArea" class="feedback-msg"></div>
+            </div>
+
+            <div class="teacher-note">
+                <strong>Lösungsweg:</strong><br>
+                $$ p_2 = \frac{p_1 \cdot V_1 \cdot T_2}{V_2 \cdot T_1} $$
+                Häufigster Fehler: Schüler rechnen mit Celsius statt Kelvin ($20 \rightarrow 293.15 K$).
+                <br>Ergebnis: ca. 2.14 bar.
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- 1. Instructor Mode Toggle logic ---
+        const toggle = document.getElementById('teacherToggle');
+        toggle.addEventListener('change', (e) => {
+            if(e.target.checked) {
+                document.body.classList.add('instructor-mode');
+            } else {
+                document.body.classList.remove('instructor-mode');
+            }
+        });
+
+        // --- 2. Simulation Logic (Visual Feedback) ---
+        const slider = document.getElementById('compressionSlider');
+        const piston = document.getElementById('simPiston');
+        const gas = document.getElementById('simGas');
+        const valVol = document.getElementById('valVol');
+        const valPress = document.getElementById('valPress');
+
+        slider.addEventListener('input', (e) => {
+            // Visuals
+            const pistonPos = e.target.value; // 10 to 90
+            piston.style.width = pistonPos + "%";
+            gas.style.width = (100 - pistonPos) + "%";
+            gas.style.left = pistonPos + "%";
+
+            // Physics (Boyle-Mariotte: p * V = k)
+            // Initial state: V=100 (at slider 0, represented by 10% margin), p=1
+            // Current V = (100 - pistonPos)
+            // p = k / V
+            const initialV = 90; // 100% width - 10% margin
+            const currentV = 100 - pistonPos;
+            
+            // Avoid division by zero
+            const displayV = Math.max(currentV, 1); 
+            const pressure = (1 * initialV) / displayV;
+
+            valVol.innerText = Math.round((currentV / initialV) * 100);
+            valPress.innerText = pressure.toFixed(2);
+
+            // Visual feedback: Gas gets "redder" as pressure increases
+            const redness = Math.min((pressure - 1) * 30, 100); 
+            gas.style.backgroundColor = `rgba(${56 + redness * 2}, ${189 - redness}, 248, 0.4)`;
+        });
+
+        // --- 3. Smart Answer Checking (Didactic Logic) ---
+        function checkAnswer() {
+            const input = parseFloat(document.getElementById('userAnswer').value);
+            const feedback = document.getElementById('feedbackArea');
+            const feedbackBox = document.querySelector('.problem-box');
+            
+            // Scenario: p1=1, V1=2, V2=1 (halved), T1=20C, T2=40C
+            // Correct Math (Kelvin):
+            // T1 = 293.15, T2 = 313.15
+            // p2 = (1 * 2 * 313.15) / (1 * 293.15) = 2.136...
+            const correct = 2.14;
+            
+            // Common Error Math (Celsius):
+            // p2 = (1 * 2 * 40) / (1 * 20) = 4.0
+            const celsiusError = 4.0;
+
+            feedback.className = "feedback-msg"; // reset
+
+            if (isNaN(input)) {
+                feedback.innerText = "Bitte geben Sie eine Zahl ein.";
+                feedback.classList.add('error');
+                return;
+            }
+
+            // Margin of error
+            if (Math.abs(input - correct) < 0.1) {
+                feedback.innerText = "Korrekt! Hervorragend. Sie haben an die Kelvin-Umrechnung gedacht.";
+                feedback.classList.add('success');
+                saveProgress(50); // Add XP
+            } 
+            else if (Math.abs(input - celsiusError) < 0.1) {
+                feedback.innerHTML = "<strong>Falsch.</strong> Ihr Ergebnis (4.0) legt nahe, dass Sie mit <strong>Celsius</strong> gerechnet haben.<br>In der Thermodynamik müssen wir immer Kelvin verwenden ($T_{K} = T_{C} + 273.15$).";
+                feedback.classList.add('hint');
+            } 
+            else {
+                feedback.innerText = `Leider falsch. Das korrekte Ergebnis ist ca. ${correct} bar. Überprüfen Sie Ihre Formel.`;
+                feedback.classList.add('error');
+            }
+        }
+
+        // --- 4. Persistent Mastery (LocalStorage) ---
+        function saveProgress(xp) {
+            let currentXP = parseInt(localStorage.getItem('gasXP') || '0');
+            // Cap at 100 for this demo
+            if (currentXP < 100) {
+                currentXP += xp;
+                localStorage.setItem('gasXP', currentXP);
+                updateMasteryBar();
+            }
+        }
+
+        function updateMasteryBar() {
+            const xp = localStorage.getItem('gasXP') || '0';
+            document.getElementById('masteryBar').style.width = xp + "%";
+        }
+
+        // Init
+        updateMasteryBar();
+
+    </script>
+</body>
+</html>
