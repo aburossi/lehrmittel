@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz: Pneumatik-Experte</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    <script>window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };</script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root { --brand-color: #0f172a; --bg-color: #f1f5f9; --tech-blue: #3b82f6; --success: #10b981; --error: #ef4444; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-color); color: #334155; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        
+        /* Teacher Layer */
+        .teacher-only { display: none; margin-bottom: 20px; }
+        .teacher-box { border: 2px solid #f59e0b; background: #fffbeb; border-radius: 8px; overflow: hidden; }
+        .teacher-summary { background: #fcd34d; padding: 10px 15px; cursor: pointer; font-weight: bold; color: #78350f; }
+        .teacher-content { padding: 20px; color: #92400e; }
+
+        .quiz-header { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .question-card { background: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        
+        .option-btn {
+            background: white; border: 2px solid #e2e8f0; padding: 15px; border-radius: 6px; 
+            text-align: left; cursor: pointer; font-size: 1rem; transition: all 0.2s; color: #334155;
+            display: block; width: 100%; margin-bottom: 10px;
+        }
+        .option-btn:hover { border-color: var(--tech-blue); background: #f8fafc; }
+        .option-btn.correct { border-color: var(--success); background: #dcfce7; color: #064e3b; }
+        .option-btn.wrong { border-color: var(--error); background: #fee2e2; color: #7f1d1d; }
+        
+        .feedback-area { margin-top: 20px; padding: 15px; border-radius: 6px; display: none; background: #f1f5f9; }
+        .next-btn { background: var(--brand-color); color: white; border: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; cursor: pointer; display: none; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" style="text-decoration: none; color: #64748b; display: block; margin-bottom: 20px;">← Zurück zum Start</a>
+
+    <div class="container">
+        
+        <div class="teacher-only">
+            <details class="teacher-box">
+                <summary class="teacher-summary">LP-Modus: Prüfungs-Check</summary>
+                <div class="teacher-content">
+                    <p>Diese Fragen eignen sich auch für die formelle Summative Prüfung. Achten Sie darauf, ob die Schüler Frage 2 (Volumen "gewinnen") verstehen – dies ist die Transferleistung zur Berechnung im Tool.</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="quiz-header">
+            <h1 style="margin:0; font-size:1.2rem;">⚡ Selbst-Test</h1>
+            <span style="font-size:1.5rem; font-weight:800; color:var(--tech-blue);" id="scoreVal">0</span>
+        </div>
+
+        <div id="quiz-container"></div>
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Nächste Frage →</button>
+    </div>
+
+    <script>
+        // --- Teacher Mode Logic ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            const isLP = params.get('id') === 'LP';
+            if (isLP) {
+                document.querySelectorAll('.teacher-only').forEach(el => el.style.display = 'block');
+                document.querySelectorAll('a').forEach(link => {
+                     if(link.href && !link.href.includes('javascript')) {
+                        const separator = link.href.includes('?') ? '&' : '?';
+                        link.href += separator + 'id=LP';
+                     }
+                });
+            }
+        });
+
+        // --- Quiz Logic ---
+        const questions = [
+            {
+                text: "Sie lesen an einem Manometer 6 bar ab. Welchen Wert setzen Sie in die Formel ein?",
+                options: [
+                    { text: "6 bar", correct: false, fb: "Das ist der Überdruck." },
+                    { text: "7 bar", correct: true, fb: "Korrekt! $p_{abs} = p_{man} + 1$." },
+                    { text: "5 bar", correct: false, fb: "Nein, Absolutdruck ist immer höher." }
+                ]
+            },
+            {
+                text: "Ein 50L Tank entspannt sich von 9 bar (abs) auf 5 bar (abs). Wieviel Normliter (1 bar) können entnommen werden?",
+                options: [
+                    { text: "200 Liter", correct: true, fb: "Richtig. $\\Delta p = 4$. $50 \\cdot 4 = 200$." },
+                    { text: "450 Liter", correct: false, fb: "Falsch. Das wäre der gesamte Inhalt." }
+                ]
+            }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+
+        function renderQuestion() {
+            const q = questions[currentQ];
+            let html = `<div class="question-card"><h2>${q.text}</h2>`;
+            q.options.forEach((opt, i) => {
+                html += `<button class="option-btn" onclick="check(this, ${i})">${opt.text}</button>`;
+            });
+            html += `<div id="fb" class="feedback-area"></div></div>`;
+            document.getElementById('quiz-container').innerHTML = html;
+            document.getElementById('nextBtn').style.display = 'none';
+            if(window.MathJax) MathJax.typesetPromise();
+        }
+
+        function check(btn, i) {
+            const q = questions[currentQ];
+            const isCorrect = q.options[i].correct;
+            const fb = document.getElementById('fb');
+            
+            document.querySelectorAll('.option-btn').forEach(b => {
+                b.style.pointerEvents = 'none';
+                b.style.opacity = '0.6';
+            });
+            btn.style.opacity = '1';
+
+            if(isCorrect) {
+                btn.classList.add('correct');
+                score += 100;
+                document.getElementById('scoreVal').innerText = score;
+                fb.innerHTML = "✅ " + q.options[i].fb;
+            } else {
+                btn.classList.add('wrong');
+                fb.innerHTML = "❌ " + q.options[i].fb;
+            }
+            fb.style.display = 'block';
+            
+            // Re-render MathJax inside feedback
+            if(window.MathJax) MathJax.typesetPromise();
+
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.style.display = 'block';
+            if(currentQ >= questions.length - 1) {
+                nextBtn.innerText = "Beenden";
+                nextBtn.onclick = () => alert("Fertig! Punktzahl: " + score);
+            }
+        }
+
+        function nextQuestion() {
+            currentQ++;
+            renderQuestion();
+        }
+
+        renderQuestion();
+    </script>
+</body>
+</html>

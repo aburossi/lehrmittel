@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Abschluss & Reflexion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root { --brand: #0f172a; --accent: #3b82f6; --bg: #f8fafc; --success: #10b981; --radius: 8px; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; }
+        
+        .progress-nav { background: white; border-radius: 8px; padding: 15px; display: flex; gap: 15px; align-items: center; margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .nav-item { font-size: 0.85rem; font-weight: 600; color: #94a3b8; text-decoration: none; }
+        .nav-item.done { color: var(--success); }
+        .nav-item.active { color: var(--brand); font-weight: 800; text-decoration: underline; }
+
+        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        
+        /* Teacher Layer */
+        .teacher-only { display: none; margin-bottom: 20px; }
+        .teacher-box { border: 2px solid #f59e0b; background: #fffbeb; border-radius: var(--radius); overflow: hidden; }
+        .teacher-summary { background: #fcd34d; padding: 10px 15px; cursor: pointer; font-weight: bold; color: #78350f; list-style: none; display: flex; align-items: center; gap: 10px; }
+        .teacher-summary::before { content: '👨‍🏫'; }
+        .teacher-content { padding: 20px; color: #92400e; font-size: 0.95rem; }
+
+        textarea { width: 100%; height: 80px; padding: 10px; margin: 10px 0 20px 0; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; }
+        
+        /* Econ Decision */
+        .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; }
+        .option-box { border: 2px solid #e2e8f0; padding: 15px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .option-box:hover { border-color: var(--accent); }
+        .option-box.selected { border-color: var(--brand); background: #f1f5f9; }
+        .price-tag { font-weight: bold; color: var(--success); display: block; margin-top: 5px; }
+
+        .finish-btn { background: var(--brand); color: white; padding: 15px 30px; border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; display: block; width: 100%; margin-top: 30px; text-decoration: none; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="progress-nav">
+            <a href="index.html" class="nav-item done">✓ Start</a> ›
+            <a href="knowledge-base.html" class="nav-item done">✓ Wissen</a> ›
+            <a href="engineering-tool.html" class="nav-item done">✓ Planung</a> ›
+            <span class="nav-item active">4. Abschluss</span>
+        </div>
+
+        <div class="teacher-only">
+            <details class="teacher-box">
+                <summary class="teacher-summary">LP-Modus: Wirtschaftlichkeit</summary>
+                <div class="teacher-content">
+                    <p>Hier findet der Transfer zu überfachlichen Kompetenzen statt. Diskutieren Sie in der Klasse: </p>
+                    <ul style="margin:0; padding-left:20px;">
+                        <li>Ist die teure Lösung (Option B) langfristig besser? (Wartung, Energie?)</li>
+                        <li>Ist Option A (Tank) schnell genug lieferbar?</li>
+                    </ul>
+                    <p>Es gibt hier kein "Richtig" oder "Falsch", nur "Gut begründet".</p>
+                </div>
+            </details>
+        </div>
+
+        <div class="card">
+            <h1>Logbuch: Die Entscheidung</h1>
+            <p>Ihre Berechnung hat gezeigt: <strong>Der aktuelle Speicher reicht nicht (nur ca. 25 min).</strong></p>
+            <p>Sie müssen dem Kunden eine Lösung vorschlagen. Beachten Sie Kosten und Aufwand.</p>
+
+            <div class="option-grid">
+                <div class="option-box" onclick="selectOpt(this)">
+                    <strong>Option A: Zusatztank</strong>
+                    <p style="font-size:0.9rem;">Wir installieren einen zweiten 50L Speicher parallel.</p>
+                    <span class="price-tag">Kosten: CHF 250.-</span>
+                    <span style="font-size:0.8rem; color:#64748b;">Installationszeit: 2h</span>
+                </div>
+                <div class="option-box" onclick="selectOpt(this)">
+                    <strong>Option B: Grösserer Kompressor</strong>
+                    <p style="font-size:0.9rem;">Austausch des Hauptkompressors gegen redundantes System.</p>
+                    <span class="price-tag">Kosten: CHF 3'500.-</span>
+                    <span style="font-size:0.8rem; color:#64748b;">Installationszeit: 2 Tage</span>
+                </div>
+            </div>
+
+            <label style="margin-top:20px; display:block; font-weight:bold;">Ihre Begründung an den Kunden:</label>
+            <textarea placeholder="Ich empfehle Option..., weil..."></textarea>
+        </div>
+
+        <div class="card">
+            <h2>Praxis-Transfer</h2>
+            <p>Wo in Ihrem Lehrbetrieb haben Sie Druckluftspeicher gesehen? Machen Sie ein Foto bis zur nächsten Lektion.</p>
+        </div>
+
+        <a href="self-test.html" class="finish-btn">Zum Abschlusstest →</a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            const isLP = params.get('id') === 'LP';
+            if (isLP) {
+                document.querySelectorAll('.teacher-only').forEach(el => el.style.display = 'block');
+                document.querySelectorAll('a').forEach(link => {
+                     if(link.href && !link.href.includes('javascript')) {
+                        const separator = link.href.includes('?') ? '&' : '?';
+                        link.href += separator + 'id=LP';
+                     }
+                });
+            }
+        });
+
+        function selectOpt(el) {
+            document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Tool: Dimensionierung</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    <script>window.MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root { --brand: #0f172a; --accent: #3b82f6; --bg: #f1f5f9; --success: #10b981; --radius: 8px; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; }
+
+        .progress-nav { background: white; border-bottom: 1px solid #e2e8f0; padding: 15px 20px; display: flex; gap: 20px; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .nav-item { font-size: 0.85rem; font-weight: 600; color: #94a3b8; text-decoration: none; }
+        .nav-item.active { color: var(--accent); }
+        .nav-item.done { color: #10b981; cursor: pointer; }
+        .nav-arrow { color: #cbd5e1; }
+
+        .wrapper { display: flex; max-width: 1200px; margin: 0 auto; min-height: calc(100vh - 60px); }
+        
+        .main-content { flex: 1; padding: 40px; }
+        .card { background: white; padding: 30px; border-radius: var(--radius); box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; }
+
+        /* Teacher Layer */
+        .teacher-only { display: none; margin-bottom: 20px; }
+        .teacher-box { border: 2px solid #f59e0b; background: #fffbeb; border-radius: var(--radius); overflow: hidden; }
+        .teacher-summary { background: #fcd34d; padding: 10px 15px; cursor: pointer; font-weight: bold; color: #78350f; list-style: none; display: flex; align-items: center; gap: 10px; }
+        .teacher-summary::before { content: '👨‍🏫'; }
+        .teacher-content { padding: 20px; color: #92400e; font-size: 0.95rem; }
+
+        /* Inputs */
+        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; color: #64748b; margin-top: 15px; }
+        input[type="number"] { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-family: 'Roboto Mono'; box-sizing: border-box; }
+        input.error { border-color: #ef4444; background: #fef2f2; }
+        input.valid { border-color: #10b981; background: #f0fdf4; }
+
+        button.primary { background: var(--brand); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; width: 100%; margin-top: 20px; }
+        button:disabled { background: #94a3b8; cursor: not-allowed; }
+
+        .step-box { border-left: 3px solid #cbd5e1; padding-left: 20px; margin-bottom: 30px; opacity: 0.5; pointer-events: none; transition: 0.3s; }
+        .step-box.active { opacity: 1; pointer-events: all; border-color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <div class="progress-nav">
+        <a href="index.html" class="nav-item done">✓ 1. Start</a>
+        <div class="nav-arrow">›</div>
+        <a href="knowledge-base.html" class="nav-item done">✓ 2. Wissen</a>
+        <div class="nav-arrow">›</div>
+        <div class="nav-item active">3. Planung & Berechnung</div>
+        <div class="nav-arrow">›</div>
+        <a href="reflection.html" class="nav-item">4. Reflexion</a>
+    </div>
+
+    <div class="wrapper">
+        <div class="main-content">
+            
+            <div class="teacher-only">
+                <details class="teacher-box">
+                    <summary class="teacher-summary">LP-Modus: Scaffolding</summary>
+                    <div class="teacher-content">
+                        <p><strong>Achtung:</strong> Dieses Tool ist kein reiner Rechner ("Black Box"), sondern zwingt die Schüler zu Zwischenschritten ("White Box").</p>
+                        <p><strong>Häufiger Fehler:</strong> Bei Schritt 2 vergessen die Schüler oft die +1 bar (Umgebungsdruck). Wenn ein rotes Feld erscheint, fragen Sie: "Was zeigt das Manometer an? Was ist physikalisch im Tank?"</p>
+                    </div>
+                </details>
+            </div>
+
+            <div class="card">
+                <h2>⚡ Auslegung: Schritt für Schritt</h2>
+                
+                <div id="step1" class="step-box active">
+                    <h3>1. Gegebene Werte (Manometer)</h3>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <label>Startdruck (Manometer)</label>
+                            <input type="number" id="pStartMan" value="8">
+                        </div>
+                        <div>
+                            <label>Enddruck (Manometer)</label>
+                            <input type="number" id="pEndMan" value="4">
+                        </div>
+                    </div>
+                    <button class="primary" onclick="validateStep1()">Werte bestätigen</button>
+                </div>
+
+                <div id="step2" class="step-box">
+                    <h3>2. Umrechnung in Absolutdruck</h3>
+                    <p style="font-size:0.9rem; color:#64748b;">Geben Sie die physikalisch korrekten Werte ein ($p_{abs}$).</p>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <label>Startdruck ($p_{abs}$)</label>
+                            <input type="number" id="pStartAbs" placeholder="?">
+                        </div>
+                        <div>
+                            <label>Enddruck ($p_{abs}$)</label>
+                            <input type="number" id="pEndAbs" placeholder="?">
+                        </div>
+                    </div>
+                    <button class="primary" onclick="validateStep2()">Prüfen</button>
+                    <div id="msgStep2" style="color:#ef4444; font-size:0.85rem; margin-top:5px;"></div>
+                </div>
+
+                <div id="step3" class="step-box">
+                    <h3>3. Ergebnis</h3>
+                    <p>Die Simulation läuft...</p>
+                    <div style="background:#1e293b; color:white; padding:20px; border-radius:8px;">
+                        Tankvolumen: 50 Liter<br>
+                        Nutzbares Luftvolumen ($\Delta p \cdot V$): <strong style="color:var(--success)" id="resVol">---</strong> Normliter<br>
+                        <hr style="border-color:#334155">
+                        Mögliche Laufzeit: <strong style="color:var(--success); font-size:1.2rem;" id="resTime">---</strong> Minuten
+                    </div>
+                    <div id="analysis" style="margin-top:15px; font-weight:bold;"></div>
+                    
+                    <a href="reflection.html" id="btnNext" class="primary" style="display:none; text-align:center; text-decoration:none;">Zum Fazit</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Teacher Mode Logic ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            const isLP = params.get('id') === 'LP';
+            if (isLP) {
+                document.querySelectorAll('.teacher-only').forEach(el => el.style.display = 'block');
+                document.querySelectorAll('a').forEach(link => {
+                     if(link.href && !link.href.includes('javascript')) {
+                        const separator = link.href.includes('?') ? '&' : '?';
+                        link.href += separator + 'id=LP';
+                     }
+                });
+            }
+        });
+
+        // --- Step Logic ---
+        function validateStep1() {
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step1').style.opacity = '0.5';
+            document.getElementById('step2').classList.add('active');
+        }
+
+        function validateStep2() {
+            const pMan1 = parseFloat(document.getElementById('pStartMan').value);
+            const pMan2 = parseFloat(document.getElementById('pEndMan').value);
+            
+            const pAbs1User = parseFloat(document.getElementById('pStartAbs').value);
+            const pAbs2User = parseFloat(document.getElementById('pEndAbs').value);
+
+            // Validation Logic: User must add ~1 bar
+            const correct1 = Math.abs(pAbs1User - (pMan1 + 1)) < 0.2;
+            const correct2 = Math.abs(pAbs2User - (pMan2 + 1)) < 0.2;
+
+            const input1 = document.getElementById('pStartAbs');
+            const input2 = document.getElementById('pEndAbs');
+            const msg = document.getElementById('msgStep2');
+
+            if(correct1 && correct2) {
+                input1.classList.add('valid'); input1.classList.remove('error');
+                input2.classList.add('valid'); input2.classList.remove('error');
+                msg.innerText = "";
+                calculateFinal(pAbs1User, pAbs2User);
+            } else {
+                input1.classList.add('error');
+                input2.classList.add('error');
+                msg.innerHTML = "❌ <strong>Fehler:</strong> Denken Sie an den Umgebungsdruck! $p_{abs} = p_{man} + 1$.";
+            }
+        }
+
+        function calculateFinal(p1, p2) {
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step3').classList.add('active');
+
+            const vTank = 50; 
+            const deltaP = p1 - p2; // 9 - 5 = 4
+            const availableAir = vTank * deltaP; // 200 NL
+            
+            // Consumption
+            const vCyl = 0.08;
+            const tCycle = 3;
+            // Consumption per cycle at p2 (critical pressure)
+            // Ideally we check max flow, but simplified: volume at crit pressure
+            const consPerCycle = vCyl * p2; // at 5 bar abs
+            
+            const totalCycles = availableAir / consPerCycle; 
+            // Note: This is a simplified physics model for the MVP. 
+            // Better: Volume consumed is V_cyl * P_supply. 
+            // Here we assume regulator keeps it at critical P? No, let's keep it simple: 
+            // Total Normliter Available / Normliter per stroke (at operating pressure).
+            
+            // Re-calculation for consistency with school level:
+            // Air needed per stroke at 5 bar abs: 0.08 * 5 = 0.4 NL.
+            // Air available in tank: 50 * (9-5) = 200 NL.
+            // Cycles: 200 / 0.4 = 500 cycles.
+            // Time: 500 * 3s = 1500s = 25 min.
+            
+            const minutes = (availableAir / (vCyl * p2) * tCycle) / 60;
+
+            document.getElementById('resVol').innerText = availableAir.toFixed(1);
+            document.getElementById('resTime').innerText = minutes.toFixed(1);
+            
+            const analysis = document.getElementById('analysis');
+            if(minutes < 60) {
+                analysis.innerHTML = "⚠️ Ziel (60 min) nicht erreicht!";
+                analysis.style.color = "#ef4444";
+            } else {
+                analysis.innerHTML = "✅ Ziel erreicht.";
+            }
+            
+            document.getElementById('btnNext').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
