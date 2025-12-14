@@ -40,6 +40,22 @@
 
         .step-box { border-left: 3px solid #cbd5e1; padding-left: 20px; margin-bottom: 30px; opacity: 0.5; pointer-events: none; transition: 0.3s; }
         .step-box.active { opacity: 1; pointer-events: all; border-color: var(--accent); }
+
+        /* --- DIFFERENTIATION BOXES --- */
+        
+        /* Help Box */
+        details.help-box { margin-top: 15px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; font-size: 0.9rem; }
+        details.help-box summary { padding: 10px; cursor: pointer; color: #1e40af; font-weight: 600; list-style: none; }
+        details.help-box summary::before { content: '🆘 '; }
+        details.help-box div { padding: 10px 15px 15px 15px; color: #1e3a8a; line-height: 1.5; border-top: 1px solid #bfdbfe; }
+
+        /* Challenge Box */
+        details.challenge-box { margin-top: 15px; background: #f8fafc; border: 1px solid #475569; border-radius: 6px; font-size: 0.9rem; }
+        details.challenge-box summary { padding: 10px; cursor: pointer; color: #0f172a; font-weight: 800; list-style: none; background: #e2e8f0; }
+        details.challenge-box summary::before { content: '🚀 EXPERT CHALLENGE '; }
+        details.challenge-box div { padding: 15px; color: #334155; line-height: 1.5; }
+        .challenge-tag { background: #0f172a; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; text-transform: uppercase; margin-right: 5px; }
+
     </style>
 </head>
 <body>
@@ -59,10 +75,13 @@
             
             <div class="teacher-only">
                 <details class="teacher-box">
-                    <summary class="teacher-summary">LP-Modus: Scaffolding</summary>
+                    <summary class="teacher-summary">LP-Modus: Binnendifferenzierung</summary>
                     <div class="teacher-content">
-                        <p><strong>Achtung:</strong> Dieses Tool ist kein reiner Rechner ("Black Box"), sondern zwingt die Schüler zu Zwischenschritten ("White Box").</p>
-                        <p><strong>Häufiger Fehler:</strong> Bei Schritt 2 vergessen die Schüler oft die +1 bar (Umgebungsdruck). Wenn ein rotes Feld erscheint, fragen Sie: "Was zeigt das Manometer an? Was ist physikalisch im Tank?"</p>
+                        <p><strong>Umgang mit den Boxen:</strong></p>
+                        <ul>
+                            <li><strong>🆘 Hilfe-Boxen:</strong> Ermutigen Sie schwächere Schüler, diese zuerst zu öffnen, bevor sie Sie rufen. Das fördert die Selbstständigkeit.</li>
+                            <li><strong>🚀 Challenge-Boxen:</strong> Für die schnellen 20% der Klasse. Diese Schüler sollen sich Gedanken über reale Einflüsse (Höhe über Meer, Temperatur) machen, während der Rest rechnet.</li>
+                        </ul>
                     </div>
                 </details>
             </div>
@@ -82,6 +101,15 @@
                             <input type="number" id="pEndMan" value="4">
                         </div>
                     </div>
+
+                    <details class="help-box">
+                        <summary>Hilfe: Wo finde ich diese Werte?</summary>
+                        <div>
+                            Schauen Sie in die E-Mail des Kunden (Phase 1).<br>
+                            Das Manometer am Tank zeigt an, wie viel Druck <strong>zusätzlich</strong> zur Umgebungsluft im Tank ist.
+                        </div>
+                    </details>
+
                     <button class="primary" onclick="validateStep1()">Werte bestätigen</button>
                 </div>
 
@@ -98,6 +126,25 @@
                             <input type="number" id="pEndAbs" placeholder="?">
                         </div>
                     </div>
+
+                    <details class="help-box">
+                        <summary>Hilfe: Ich weiss die Formel nicht mehr...</summary>
+                        <div>
+                            <strong>Denk-Anstoss:</strong> Wir leben nicht im Vakuum. Um uns herum herrscht bereits ca. 1 bar Druck.<br>
+                            $$ p_{abs} = p_{manometer} + p_{umgebung} $$
+                        </div>
+                    </details>
+
+                    <details class="challenge-box">
+                        <summary>Geografie-Frage (Zusatz)</summary>
+                        <div>
+                            <span class="challenge-tag">Physik</span>
+                            Das Werk des Kunden steht in St. Moritz (1800m ü. M.). Der Luftdruck dort ist nur ca. <strong>0.8 bar</strong>.
+                            <br><br>
+                            <strong>Überlegung:</strong> Hätten wir dort mehr oder weniger Luft im Tank verfügbar als in Zürich (400m ü. M.) bei gleicher Manometer-Anzeige?
+                        </div>
+                    </details>
+
                     <button class="primary" onclick="validateStep2()">Prüfen</button>
                     <div id="msgStep2" style="color:#ef4444; font-size:0.85rem; margin-top:5px;"></div>
                 </div>
@@ -111,8 +158,20 @@
                         <hr style="border-color:#334155">
                         Mögliche Laufzeit: <strong style="color:var(--success); font-size:1.2rem;" id="resTime">---</strong> Minuten
                     </div>
-                    <div id="analysis" style="margin-top:15px; font-weight:bold;"></div>
                     
+                    <details class="challenge-box">
+                        <summary>Thermodynamik (Profi-Level)</summary>
+                        <div>
+                            <span class="challenge-tag">Gay-Lussac</span>
+                            Wenn Luft schnell ausströmt, <strong>kühlt</strong> sie sich ab (adiabatische Expansion).
+                            <br><br>
+                            Wenn die Luft im Tank von 20°C auf 5°C abkühlt, sinkt der Druck im Tank zusätzlich, ohne dass wir Luft verbrauchen ($p \sim T$).
+                            <br>
+                            <em>Hypothese:</em> Die reale Laufzeit wird also noch <strong>kürzer</strong> sein als hier berechnet.
+                        </div>
+                    </details>
+
+                    <div id="analysis" style="margin-top:15px; font-weight:bold;"></div>
                     <a href="reflection.html" id="btnNext" class="primary" style="display:none; text-align:center; text-decoration:none;">Zum Fazit</a>
                 </div>
 
@@ -141,6 +200,8 @@
             document.getElementById('step1').classList.remove('active');
             document.getElementById('step1').style.opacity = '0.5';
             document.getElementById('step2').classList.add('active');
+            // Close details to clean up UI
+            document.querySelectorAll('#step1 details').forEach(d => d.removeAttribute('open'));
         }
 
         function validateStep2() {
@@ -167,37 +228,27 @@
                 input1.classList.add('error');
                 input2.classList.add('error');
                 msg.innerHTML = "❌ <strong>Fehler:</strong> Denken Sie an den Umgebungsdruck! $p_{abs} = p_{man} + 1$.";
+                // Auto-open help if wrong
+                document.querySelector('#step2 details.help-box').setAttribute('open', 'true');
             }
         }
 
         function calculateFinal(p1, p2) {
             document.getElementById('step2').classList.remove('active');
             document.getElementById('step3').classList.add('active');
+            document.querySelectorAll('#step2 details').forEach(d => d.removeAttribute('open'));
 
             const vTank = 50; 
-            const deltaP = p1 - p2; // 9 - 5 = 4
-            const availableAir = vTank * deltaP; // 200 NL
+            const deltaP = p1 - p2; 
+            const availableAir = vTank * deltaP; 
             
-            // Consumption
             const vCyl = 0.08;
             const tCycle = 3;
-            // Consumption per cycle at p2 (critical pressure)
-            // Ideally we check max flow, but simplified: volume at crit pressure
-            const consPerCycle = vCyl * p2; // at 5 bar abs
+            // Simplified consumption at operating pressure (worst case)
+            const consumption = vCyl * p2; 
             
-            const totalCycles = availableAir / consPerCycle; 
-            // Note: This is a simplified physics model for the MVP. 
-            // Better: Volume consumed is V_cyl * P_supply. 
-            // Here we assume regulator keeps it at critical P? No, let's keep it simple: 
-            // Total Normliter Available / Normliter per stroke (at operating pressure).
-            
-            // Re-calculation for consistency with school level:
-            // Air needed per stroke at 5 bar abs: 0.08 * 5 = 0.4 NL.
-            // Air available in tank: 50 * (9-5) = 200 NL.
-            // Cycles: 200 / 0.4 = 500 cycles.
-            // Time: 500 * 3s = 1500s = 25 min.
-            
-            const minutes = (availableAir / (vCyl * p2) * tCycle) / 60;
+            const cycles = availableAir / consumption;
+            const minutes = (cycles * tCycle) / 60;
 
             document.getElementById('resVol').innerText = availableAir.toFixed(1);
             document.getElementById('resTime').innerText = minutes.toFixed(1);
