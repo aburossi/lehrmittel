@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool: Dimensionierung</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root { --brand: #0f172a; --accent: #3b82f6; --bg: #f1f5f9; --success: #10b981; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; }
+
+        /* Nav */
+        .progress-nav { background: white; border-bottom: 1px solid #e2e8f0; padding: 15px 20px; display: flex; gap: 20px; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .nav-item { font-size: 0.85rem; font-weight: 600; color: #94a3b8; }
+        .nav-item.active { color: var(--accent); }
+        .nav-item.done { color: #10b981; cursor: pointer; }
+        .nav-arrow { color: #cbd5e1; }
+
+        /* Layout */
+        .wrapper { display: flex; max-width: 1200px; margin: 0 auto; height: calc(100vh - 60px); }
+        
+        /* Project Brief Sidebar (Slide-in) */
+        .sidebar { width: 0; overflow: hidden; background: #e2e8f0; transition: width 0.3s; position: relative; border-right: 1px solid #cbd5e1; }
+        .sidebar.open { width: 300px; }
+        .sidebar-content { padding: 20px; width: 300px; box-sizing: border-box; }
+        .toggle-brief-btn { position: absolute; top: 20px; left: 20px; z-index: 50; background: var(--brand); color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
+
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; }
+
+        /* Planning Phase */
+        .phase-box { display: none; }
+        .phase-box.active { display: block; animation: fadein 0.5s; }
+        
+        .plan-check { background: #f8fafc; padding: 15px; border: 1px solid #cbd5e1; border-radius: 4px; margin-bottom: 10px; display: flex; gap: 10px; cursor: pointer; }
+        .plan-check:hover { background: #eff6ff; }
+        .plan-check input { cursor: pointer; }
+
+        /* Calculator */
+        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; color: #64748b; }
+        input[type="number"] { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 4px; font-family: 'Roboto Mono'; box-sizing: border-box; }
+        button.primary { background: var(--brand); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; width: 100%; }
+        button.primary:disabled { background: #94a3b8; cursor: not-allowed; }
+
+        .result-box { background: #1e293b; color: white; padding: 20px; border-radius: 8px; margin-top: 20px; display: none; }
+        .result-val { font-family: 'Roboto Mono'; color: var(--success); font-size: 1.2rem; }
+
+        @keyframes fadein { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="progress-nav">
+        <a href="index.html" class="nav-item done" style="text-decoration:none;">✓ 1. Start</a>
+        <div class="nav-arrow">›</div>
+        <a href="knowledge-base.html" class="nav-item done" style="text-decoration:none;">✓ 2. Wissen</a>
+        <div class="nav-arrow">›</div>
+        <div class="nav-item active">3. Planung & Berechnung</div>
+        <div class="nav-arrow">›</div>
+        <div class="nav-item">4. Reflexion</div>
+    </div>
+
+    <div class="wrapper">
+        <button class="toggle-brief-btn" onclick="toggleSidebar()">📋 Projektdaten anzeigen</button>
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-content" style="margin-top: 40px;">
+                <h4>Projektdaten (E-Mail)</h4>
+                <ul style="font-size: 0.9rem; line-height: 1.6; padding-left: 20px;">
+                    <li><strong>Tank:</strong> 50 Liter</li>
+                    <li><strong>Startdruck:</strong> 8 bar</li>
+                    <li><strong>Mindestdruck:</strong> 4 bar</li>
+                    <li><strong>Zylinder:</strong> 0.08 L/Hub</li>
+                    <li><strong>Takt:</strong> 3 Sekunden</li>
+                    <li><strong>Ziel:</strong> 60 Min Laufzeit</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="main-content">
+            
+            <div id="phase1" class="phase-box active">
+                <div class="card">
+                    <h2>Phase 1: Planung & Strategie</h2>
+                    <p>Bevor wir rechnen, müssen wir die Strategie festlegen. Bestätigen Sie die Schritte:</p>
+                    
+                    <label class="plan-check">
+                        <input type="checkbox" class="plan-cb" onchange="checkPlan()">
+                        <span>Ich muss alle Manometer-Drücke (bar) in <strong>Absolutdruck</strong> umrechnen (+1 bar).</span>
+                    </label>
+                    
+                    <label class="plan-check">
+                        <input type="checkbox" class="plan-cb" onchange="checkPlan()">
+                        <span>Ich berechne die Differenz ($\Delta p$), um das nutzbare Luftvolumen im Tank zu finden.</span>
+                    </label>
+
+                    <label class="plan-check">
+                        <input type="checkbox" class="plan-cb" onchange="checkPlan()">
+                        <span>Ich berechne den Verbrauch pro Hub bei kritischem Druck (Worst Case).</span>
+                    </label>
+
+                    <button id="btnToCalc" class="primary" disabled onclick="goToCalc()">Planung abgeschlossen →</button>
+                </div>
+            </div>
+
+            <div id="phase2" class="phase-box">
+                <div class="card">
+                    <h2>Phase 2: Berechnung</h2>
+                    
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <label>Zylinder-Volumen (Liter)</label>
+                            <input type="number" id="vCyl" value="0.08">
+                            <label>Taktzeit (Sekunden)</label>
+                            <input type="number" id="tCycle" value="3">
+                        </div>
+                        <div>
+                            <label>Tank-Volumen (Liter)</label>
+                            <input type="number" id="vTank" value="50">
+                        </div>
+                    </div>
+
+                    <div style="background: #fff7ed; padding: 15px; border-radius: 4px; margin-bottom: 20px; border: 1px solid #fed7aa;">
+                        <small><strong>Hinweis:</strong> Geben Sie hier die Werte ein, wie sie am Manometer stehen. Das System rechnet intern um (wie in Phase 1 geplant).</small>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px;">
+                            <div>
+                                <label>Startdruck (bar man.)</label>
+                                <input type="number" id="pStart" value="8">
+                            </div>
+                            <div>
+                                <label>Enddruck (bar man.)</label>
+                                <input type="number" id="pEnd" value="4">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="primary" onclick="calculate()">Berechnen</button>
+
+                    <div id="resultBox" class="result-box">
+                        <h3>Ergebnis</h3>
+                        <p>Nutzbare Luft: <span id="resAir" class="result-val">---</span> Normliter</p>
+                        <p>Laufzeit: <span id="resTime" class="result-val">---</span> Minuten</p>
+                        <div id="resAnalysis" style="margin-top: 15px; font-weight: bold;"></div>
+                        <a href="reflection.html" id="nextLink" style="display:none; color: #60a5fa; margin-top: 10px;">Weiter zur Reflexion →</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function checkPlan() {
+            const all = document.querySelectorAll('.plan-cb');
+            const btn = document.getElementById('btnToCalc');
+            btn.disabled = !Array.from(all).every(cb => cb.checked);
+        }
+
+        function goToCalc() {
+            document.getElementById('phase1').classList.remove('active');
+            document.getElementById('phase2').classList.add('active');
+        }
+
+        function calculate() {
+            const vCyl = parseFloat(document.getElementById('vCyl').value);
+            const vTank = parseFloat(document.getElementById('vTank').value);
+            const tCycle = parseFloat(document.getElementById('tCycle').value);
+            const pStart = parseFloat(document.getElementById('pStart').value);
+            const pEnd = parseFloat(document.getElementById('pEnd').value);
+
+            // Calculation (Using Absolute Logic internally)
+            const pStartAbs = pStart + 1;
+            const pEndAbs = pEnd + 1;
+            const availableAir = vTank * (pStartAbs - pEndAbs);
+            const consumption = vCyl * pEndAbs; 
+            const cycles = availableAir / consumption;
+            const minutes = (cycles * tCycle) / 60;
+
+            document.getElementById('resultBox').style.display = 'block';
+            document.getElementById('resAir').innerText = availableAir.toFixed(1);
+            document.getElementById('resTime').innerText = minutes.toFixed(1);
+
+            const analysis = document.getElementById('resAnalysis');
+            const link = document.getElementById('nextLink');
+            
+            if(minutes < 60) {
+                analysis.innerHTML = "⚠️ <strong>Problem:</strong> Ziel (60 min) nicht erreicht. Lösung nötig!";
+                analysis.style.color = "#f87171";
+            } else {
+                analysis.innerHTML = "✅ <strong>Erfolg:</strong> Die Anlage hält durch.";
+                analysis.style.color = "#4ade80";
+            }
+            link.style.display = 'inline-block';
+        }
+    </script>
+</body>
+</html>

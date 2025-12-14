@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Wiki: Pneumatik Grundlagen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    <script>window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };</script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root { --brand: #0f172a; --accent: #3b82f6; --bg: #f8fafc; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; }
+        
+        .progress-nav { background: white; border-bottom: 1px solid #e2e8f0; padding: 15px 20px; display: flex; gap: 20px; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .nav-item { font-size: 0.85rem; font-weight: 600; color: #94a3b8; }
+        .nav-item.active { color: var(--accent); }
+        .nav-item.done { color: #10b981; cursor: pointer; }
+        .nav-arrow { color: #cbd5e1; }
+
+        .container { max-width: 800px; margin: 30px auto; padding: 0 20px; }
+        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        
+        /* Tech Tooltip */
+        .tech-term { border-bottom: 2px dotted var(--accent); cursor: help; position: relative; font-weight: 600; }
+        .tech-term:hover::after { content: attr(data-tooltip); position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 8px 12px; border-radius: 4px; font-size: 0.8rem; width: 200px; z-index: 10; }
+
+        /* Sim */
+        .sim-box { background: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #cbd5e1; }
+        .visualizer { height: 80px; background: #cbd5e1; position: relative; border-radius: 4px; overflow: hidden; }
+        .gas { height: 100%; position: absolute; right: 0; background: rgba(59, 130, 246, 0.4); }
+        .piston { height: 100%; width: 5px; background: #334155; position: absolute; }
+    </style>
+</head>
+<body>
+
+    <div class="progress-nav">
+        <a href="index.html" class="nav-item done" style="text-decoration:none;">✓ 1. Start</a>
+        <div class="nav-arrow">›</div>
+        <div class="nav-item active">2. Wissen (SOL)</div>
+        <div class="nav-arrow">›</div>
+        <div class="nav-item">3. Planung & Berechnung</div>
+        <div class="nav-arrow">›</div>
+        <div class="nav-item">4. Reflexion</div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h1>Grundlagen: Verhalten von Gasen</h1>
+            <p>Luft ist <span class="tech-term" data-tooltip="Volumen verringert sich bei Druck.">komprimierbar</span>. Wenn wir Gas verdichten, ändern sich die Zustandsgrössen.</p>
+
+            <h3>Das Gesetz von Boyle-Mariotte</h3>
+            <p>$$ p_1 \cdot V_1 = p_2 \cdot V_2 $$</p>
+
+            <div class="sim-box">
+                <h4>Simulation</h4>
+                <div class="visualizer">
+                    <div id="piston" class="piston" style="left:0"></div>
+                    <div id="gas" class="gas" style="width:100%"></div>
+                </div>
+                <input type="range" min="1" max="10" value="1" id="slider" style="width:100%">
+                <div style="font-family:'Roboto Mono'; margin-top:10px;">
+                    Druck: <span id="pVal">1.0</span> bar | Volumen: <span id="vVal">100</span> %
+                </div>
+            </div>
+
+            <div style="background:#fff7ed; border-left:4px solid #f97316; padding:15px; margin-top:20px;">
+                <strong>⚠️ Achtung: Absolutdruck</strong><br>
+                Rechnen Sie immer mit $p_{abs} = p_{manometer} + 1 \text{ bar}$.
+            </div>
+
+            <a href="engineering-tool.html" style="display:block; text-align:center; background:#0f172a; color:white; padding:15px; border-radius:6px; margin-top:20px; text-decoration:none; font-weight:bold;">Weiter zur Berechnung →</a>
+        </div>
+    </div>
+
+    <script>
+        const slider = document.getElementById('slider');
+        const pVal = document.getElementById('pVal');
+        const vVal = document.getElementById('vVal');
+        const gas = document.getElementById('gas');
+        const piston = document.getElementById('piston');
+
+        slider.addEventListener('input', (e) => {
+            const P = parseFloat(e.target.value);
+            const V = 100 / P;
+            pVal.innerText = P.toFixed(1);
+            vVal.innerText = V.toFixed(1);
+            gas.style.width = V + "%";
+            piston.style.left = (100 - V) + "%";
+            gas.style.backgroundColor = `rgba(59, 130, 246, ${0.3 + (P/15)})`;
+        });
+    </script>
+</body>
+</html>

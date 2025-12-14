@@ -5,8 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lernmodul: Thermodynamik & Pneumatik</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']], // Enables $ for inline math
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
         :root {
             --tech-blue: #0056b3;
@@ -52,7 +61,7 @@
 
         .header-controls {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             align-items: center;
         }
 
@@ -64,8 +73,9 @@
             font-size: 0.8rem;
             cursor: pointer;
             background: rgba(255,255,255,0.1);
-            padding: 5px 10px;
+            padding: 6px 12px;
             border-radius: 20px;
+            user-select: none;
         }
         
         .mode-toggle input { display: none; }
@@ -152,7 +162,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            transition: width 0.3s ease-out;
+            transition: width 0.1s ease-out; /* Faster for responsiveness */
             display: flex;
             align-items: center;
             justify-content: flex-end;
@@ -160,13 +170,15 @@
             color: white;
             font-family: 'Roboto Mono', monospace;
             font-size: 0.8rem;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         .air-chamber {
             position: absolute;
             top: 0; right: 0; bottom: 0;
             background: rgba(56, 189, 248, 0.2); /* Light Blue Gas */
-            transition: width 0.3s ease-out, background-color 0.3s;
+            transition: width 0.1s ease-out, background-color 0.1s;
         }
 
         input[type="range"] { width: 100%; cursor: pointer; }
@@ -236,6 +248,13 @@
             transition: width 0.5s;
         }
 
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .app-header { padding: 1rem; flex-direction: column; gap: 10px; }
+            .header-controls { width: 100%; justify-content: space-between; }
+            .learning-card { padding: 1.5rem; }
+        }
+
     </style>
 </head>
 <body>
@@ -247,7 +266,7 @@
         </div>
         <div class="header-controls">
             <div style="text-align: right;">
-                <div style="font-size: 0.7rem; text-transform: uppercase;">Mastery</div>
+                <div style="font-size: 0.7rem; text-transform: uppercase;">Fortschritt</div>
                 <div class="mastery-bar-container">
                     <div class="mastery-bar" id="masteryBar"></div>
                 </div>
@@ -264,11 +283,15 @@
     <main class="container">
 
         <section class="learning-card" id="card-1">
-            <span class="badge">Grundlagen</span>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="badge">Grundlagen</span>
+                <span id="check-1" style="display:none; color: var(--accent-success); font-weight:bold;">✓ Erledigt</span>
+            </div>
+            
             <h2>Isotherme Zustandsänderung (Boyle-Mariotte)</h2>
             <p>Ein Pneumatikzylinder wird zusammengedrückt. Die Temperatur bleibt konstant ($T = konst$). Was passiert mit dem Druck?</p>
 
-            <div class="formula-box" style="font-family: 'Roboto Mono'; background: #f1f5f9; padding: 10px; border-radius: 4px; text-align: center;">
+            <div class="formula-box" style="font-family: 'Roboto Mono'; background: #f1f5f9; padding: 10px; border-radius: 4px; text-align: center; margin-bottom: 20px;">
                 $$ p_1 \cdot V_1 = p_2 \cdot V_2 $$
             </div>
 
@@ -287,25 +310,29 @@
                     <div>Volumen: <span id="valVol">100</span> %</div>
                     <div>Druck: <span id="valPress">1.0</span> bar</div>
                 </div>
+                
+                <p style="font-size: 0.8rem; margin-top:10px; color:#666;">Bewegen Sie den Regler, um die Werte zu ändern.</p>
             </div>
 
             <div class="teacher-note">
-                <strong>Didaktischer Hinweis:</strong> Lassen Sie die Lernenden den Schieberegler schnell bewegen. Diskutieren Sie: "Ist das in der Realität wirklich isotherm?" (Nein, adiabatische Erwärmung). Dies ist der perfekte Übergang zum allgemeinen Gasgesetz.
+                <strong>Didaktischer Hinweis:</strong> Lassen Sie die Lernenden den Schieberegler schnell bewegen. Diskutieren Sie: "Ist das in der Realität wirklich isotherm?" (Nein, adiabatische Erwärmung bei schneller Kompression). Dies ist der perfekte Übergang zum allgemeinen Gasgesetz.
             </div>
         </section>
 
         <section class="learning-card" id="card-2">
-            <span class="badge">Anwendung</span>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="badge">Anwendung</span>
+                <span id="check-2" style="display:none; color: var(--accent-success); font-weight:bold;">✓ Erledigt</span>
+            </div>
+
             <h2>Praxisbeispiel: Der Kompressor</h2>
             <p>Ein Kompressor saugt Luft bei <strong>20°C</strong> an. Nach der Verdichtung auf <strong>8 bar</strong> beträgt die Temperatur <strong>150°C</strong>.</p>
-            <p>Wie gross ist das Volumenverhältnis, wenn wir ideale Bedingungen annehmen?</p>
+            <p>Wie gross ist der Enddruck $p_2$, wenn das Volumen halbiert wird ($V_2 = 0.5 \cdot V_1$) und die Temperatur auf <strong>40°C</strong> steigt (ausgehend von 20°C)? Startdruck: 1 bar.</p>
 
             <div class="problem-box">
-                <label>Berechneter Druck $p_2$ (nur als Test):</label>
-                <p style="font-size: 0.9rem; color: #cbd5e1;">(Vereinfacht: Berechnen Sie den Enddruck, wenn $V$ halbiert wird und $T$ von 20°C auf 40°C steigt. Startdruck: 1 bar).</p>
-                
+                <label>Ihr Ergebnis für $p_2$ (in bar):</label>
                 <div class="input-group">
-                    <input type="number" id="userAnswer" placeholder="Ergebnis in bar...">
+                    <input type="number" id="userAnswer" placeholder="z.B. 2.5">
                     <button class="action-btn" onclick="checkAnswer()">Prüfen</button>
                 </div>
                 
@@ -313,10 +340,21 @@
             </div>
 
             <div class="teacher-note">
-                <strong>Lösungsweg:</strong><br>
-                $$ p_2 = \frac{p_1 \cdot V_1 \cdot T_2}{V_2 \cdot T_1} $$
-                Häufigster Fehler: Schüler rechnen mit Celsius statt Kelvin ($20 \rightarrow 293.15 K$).
-                <br>Ergebnis: ca. 2.14 bar.
+                <strong>Lösungsweg & Stolpersteine:</strong><br>
+                Formel: $$ p_2 = \frac{p_1 \cdot V_1 \cdot T_2}{V_2 \cdot T_1} $$
+                <br>
+                <strong>Häufigster Fehler:</strong> Schüler rechnen mit Celsius statt Kelvin ($20^\circ C \rightarrow 293.15 K$).
+                <br>
+                <br>
+                <strong>Berechnung:</strong>
+                <br>
+                $p_1 = 1$, $V_1 = 1$, $V_2 = 0.5$
+                <br>
+                $T_1 = 293.15 K$, $T_2 = 313.15 K$
+                <br>
+                $$ p_2 = \frac{1 \cdot 1 \cdot 313.15}{0.5 \cdot 293.15} \approx 2.14 \text{ bar} $$
+                <br>
+                <em>Falsches Ergebnis mit Celsius:</em> 4.0 bar.
             </div>
         </section>
 
@@ -340,6 +378,9 @@
         const valVol = document.getElementById('valVol');
         const valPress = document.getElementById('valPress');
 
+        // Initial Progress logic for Card 1 (Interaction based)
+        let simInteracted = false;
+
         slider.addEventListener('input', (e) => {
             // Visuals
             const pistonPos = e.target.value; // 10 to 90
@@ -348,9 +389,6 @@
             gas.style.left = pistonPos + "%";
 
             // Physics (Boyle-Mariotte: p * V = k)
-            // Initial state: V=100 (at slider 0, represented by 10% margin), p=1
-            // Current V = (100 - pistonPos)
-            // p = k / V
             const initialV = 90; // 100% width - 10% margin
             const currentV = 100 - pistonPos;
             
@@ -364,22 +402,28 @@
             // Visual feedback: Gas gets "redder" as pressure increases
             const redness = Math.min((pressure - 1) * 30, 100); 
             gas.style.backgroundColor = `rgba(${56 + redness * 2}, ${189 - redness}, 248, 0.4)`;
+
+            // Mark card 1 as done if interacted significantly
+            if(!simInteracted && pistonPos > 50) {
+                simInteracted = true;
+                saveProgress(1, 50); // ID 1, 50% progress
+                document.getElementById('check-1').style.display = 'block';
+            }
         });
 
         // --- 3. Smart Answer Checking (Didactic Logic) ---
         function checkAnswer() {
             const input = parseFloat(document.getElementById('userAnswer').value);
             const feedback = document.getElementById('feedbackArea');
-            const feedbackBox = document.querySelector('.problem-box');
             
-            // Scenario: p1=1, V1=2, V2=1 (halved), T1=20C, T2=40C
+            // Scenario: p1=1, V1=1, V2=0.5 (halved), T1=20C, T2=40C
             // Correct Math (Kelvin):
             // T1 = 293.15, T2 = 313.15
-            // p2 = (1 * 2 * 313.15) / (1 * 293.15) = 2.136...
+            // p2 = (1 * 1 * 313.15) / (0.5 * 293.15) = 2.136...
             const correct = 2.14;
             
             // Common Error Math (Celsius):
-            // p2 = (1 * 2 * 40) / (1 * 20) = 4.0
+            // p2 = (1 * 1 * 40) / (0.5 * 20) = 4.0
             const celsiusError = 4.0;
 
             feedback.className = "feedback-msg"; // reset
@@ -394,32 +438,48 @@
             if (Math.abs(input - correct) < 0.1) {
                 feedback.innerText = "Korrekt! Hervorragend. Sie haben an die Kelvin-Umrechnung gedacht.";
                 feedback.classList.add('success');
-                saveProgress(50); // Add XP
+                saveProgress(2, 50); // ID 2, +50% progress
+                document.getElementById('check-2').style.display = 'block';
             } 
             else if (Math.abs(input - celsiusError) < 0.1) {
                 feedback.innerHTML = "<strong>Falsch.</strong> Ihr Ergebnis (4.0) legt nahe, dass Sie mit <strong>Celsius</strong> gerechnet haben.<br>In der Thermodynamik müssen wir immer Kelvin verwenden ($T_{K} = T_{C} + 273.15$).";
                 feedback.classList.add('hint');
+                // Trigger MathJax re-render for the hint
+                if(window.MathJax) MathJax.typesetPromise();
             } 
             else {
-                feedback.innerText = `Leider falsch. Das korrekte Ergebnis ist ca. ${correct} bar. Überprüfen Sie Ihre Formel.`;
+                feedback.innerText = `Leider falsch. Das korrekte Ergebnis ist ca. ${correct} bar. Überprüfen Sie Ihre Formel und Einheiten.`;
                 feedback.classList.add('error');
             }
         }
 
         // --- 4. Persistent Mastery (LocalStorage) ---
-        function saveProgress(xp) {
+        function saveProgress(id, xp) {
             let currentXP = parseInt(localStorage.getItem('gasXP') || '0');
-            // Cap at 100 for this demo
-            if (currentXP < 100) {
+            let completedItems = JSON.parse(localStorage.getItem('gasCompleted') || '[]');
+
+            // Prevent double counting
+            if (!completedItems.includes(id)) {
                 currentXP += xp;
+                if(currentXP > 100) currentXP = 100;
+                
+                completedItems.push(id);
+                
                 localStorage.setItem('gasXP', currentXP);
+                localStorage.setItem('gasCompleted', JSON.stringify(completedItems));
                 updateMasteryBar();
             }
         }
 
         function updateMasteryBar() {
             const xp = localStorage.getItem('gasXP') || '0';
+            const completedItems = JSON.parse(localStorage.getItem('gasCompleted') || '[]');
+            
             document.getElementById('masteryBar').style.width = xp + "%";
+            
+            // Restore checkmarks on reload
+            if(completedItems.includes(1)) document.getElementById('check-1').style.display = 'block';
+            if(completedItems.includes(2)) document.getElementById('check-2').style.display = 'block';
         }
 
         // Init

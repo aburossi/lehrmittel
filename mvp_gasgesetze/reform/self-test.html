@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz: Pneumatik-Experte</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root { --brand-color: #0f172a; --bg-color: #f1f5f9; --tech-blue: #3b82f6; --success: #10b981; --error: #ef4444; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-color); color: #334155; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        
+        .quiz-header { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .stat-val { font-size: 1.5rem; font-weight: 800; color: var(--tech-blue); }
+        .stat-label { font-size: 0.7rem; text-transform: uppercase; color: #64748b; }
+
+        .question-card { background: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; animation: slideIn 0.3s ease; }
+        .q-tag { background: #e0f2fe; color: var(--tech-blue); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; display: inline-block; }
+        h2 { margin-top: 0; color: var(--brand-color); font-size: 1.2rem; }
+        
+        .option-btn {
+            background: white; border: 2px solid #e2e8f0; padding: 15px; border-radius: 6px; 
+            text-align: left; cursor: pointer; font-size: 1rem; transition: all 0.2s; color: #334155;
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; width: 100%;
+        }
+        .option-btn:hover { border-color: var(--tech-blue); background: #f8fafc; }
+        .option-btn.correct { border-color: var(--success); background: #dcfce7; color: #064e3b; }
+        .option-btn.wrong { border-color: var(--error); background: #fee2e2; color: #7f1d1d; opacity: 0.7; }
+        .option-btn.disabled { pointer-events: none; }
+
+        .feedback-area { margin-top: 20px; padding: 15px; border-radius: 6px; display: none; }
+        .feedback-area.success { background: #f0fdf4; border-left: 4px solid var(--success); }
+        .feedback-area.error { background: #fef2f2; border-left: 4px solid var(--error); }
+
+        .next-btn { background: var(--brand-color); color: white; border: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; cursor: pointer; display: none; margin-left: auto; }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" style="text-decoration: none; color: #64748b; display: block; margin-bottom: 20px;">← Zurück zum Dashboard</a>
+
+    <div class="container">
+        <div class="quiz-header">
+            <div>
+                <h1 style="margin:0; font-size:1.2rem;">⚡ Selbst-Test</h1>
+                <span style="font-size:0.8rem; color:#64748b;">Prüfen Sie Ihr Wissen ohne Druck.</span>
+            </div>
+            <div style="text-align:center;">
+                <span class="stat-val" id="scoreVal">0</span>
+                <div class="stat-label">Punkte</div>
+            </div>
+        </div>
+
+        <div id="quiz-container"></div>
+        <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Nächste Frage →</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                tag: "Grundlagen",
+                text: "Sie lesen an einem Manometer am Kompressor **6 bar** ab. Welchen Druck müssen Sie in die Formel $p_1 \\cdot V_1 = p_2 \\cdot V_2$ einsetzen?",
+                options: [
+                    { text: "6 bar", correct: false, feedback: "Falsch. Das ist der Überdruck." },
+                    { text: "7 bar", correct: true, feedback: "Korrekt! $p_{abs} = p_{man} + 1$." },
+                    { text: "5 bar", correct: false, feedback: "Falsch. Absolutdruck ist immer höher." }
+                ]
+            },
+            {
+                tag: "Anwendung",
+                text: "Ein 50-Liter-Tank hat 9 bar (abs). Wir entnehmen Luft, bis er 5 bar (abs) hat. Wie viel Volumen (bei 1 bar Umgebung) haben wir 'gewonnen'?",
+                options: [
+                    { text: "200 Liter", correct: true, feedback: "Genau. $\\Delta p = 4$. $50 \\cdot 4 = 200$." },
+                    { text: "450 Liter", correct: false, feedback: "Falsch. Sie haben mit dem Gesamtdruck gerechnet." }
+                ]
+            }
+        ];
+
+        let currentQIndex = 0;
+        let score = 0;
+
+        function renderQuestion() {
+            const container = document.getElementById('quiz-container');
+            const q = questions[currentQIndex];
+            document.getElementById('nextBtn').style.display = 'none';
+
+            let html = `
+                <div class="question-card">
+                    <span class="q-tag">${q.tag}</span>
+                    <h2>${q.text}</h2>
+                    <div>
+            `;
+
+            q.options.forEach((opt, idx) => {
+                html += `<button class="option-btn" onclick="checkAnswer(this, ${idx})">${opt.text}</button>`;
+            });
+
+            html += `</div><div class="feedback-area" id="feedback"></div></div>`;
+            container.innerHTML = html;
+            if(window.MathJax) MathJax.typesetPromise();
+        }
+
+        function checkAnswer(btn, idx) {
+            const q = questions[currentQIndex];
+            const isCorrect = q.options[idx].correct;
+            const feedbackEl = document.getElementById('feedback');
+            
+            document.querySelectorAll('.option-btn').forEach(b => b.classList.add('disabled'));
+            
+            if(isCorrect) {
+                btn.classList.add('correct');
+                feedbackEl.className = 'feedback-area success';
+                feedbackEl.style.display = 'block';
+                feedbackEl.innerHTML = `<strong>Richtig!</strong> ${q.options[idx].feedback}`;
+                score += 100;
+                document.getElementById('scoreVal').innerText = score;
+            } else {
+                btn.classList.add('wrong');
+                feedbackEl.className = 'feedback-area error';
+                feedbackEl.style.display = 'block';
+                feedbackEl.innerHTML = `<strong>Leider nein.</strong> ${q.options[idx].feedback}`;
+            }
+
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentQIndex < questions.length - 1) {
+                nextBtn.style.display = 'block';
+            } else {
+                nextBtn.innerText = "Abschliessen";
+                nextBtn.onclick = () => alert("Test beendet! Punktzahl: " + score);
+                nextBtn.style.display = 'block';
+            }
+        }
+
+        function nextQuestion() {
+            currentQIndex++;
+            renderQuestion();
+        }
+
+        renderQuestion();
+    </script>
+</body>
+</html>

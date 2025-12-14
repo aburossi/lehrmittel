@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projekt: Pneu-Gripper Auslegung</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root { --brand: #0f172a; --accent: #3b82f6; --bg: #f1f5f9; --text: #334155; --success: #10b981; --radius: 8px; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; }
+        
+        /* --- GLOBAL PROGRESS HEADER --- */
+        .progress-nav { background: white; border-bottom: 1px solid #e2e8f0; padding: 15px 20px; display: flex; gap: 20px; align-items: center; position: sticky; top: 0; z-index: 1000; overflow-x: auto; }
+        .nav-item { font-size: 0.85rem; font-weight: 600; color: #94a3b8; white-space: nowrap; display: flex; align-items: center; gap: 8px; }
+        .nav-item.active { color: var(--accent); }
+        .nav-item.done { color: var(--success); }
+        .nav-arrow { color: #cbd5e1; }
+
+        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        
+        /* Email & Cards */
+        .email-card { background: white; border-radius: var(--radius); border-left: 5px solid #ef4444; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        .email-header { background: #f8fafc; padding: 15px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; }
+        .email-body { padding: 30px; line-height: 1.6; }
+        
+        /* Unit Matcher */
+        .island-box { background: #1e293b; color: white; padding: 20px; border-radius: var(--radius); margin-bottom: 30px; }
+        .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .match-btn { background: #334155; border: 2px solid #475569; padding: 10px; border-radius: 4px; cursor: pointer; text-align: center; transition: 0.2s; }
+        .match-btn:hover { border-color: var(--accent); }
+        .match-btn.selected { background: var(--accent); border-color: var(--accent); }
+        .match-btn.correct { border-color: var(--success); color: var(--success); background: rgba(16, 185, 129, 0.1); pointer-events: none; }
+        .match-btn.wrong { border-color: #ef4444; animation: shake 0.4s; }
+        
+        @keyframes shake { 0%, 100% {transform: translateX(0);} 25% {transform: translateX(-5px);} 75% {transform: translateX(5px);} }
+
+        /* Actions */
+        .grid-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 50px; }
+        .action-card { background: white; padding: 20px; border-radius: var(--radius); text-decoration: none; color: inherit; border: 1px solid #e2e8f0; transition: transform 0.2s; }
+        .action-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <div class="progress-nav">
+        <div class="nav-item active"><span>1. Start & Auftrag</span></div>
+        <div class="nav-arrow">›</div>
+        <div class="nav-item"><span>2. Wissen (SOL)</span></div>
+        <div class="nav-arrow">›</div>
+        <div class="nav-item"><span>3. Planung & Berechnung</span></div>
+        <div class="nav-arrow">›</div>
+        <div class="nav-item"><span>4. Reflexion</span></div>
+    </div>
+
+    <div class="container">
+        
+        <div class="email-card">
+            <div class="email-header">
+                <strong>📩 Von: R. Müller (Kunde)</strong>
+                <span style="color: #ef4444; font-weight: bold;">Priorität: Hoch</span>
+            </div>
+            <div class="email-body">
+                <p>Guten Tag Team,</p>
+                <p>Hauptkompressor fällt aus. Wir müssen den Notlauf über den lokalen <strong>50L Speicher (8 bar)</strong> sicherstellen. Kritischer Systemdruck: 4 bar.</p>
+                <p>Verbraucher: Zylinder DNC-32-100 (0.08 L/Hub), alle 3 Sek.</p>
+                <p><strong>Frage:</strong> Reicht der Speicher für 1 Stunde?</p>
+            </div>
+        </div>
+
+        <div class="island-box">
+            <div style="font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; color:#94a3b8;">⚡ Warm-Up: Einheiten-Check</div>
+            <p style="margin:5px 0 0 0;">Ordnen Sie zu, bevor Sie das Projekt starten.</p>
+            
+            <div class="match-grid">
+                <div class="col" id="col-terms">
+                    <div class="match-btn" data-id="1">Druck <i>(p)</i></div>
+                    <div class="match-btn" data-id="2">Volumen <i>(V)</i></div>
+                    <div class="match-btn" data-id="3">Kraft <i>(F)</i></div>
+                    <div class="match-btn" data-id="4">Temperatur <i>(T)</i></div>
+                </div>
+                <div class="col" id="col-units">
+                    <div class="match-btn" data-match="2">Kubikmeter ($m^3$)</div>
+                    <div class="match-btn" data-match="4">Kelvin ($K$)</div>
+                    <div class="match-btn" data-match="1">Pascal ($Pa$)</div>
+                    <div class="match-btn" data-match="3">Newton ($N$)</div>
+                </div>
+            </div>
+            <div id="success-msg" style="display:none; color:var(--success); font-weight:bold; margin-top:15px; text-align:center;">✓ Check erfolgreich!</div>
+        </div>
+
+        <div class="grid-actions">
+            <a href="knowledge-base.html" class="action-card">
+                <div style="font-size:1.5rem;">📚</div>
+                <strong>Wissensdatenbank</strong>
+                <div style="font-size:0.9rem; color:#64748b;">Theorie erarbeiten</div>
+            </a>
+            <a href="engineering-tool.html" class="action-card">
+                <div style="font-size:1.5rem;">🧮</div>
+                <strong>Ingenieur-Tool</strong>
+                <div style="font-size:0.9rem; color:#64748b;">Planen & Berechnen</div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let selected = null;
+        let matches = 0;
+        document.querySelectorAll('#col-terms .match-btn').forEach(b => b.onclick = () => {
+            if(b.classList.contains('correct')) return;
+            document.querySelectorAll('#col-terms .match-btn').forEach(x => x.classList.remove('selected'));
+            b.classList.add('selected'); selected = b;
+        });
+        document.querySelectorAll('#col-units .match-btn').forEach(b => b.onclick = () => {
+            if(!selected || b.classList.contains('correct')) return;
+            if(selected.dataset.id === b.dataset.match) {
+                selected.classList.add('correct'); b.classList.add('correct');
+                selected.classList.remove('selected'); selected = null;
+                matches++;
+                if(matches === 4) document.getElementById('success-msg').style.display = 'block';
+            } else {
+                b.classList.add('wrong'); setTimeout(()=>b.classList.remove('wrong'), 400);
+            }
+        });
+    </script>
+</body>
+</html>
