@@ -33,6 +33,11 @@
         .email-card { background: white; border-radius: var(--radius); border-left: 5px solid #ef4444; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 30px; }
         .email-header { background: #f8fafc; padding: 15px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; }
         .email-body { padding: 30px; line-height: 1.6; }
+
+        /* Email Attachment Styling */
+        .email-attachment { margin: 20px 0; border: 1px solid #e2e8f0; padding: 15px; border-radius: 6px; background: #f8fafc; width: fit-content; max-width: 100%; }
+        .attachment-label { font-size: 0.75rem; color: #64748b; margin-bottom: 8px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+        .email-attachment img { max-width: 100%; height: auto; border-radius: 4px; border: 1px solid #cbd5e1; max-height: 300px; object-fit: cover; }
         
         /* Interactive Island */
         .island-box { background: #1e293b; color: white; padding: 25px; border-radius: var(--radius); margin-bottom: 30px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
@@ -94,7 +99,13 @@
             </div>
             <div class="email-body">
                 <p>Guten Tag Team,</p>
-                <p>Der Hauptkompressor fällt immer wieder aus. Wir müssen den Notlauf unserer Montageanlage über den lokalen <strong>50L Speicher (8 bar)</strong> sicherstellen. </p>
+                <p>Der Hauptkompressor fällt immer wieder aus. Wir müssen den Notlauf unserer Montageanlage über den lokalen <strong>50L Speicher (8 bar)</strong> sicherstellen. Ich habe Ihnen ein Foto vom Typenschild des Tanks angehängt.</p>
+                
+                <div class="email-attachment">
+                    <div class="attachment-label">📎 Anhang: typenschild_packtech.png</div>
+                    <img src="images/typenschild_packtech.png" alt="Typenschild PackTech AG Druckluftbehälter">
+                </div>
+
                 <ul>
                     <li>Kritischer Systemdruck: <strong>4 bar</strong> (darunter fällt das Werkstück).</li>
                     <li>Verbraucher: Zylinder DNC-32-100 (Volumen <strong>0.08 L/Hub</strong>).</li>
@@ -154,10 +165,10 @@
             if (isLP) {
                 document.querySelectorAll('.teacher-only').forEach(el => el.style.display = 'block');
                 document.querySelectorAll('a').forEach(link => {
-                     if(link.href && !link.href.includes('javascript') && !link.href.includes('#')) {
+                      if(link.href && !link.href.includes('javascript') && !link.href.includes('#')) {
                         const separator = link.href.includes('?') ? '&' : '?';
                         link.href += separator + 'id=LP';
-                     }
+                      }
                 });
             }
         });
