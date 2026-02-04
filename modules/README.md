@@ -1,6 +1,6 @@
 # MAPH – Interaktive Module (MVP) · Entwickler-Dokumentation
 
-Diese Dokumentation beschreibt, wie das MVP der interaktiven HTML‑Module aufgebaut ist (Stand: **Modul 1**) und wie ihr daraus die nächsten Module ableiten könnt.
+Diese Dokumentation beschreibt, wie das MVP der interaktiven HTML‑Module aufgebaut ist (Stand: **Modul 1–4**) und wie ihr daraus die nächsten Module ableiten könnt.
 
 ## Ziel & Grundprinzipien
 
@@ -17,6 +17,8 @@ Diese Dokumentation beschreibt, wie das MVP der interaktiven HTML‑Module aufge
   modules/
     index.html
     module_1.html
+    module_2.html
+    module_3.html
     shared.css
     shared.js
     vendor/
@@ -33,16 +35,38 @@ Diese Dokumentation beschreibt, wie das MVP der interaktiven HTML‑Module aufge
 
 - Startseite öffnen: `modules/index.html`
 - Modul 1 öffnen: `modules/module_1.html`
+- Modul 2 öffnen: `modules/module_2.html`
+- Modul 3 öffnen: `modules/module_3.html`
+- Modul 4 öffnen: `modules/module_4.html`
 
 ### Teilen/Versenden (ohne GitHub)
 Am einfachsten ist ein ZIP **vom ganzen Root-Ordner**, damit `modules/` und `skript1/` zusammenbleiben. Danach kann man lokal `modules/index.html` öffnen.
 
 ## `modules/index.html` (Modulübersicht)
 
-**Aufgabe:** Liste aller Module anzeigen; Modul 1 ist klickbar, spätere Module sind “in Arbeit”.
+**Aufgabe:** Liste aller Module anzeigen; fertige Module sind klickbar, spätere Module sind “in Arbeit”.
 
 - Datenquelle ist aktuell ein JS-Array direkt im HTML (`const modules = [...]`).
 - Für ein neues Modul muss nur ein weiterer Eintrag hinzugefügt werden (`href: "module_2.html"` usw.).
+
+## Modul-spezifisches JS (Modul 2, 3 & 4)
+
+Modul 2, 3 und 4 enthalten zusätzliche Interaktivität (z.B. Zuordnungs-Quiz, Dreisatz-Maschine, Diagramm-Labor, Self-Checks). Das ist bewusst **modul-lokal** als Inline-Script gelöst:
+
+- **Kein neuer Global:** Es werden keine neuen `window.*` APIs exportiert; es bleibt bei `window.MAPH` aus `shared.js`.
+- **Shared bleibt stabil:** Wenn sich wiederkehrende Logik häuft, kann sie später nach `shared.js` gezogen werden – aktuell war das nicht nötig.
+
+### Modul 4: Kinematik-Dashboard (LZ 16, 20)
+`modules/module_4.html` ist ein reines Offline-Modul (HTML/CSS/JS) und nutzt nur `shared.css` + `shared.js` (MAPH-Utilities). Die Logik ist komplett im Modul als Inline-Script gekapselt.
+
+Wichtige Bausteine:
+- **Kinematik-Rechner** mit Modus-Umschalter: `v = s/t`, `s = v·t`, `t = s/v` inkl. Umrechnung (m/km, s/min/h, m/s ↔ km/h).
+- **Resultat-Schätzer (LZ 16 / Grössenordnung):** Das Resultat wird erst angezeigt, wenn die passende Grössenordnung `10^x` gewählt wurde (`floor(log10(|result|))`).
+- **Diagramm-Labor (SVG, ohne externe Libraries):**
+  - Datenmodell ist stückweise konstante Geschwindigkeit: `segments = [{ dt_s, v_mps }, ...]`.
+  - s–t wird aus den Segmenten aufgebaut, v–t zeigt die Segmente als Rechtecke.
+  - Interaktion: Drag an v–t-Handles (v) und Segment-Grenzen (dt); alternativ Eingabe über Tabellenfelder.
+- **Self-Checks:** A1–A3 (Diagramm-Aufgaben) und B1–B2 (Musterlösungsweg) mit direktem Feedback.
 
 ## `modules/shared.css` (Design-System)
 
@@ -160,7 +184,7 @@ Wenn ihr später wieder einen Simulator wollt:
 
 ## Neues Modul erstellen (Empfehlung)
 
-1. `modules/module_1.html` kopieren → `modules/module_2.html`
+1. Eine bestehende Modul-Datei als Template kopieren (meist `modules/module_2.html` oder `modules/module_3.html`)
 2. Titel/Lernziel/Quellen anpassen
 3. Neue Sektionen als `.card` ergänzen
 4. Übungen als Arrays definieren (gleiches Pattern wie in Modul 1)
@@ -195,4 +219,3 @@ Wenn der Inhalt **öffentlich** sein darf, kann GitHub Pages sinnvoll sein:
 - Repo enthält `modules/` und `skript1/` (und zukünftige `skriptX/`)
 - Link ist dann z.B. `.../modules/index.html` (oder ihr erstellt im Repo-Root eine `index.html`, die dorthin weiterleitet)
 - Wenn KaTeX genutzt werden soll: KaTeX‑Dist **mitcommiten** (`modules/vendor/katex/`)
-
