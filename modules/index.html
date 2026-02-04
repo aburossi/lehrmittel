@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MAPH – Interaktive Module</title>
+    <link rel="stylesheet" href="shared.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <div>
+          <h1>MAPH – Interaktive Module</h1>
+          <p>Lernfeld LFB_FA_TRB_0 – Trennen Basis</p>
+        </div>
+      </header>
+
+      <main class="card">
+        <h2 class="card-title">Module</h2>
+        <ul class="module-list" id="module-list" aria-label="Modulliste"></ul>
+      </main>
+    </div>
+
+    <script>
+      (function () {
+        "use strict";
+
+        const modules = [
+          {
+            id: 1,
+            title:
+              "Interaktive Rechenlogik und Taschenrechner-Simulation (Lernziel 1)",
+            href: "module_1.html",
+            status: "ready",
+          },
+          {
+            id: 2,
+            title:
+              "Dynamisches Einheiten-Management und SI-System (LZ 2, 3, 18)",
+            href: null,
+            status: "todo",
+          },
+          {
+            id: 3,
+            title: "Interaktiver Dreisatz (LZ 17, 19)",
+            href: null,
+            status: "todo",
+          },
+          {
+            id: 4,
+            title: "Kinematik-Dashboard (LZ 16, 20)",
+            href: null,
+            status: "todo",
+          },
+          {
+            id: 5,
+            title: "Schnittdaten/Rotation (LZ 4, 15, 21)",
+            href: null,
+            status: "todo",
+          },
+        ];
+
+        const list = document.getElementById("module-list");
+        if (!list) return;
+
+        function pill(status) {
+          if (status === "ready") {
+            return '<span class="pill pill--ready">bereit</span>';
+          }
+          return '<span class="pill pill--todo">in Arbeit</span>';
+        }
+
+        list.innerHTML = modules
+          .map((m) => {
+            const title = `Modul ${m.id}`;
+            const subtitle = m.title;
+            const label = `
+              <span>
+                <span class="module-title">${title}</span>
+                <span class="module-subtitle">${subtitle}</span>
+              </span>
+            `;
+
+            if (m.href) {
+              return `
+                <li class="module-item">
+                  <a href="${m.href}" aria-label="${title}: ${subtitle}">
+                    ${label}
+                  </a>
+                  ${pill(m.status)}
+                </li>
+              `;
+            }
+
+            return `
+              <li class="module-item module-item--disabled" aria-disabled="true">
+                <span>
+                  ${label}
+                </span>
+                ${pill(m.status)}
+              </li>
+            `;
+          })
+          .join("");
+      })();
+    </script>
+  </body>
+</html>
