@@ -3,6 +3,8 @@
 Diese Module können Formeln per **KaTeX** rendern – komplett offline (ohne CDN).  
 Wenn KaTeX nicht vorhanden ist, bleiben Formeln als lesbarer TeX‑Text sichtbar.
 
+Seit 2026-02 wird KaTeX (falls vorhanden) automatisch über `MAPH.typesetTeX()` geladen (lokal-first; optional CDN-Fallback bei `http/https`).
+
 ## Erwartete Dateien
 
 Lege die KaTeX‑Dist hier ab:
@@ -27,4 +29,3 @@ Wichtig: Den Ordner `fonts/` unbedingt mitkopieren.
 1. Lade das KaTeX Release als ZIP herunter.
 2. Kopiere den Inhalt des `dist/` Ordners in:
    - `modules/vendor/katex/`
-

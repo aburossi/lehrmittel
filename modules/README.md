@@ -1,12 +1,12 @@
 # MAPH – Interaktive Module (MVP) · Entwickler-Dokumentation
 
-Diese Dokumentation beschreibt, wie das MVP der interaktiven HTML‑Module aufgebaut ist (Stand: **Modul 1–4**) und wie ihr daraus die nächsten Module ableiten könnt.
+Diese Dokumentation beschreibt, wie das MVP der interaktiven HTML‑Module aufgebaut ist (Stand: **Modul 1–5**) und wie ihr daraus die nächsten Module ableiten könnt.
 
 ## Ziel & Grundprinzipien
 
 - **Offline-first / ohne Build-Step:** Alles sind statische Dateien (HTML/CSS/JS). Es gibt keine Server-Abhängigkeit und keine CDN-Imports.
 - **Ein Modul = eine HTML-Datei:** Pro Modul gibt es eine eigene `module_X.html`.
-- **Wiederverwendbare Basis:** Gemeinsame Styles und Hilfsfunktionen liegen in `modules/shared.css` und `modules/shared.js`.
+- **Wiederverwendbare Basis:** Gemeinsame Styles und Hilfsfunktionen liegen in `modules/shared.css`, `modules/shared.js` und `modules/app.js`.
 - **CH-Notation:** Ausgabe mit Dezimalkomma, optional Tausendertrennzeichen `'`.
 - **Formeln:** Optional lokal via KaTeX; sonst best-effort Text-Fallback (lesbar, aber nicht typografisch perfekt).
 
@@ -16,11 +16,24 @@ Diese Dokumentation beschreibt, wie das MVP der interaktiven HTML‑Module aufge
 <root>/
   modules/
     index.html
-    module_1.html
-    module_2.html
-    module_3.html
+    app.js
     shared.css
     shared.js
+    module_1.html
+    module_1.css
+    module_1.js
+    module_2.html
+    module_2.css
+    module_2.js
+    module_3.html
+    module_3.css
+    module_3.js
+    module_4.html
+    module_4.css
+    module_4.js
+    module_5.html
+    module_5.css
+    module_5.js
     vendor/
       katex/
         README.md
@@ -38,6 +51,7 @@ Diese Dokumentation beschreibt, wie das MVP der interaktiven HTML‑Module aufge
 - Modul 2 öffnen: `modules/module_2.html`
 - Modul 3 öffnen: `modules/module_3.html`
 - Modul 4 öffnen: `modules/module_4.html`
+- Modul 5 öffnen: `modules/module_5.html`
 
 ### Teilen/Versenden (ohne GitHub)
 Am einfachsten ist ein ZIP **vom ganzen Root-Ordner**, damit `modules/` und `skript1/` zusammenbleiben. Danach kann man lokal `modules/index.html` öffnen.
@@ -46,18 +60,24 @@ Am einfachsten ist ein ZIP **vom ganzen Root-Ordner**, damit `modules/` und `skr
 
 **Aufgabe:** Liste aller Module anzeigen; fertige Module sind klickbar, spätere Module sind “in Arbeit”.
 
-- Datenquelle ist aktuell ein JS-Array direkt im HTML (`const modules = [...]`).
-- Für ein neues Modul muss nur ein weiterer Eintrag hinzugefügt werden (`href: "module_2.html"` usw.).
+- Datenquelle ist `modules/app.js` (Array `MODULES` wird als `MAPH.modules` bereitgestellt).
+- Für ein neues Modul nur einen weiteren Eintrag in `MODULES` hinzufügen (`href: "module_6.html"` usw.).
 
-## Modul-spezifisches JS (Modul 2, 3 & 4)
+## Modul-spezifische Dateien (CSS/JS)
 
-Modul 2, 3 und 4 enthalten zusätzliche Interaktivität (z.B. Zuordnungs-Quiz, Dreisatz-Maschine, Diagramm-Labor, Self-Checks). Das ist bewusst **modul-lokal** als Inline-Script gelöst:
+Alle Module (1–5) sind reine Offline-Seiten (HTML/CSS/JS) und nutzen:
+
+- `shared.css` / `shared.js` (Design + MAPH-Utilities)
+- `app.js` (Modul-Metadaten, Modulübersicht, gemeinsamer Header/Navi für alle Module)
+- `module_X.css` / `module_X.js` (modul-spezifische Styles & Interaktion)
+
+Die `module_X.html` Dateien enthalten hauptsächlich **Content-Markup** in `<main id="main">` und tragen `data-module-id="X"` am `<body>` (keine Inline `<style>`/`<script>` Blöcke).
 
 - **Kein neuer Global:** Es werden keine neuen `window.*` APIs exportiert; es bleibt bei `window.MAPH` aus `shared.js`.
 - **Shared bleibt stabil:** Wenn sich wiederkehrende Logik häuft, kann sie später nach `shared.js` gezogen werden – aktuell war das nicht nötig.
 
 ### Modul 4: Kinematik-Dashboard (LZ 16, 20)
-`modules/module_4.html` ist ein reines Offline-Modul (HTML/CSS/JS) und nutzt nur `shared.css` + `shared.js` (MAPH-Utilities). Die Logik ist komplett im Modul als Inline-Script gekapselt.
+`modules/module_4.html` ist ein reines Offline-Modul (HTML/CSS/JS) und nutzt `shared.css`/`shared.js` (MAPH-Utilities) plus `module_4.css`/`module_4.js`. Header/Navi kommen aus `app.js`.
 
 Wichtige Bausteine:
 - **Kinematik-Rechner** mit Modus-Umschalter: `v = s/t`, `s = v·t`, `t = s/v` inkl. Umrechnung (m/km, s/min/h, m/s ↔ km/h).
@@ -67,6 +87,19 @@ Wichtige Bausteine:
   - s–t wird aus den Segmenten aufgebaut, v–t zeigt die Segmente als Rechtecke.
   - Interaktion: Drag an v–t-Handles (v) und Segment-Grenzen (dt); alternativ Eingabe über Tabellenfelder.
 - **Self-Checks:** A1–A3 (Diagramm-Aufgaben) und B1–B2 (Musterlösungsweg) mit direktem Feedback.
+
+### Modul 5: Schnittdaten/Rotation (LZ 4, 15, 21)
+`modules/module_5.html` ist ein Offline-Modul (HTML/CSS/JS) und nutzt `shared.css`/`shared.js` (MAPH-Utilities) plus `module_5.css`/`module_5.js`. Header/Navi kommen aus `app.js`.
+
+Wichtige Bausteine:
+- **Skript-Bezug (Kap. 5.3):** Einbindung der Bilder `img-29`, `img-35`, `img-36`, `img-38` aus `skript1/` zur Begriffsabgrenzung v_u/v_c und zur Übungs-Einbettung.
+- **Rechner: Drehzahl n:** Mini-Tool für `n = N/t` mit Umschalter der Zeiteinheit (s/min).
+- **Rechner: Umfangsgeschwindigkeit v_u (Solve-Modus):** Modusumschalter für Berechnung von v_u, n oder d inkl. Einheitenwahl (mm/cm/m, 1/s/1/min, m/s/m/min/km/h/mm/min) und optionaler Rundung via `MAPH.roundHalfUp`.
+- **Riemen-/Riemenscheiben-Übersetzung:** Rechner mit `d1·n1 = d2·n2` plus SVG-Animation (Drehgeschwindigkeit wird für die Darstellung geclamped). Pause/Play ist enthalten.
+- **Schnittdaten-Rechner (Drehen):** `n_ideal = v_c/(π·d)` (d in mm wird intern nach m umgerechnet) + optionaler Drehzahlstufen-Preset (u.a. Skript: 90/120/180/240/300). Zusätzlich: Anzeige v_c,real bei Stufe und Warnbadge bei `n_ideal > n_max`.
+- **Lookup (offline-sicher):** v_c-Startwerte als Inline-Daten in `modules/module_5.js` (Konstante `VC_TABLE`) – bewusst kein `fetch`, damit `file://` sauber funktioniert. Werte sind als **PLACEHOLDER** markiert (Banner-Hinweis).
+- **Übungsbereich:** Datengetriebene Aufgaben-Karten (Input + "Prüfen" + "Lösung anzeigen") aus Skript 5.3.1 und ausgewählten 5.4 Aufgaben. Zahlen-Parsing ist tolerant gegen CH-Notation (`'` als Tausendertrennzeichen).
+- **Vertiefung (Zusatz):** Drehmoment/Leistung (ω=2πn, P=Mω) + Rotationsenergie (Zylinder-Approximation) als einklappbarer Abschnitt.
 
 ## `modules/shared.css` (Design-System)
 
@@ -84,10 +117,11 @@ Wichtige Bausteine:
 
 ## `modules/shared.js` (Hilfsfunktionen)
 
-`shared.js` exportiert genau ein globales Objekt:
+`shared.js` hängt alle Utilities an genau ein globales Objekt (Merge in `window.MAPH`):
 
 ```js
-window.MAPH = { normalizeNumberInput, parseLocaleNumber, formatCH, roundHalfUp, renderTeX }
+window.MAPH = window.MAPH || {};
+Object.assign(window.MAPH, { normalizeNumberInput, parseLocaleNumber, formatCH, roundHalfUp, renderTeX });
 ```
 
 ### `MAPH.normalizeNumberInput(raw)`
@@ -123,6 +157,25 @@ Rendert Elemente mit `[data-tex]`:
 
 **Hinweis:** Das Fallback ist absichtlich “robust & lesbar”, nicht vollständig TeX-kompatibel.
 
+### `MAPH.typesetTeX(root?)`
+“All-in-one” Formel-Rendering für **alle Seiten**:
+- Erkennt/erzeugt Formeln aus TeX-Delimitern in Text (`\( … \)`, `\[ … \]`, `$$ … $$`, best-effort auch `$ … $`) und wandelt sie in `[data-tex]` um.
+- Lädt KaTeX **lokal** (`vendor/katex/…`) wenn vorhanden; sonst (nur bei `http/https`) optional via CDN.
+- Rendert danach via `MAPH.renderTeX()`.
+
+Rückgabe: `Promise<{ katexLoaded: boolean }>`
+
+Konfiguration (optional): vor dem ersten `typesetTeX()` setzen:
+```js
+window.MAPH_TEX = {
+  allowCDN: false, // true/false
+  localCss: "vendor/katex/katex.min.css",
+  localJs: "vendor/katex/katex.min.js",
+  cdnCss: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css",
+  cdnJs: "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js",
+};
+```
+
 ## KaTeX (optional, lokal)
 
 KaTeX ist **nicht** im Repo enthalten. Anleitung:
@@ -132,12 +185,13 @@ KaTeX ist **nicht** im Repo enthalten. Anleitung:
 Wenn KaTeX fehlt:
 - Die Seite funktioniert trotzdem.
 - Formeln erscheinen als vereinfachter Text.
-- In Modul 1 wird ein Hinweis eingeblendet.
+- In den Modulen wird ein Hinweis unter dem Header eingeblendet (via `app.js`).
+- Bei Hosting über GitHub Pages kann `typesetTeX()` (optional) KaTeX auch per CDN nachladen (falls aktiviert).
 
 ## `modules/module_1.html` (Modul 1 – Aufbau)
 
 ### Sektionen
-1. **Header** (Titel, Lernziel, Link “Übersicht”)
+1. **Header** (wird via `app.js` injiziert: Titel, Lernziel, Navigation)
 2. **Skript-Bezug** (Bilder aus `skript1/`)
 3. **Rundungsregeln** (Regeln + Tool + Mini-Übung)
 4. **Taschenrechner (Hinweis)** (didaktischer Abschnitt; kein Simulator im MVP-Flow)
@@ -145,14 +199,14 @@ Wenn KaTeX fehlt:
 
 ### Bilder / “zu grosse Symbole”
 Das erste Bild (Tasten-Symbole) ist bewusst auf eine kleinere Maximalbreite begrenzt:
-- `.figure-keys` in `module_1.html`
+- `.figure-keys` in `module_1.css`
 
 Wenn ihr andere Bilder einbettet:
 - Nutzt `<figure>` + `<figcaption>` (bessere Semantik)
 - Achtet auf relative Pfade (bei ZIP/GitHub Pages)
 
 ### Rundungs-Tool & Mini-Übung
-In `module_1.html`:
+In `module_1.js`:
 - Das Tool nutzt `MAPH.roundHalfUp()`.
 - Die Mini-Übung wird über ein Array `roundingExercises` erzeugt.
 - Die Eingabe ist leer; Lösungen sind **nicht** vorbefüllt.
@@ -184,13 +238,12 @@ Wenn ihr später wieder einen Simulator wollt:
 
 ## Neues Modul erstellen (Empfehlung)
 
-1. Eine bestehende Modul-Datei als Template kopieren (meist `modules/module_2.html` oder `modules/module_3.html`)
-2. Titel/Lernziel/Quellen anpassen
-3. Neue Sektionen als `.card` ergänzen
-4. Übungen als Arrays definieren (gleiches Pattern wie in Modul 1)
-5. In `modules/index.html` den neuen Modul-Eintrag ergänzen:
-   - `href: "module_2.html"`
-   - Status “bereit”
+1. Ein bestehendes Modul als Template kopieren (z.B. `module_3.html` + `module_3.css` + `module_3.js`)
+2. In `module_6.html` `data-module-id="6"` setzen und Verweise auf `module_6.css` / `module_6.js` anpassen
+3. Titel/Lernziel/Quellen im Content anpassen (Header/Navi kommt automatisch via `app.js`)
+4. Modul-spezifische Styles in `module_6.css` pflegen
+5. Modul-spezifische Logik in `module_6.js` pflegen
+6. In `modules/app.js` einen Eintrag in `MODULES` hinzufügen (`id: 6`, `href: "module_6.html"`, `title`, `subtitle`, `status`)
 
 ### Assets (Bilder/Skript)
 Für weitere Module ist es sinnvoll, pro Modul einen eigenen Skript-Ordner zu verwenden, z.B.:

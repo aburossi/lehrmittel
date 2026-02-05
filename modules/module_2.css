@@ -1,0 +1,182 @@
+.nav {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: #ffffff;
+      }
+      .nav a {
+        font-weight: 700;
+      }
+
+      figure {
+        margin: 0;
+      }
+      figure img {
+        width: 100%;
+        height: auto;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        background: #ffffff;
+      }
+      figcaption {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .hint {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .source-note {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .table th,
+      .table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+      }
+      .table th {
+        text-align: left;
+        background: #f8fafc;
+        font-size: 0.95rem;
+      }
+      .table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .ok {
+        background: var(--success-bg);
+        border: 1px solid var(--success-border);
+        color: var(--success-text);
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-weight: 900;
+        display: inline-block;
+      }
+      .bad {
+        background: var(--danger-bg);
+        border: 1px solid var(--danger-border);
+        color: var(--danger-text);
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-weight: 900;
+        display: inline-block;
+      }
+
+      .mini-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+      }
+      @media (min-width: 980px) {
+        .mini-grid {
+          grid-template-columns: 1fr 1fr;
+          align-items: start;
+        }
+      }
+
+      .match-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+        align-items: end;
+        padding: var(--space-3);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        background: #ffffff;
+      }
+      @media (min-width: 860px) {
+        .match-row {
+          grid-template-columns: 1.1fr 0.9fr 0.9fr auto;
+        }
+      }
+      .match-title {
+        font-weight: 900;
+      }
+
+      .tool-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+        align-items: end;
+      }
+      @media (min-width: 860px) {
+        .tool-row {
+          grid-template-columns: 1.2fr 0.9fr 0.9fr 0.9fr auto;
+        }
+      }
+
+      .result-box {
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        background: #f8fafc;
+        padding: var(--space-4);
+      }
+      .result-line {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: baseline;
+      }
+      .result-label {
+        color: var(--muted);
+        font-weight: 800;
+      }
+      .result-value {
+        font-weight: 900;
+        font-size: 1.2rem;
+      }
+
+      .exercise-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+      }
+      .exercise-card {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: #ffffff;
+        padding: var(--space-5);
+      }
+      .exercise-title {
+        margin: 0 0 10px 0;
+        font-size: 1.05rem;
+        font-weight: 900;
+      }
+      .exercise-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 12px;
+        align-items: center;
+      }
+      .exercise-actions .input {
+        flex: 1 1 320px;
+        min-width: 220px;
+      }
+      .exercise-feedback {
+        margin-top: 12px;
+        font-weight: 900;
+      }
+      details {
+        margin-top: 10px;
+      }
+      details summary {
+        cursor: pointer;
+        font-weight: 900;
+      }

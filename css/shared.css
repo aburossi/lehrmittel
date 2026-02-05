@@ -489,12 +489,6 @@ details summary {
   overflow-wrap: anywhere;
 }
 
-.tex-fallback--block {
-  display: block;
-  padding: 8px 10px;
-  margin: 10px 0;
-}
-
 @media print {
   body {
     background: #ffffff;
