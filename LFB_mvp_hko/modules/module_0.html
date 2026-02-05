@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Auftrag 0 – Warm-up: Mathe-Gatekeeper</title>
+
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="module_0.css" />
+    <!-- Optional (lokal): KaTeX für schöne Formel-Darstellung -->
+    <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+  </head>
+
+  <body data-module-id="0">
+    <div class="container">
+      <main id="main">
+        <section class="card" id="intro">
+          <h2 class="card-title">Mathe-Gatekeeper (Warm-up)</h2>
+          <p class="source-note">
+            Ziel: Bevor du an der Maschine rechnest, musst du <strong>Einheiten sicher umrechnen</strong> und
+            <strong>Formelsyntax</strong> fehlerfrei eingeben können (Klammern, Potenzen, EE).
+          </p>
+          <div class="grid">
+            <div class="result-box">
+              <div class="result-line">
+                <span class="result-label">Mini-Checklist</span>
+              </div>
+              <ul style="margin: 10px 0 0 18px">
+                <li>mm ↔ m (Zehnerpotenzen, Dezimalpunkt)</li>
+                <li>Klammern &amp; Reihenfolge der Operationen</li>
+                <li>Exponentialschreibweise (E/EE)</li>
+              </ul>
+            </div>
+            <div class="result-box">
+              <div class="result-line">
+                <span class="result-label">Merksatz</span>
+              </div>
+              <div data-tex="10^3\\,\\mathrm{mm}=1\\,\\mathrm{m}" data-display="block"></div>
+              <p class="hint" style="margin: 0">
+                Einheiten sind Teil des Resultats – nicht nur „Zahlen“.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="converter">
+          <h2 class="card-title">Engineering Tool: Einheiten-Umrechner</h2>
+          <p class="source-note">
+            Gib eine Zahl ein und wähle „von“ und „nach“. Der Rechner akzeptiert Dezimalkomma.
+          </p>
+
+          <div class="input-grid" aria-label="Einheiten umrechnen">
+            <div>
+              <label class="field-label" for="conv-value">Wert</label>
+              <input
+                class="input"
+                id="conv-value"
+                type="text"
+                inputmode="decimal"
+                placeholder="z.B. 2500"
+              />
+            </div>
+
+            <div>
+              <label class="field-label" for="conv-from">von</label>
+              <select class="select" id="conv-from">
+                <option value="mm" selected>mm</option>
+                <option value="cm">cm</option>
+                <option value="m">m</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="field-label" for="conv-to">nach</label>
+              <select class="select" id="conv-to">
+                <option value="mm">mm</option>
+                <option value="cm">cm</option>
+                <option value="m" selected>m</option>
+              </select>
+            </div>
+
+            <div class="input-grid__actions">
+              <button class="btn btn-primary" id="conv-run" type="button">Umrechnen</button>
+              <button class="btn btn-secondary" id="conv-swap" type="button">Tauschen</button>
+            </div>
+          </div>
+
+          <div class="result-box" style="margin-top: 14px" aria-live="polite">
+            <div class="result-line">
+              <span class="result-label">Resultat:</span>
+              <span class="result-value" id="conv-out">—</span>
+            </div>
+            <div class="hint" id="conv-hint">—</div>
+          </div>
+        </section>
+
+        <section class="card" id="calculator">
+          <h2 class="card-title">Engineering Tool: Taschenrechner-Syntax</h2>
+          <p class="source-note">
+            Tippe einen Ausdruck wie auf dem Taschenrechner. Unterstützt: <code>+ - × · * ÷ : / ^</code>,
+            Klammern <code>()</code>/<code>[]</code>, <code>sqrt(...)</code>, <code>π</code>/<code>pi</code>,
+            sowie Exponenten <code>E</code> (z.B. <code>1E-3</code>).
+          </p>
+
+          <div class="calc-wrap" aria-label="Ausdruck berechnen">
+            <label class="sr-only" for="expr-input">Ausdruck</label>
+            <input
+              class="input"
+              id="expr-input"
+              type="text"
+              inputmode="text"
+              placeholder="z.B. 25-[7+(24-13,83)-(2,5+2,6+2,7)]"
+            />
+            <div class="calc-actions">
+              <button class="btn btn-primary" id="expr-run" type="button">Berechnen</button>
+              <button class="btn btn-secondary" id="expr-clear" type="button">Reset</button>
+            </div>
+          </div>
+
+          <div class="result-box" style="margin-top: 14px" aria-live="polite">
+            <div class="result-line">
+              <span class="result-label">Resultat:</span>
+              <span class="result-value" id="expr-out">—</span>
+            </div>
+            <div class="hint" id="expr-msg">—</div>
+          </div>
+        </section>
+
+        <section class="card" id="selfcheck">
+          <h2 class="card-title">Mini-Self-Check</h2>
+          <p class="source-note">
+            Diese Aufgaben sind bewusst kurz. Ziel ist fehlerfreie Eingabe und saubere Einheiten.
+          </p>
+          <div class="exercise-list" id="exercise-list"></div>
+        </section>
+
+        <footer class="card">
+          <h2 class="card-title">Quelle</h2>
+          <p class="source-note" style="margin: 0">
+            Quelle: Grundlagen (Einheiten, Rechenoperationen, Taschenrechner-Syntax). TODO: Skript-Verweis ergänzen.
+          </p>
+        </footer>
+      </main>
+    </div>
+
+    <script defer src="shared.js"></script>
+    <!-- Optional (lokal): KaTeX -->
+    <script defer src="vendor/katex/katex.min.js"></script>
+    <script defer src="app.js"></script>
+    <script defer src="module_0.js"></script>
+  </body>
+</html>

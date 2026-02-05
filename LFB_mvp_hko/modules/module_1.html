@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Auftrag 1 – Das Werkzeug vorbereiten (Geometrie)</title>
+
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="module_1.css" />
+    <!-- Optional (lokal): KaTeX für schöne Formel-Darstellung -->
+    <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+  </head>
+
+  <body data-module-id="1">
+    <div class="container">
+      <main id="main">
+        <figure class="module-hero">
+          <img
+            src="../skript1/img/m1_intro.png"
+            alt="Introbild Auftrag 1: Werkzeuggeometrie"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+
+        <section class="card" id="skript">
+          <h2 class="card-title">Skript-Bezug</h2>
+          <p class="source-note">
+            TODO: Lege passende Skizzen/Bilder in <code>LFB_mvp_hko/skript1/</code> ab und verlinke sie
+            hier (Pfad aus diesem Modul: <code>../skript1/...</code>).
+          </p>
+
+          <div class="grid">
+            <figure>
+              <img
+                src="../skript1/img/m1_1.png"
+                alt="Werkzeugschneide in der Praxis und schematische Winkel α, β, γ"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>Werkzeugschneide: Praxisbild + Winkelübersicht (α, β, γ).</figcaption>
+            </figure>
+
+            <figure>
+              <svg
+                class="tool-svg"
+                viewBox="0 0 420 260"
+                role="img"
+                aria-label="Schematische Werkzeuggeometrie mit α, β, γ"
+              >
+                <!-- Work surface -->
+                <line x1="20" y1="210" x2="400" y2="210" stroke="#0f172a" stroke-width="2" />
+                <text x="24" y="236" font-size="12" fill="#475569">Werkstückoberfläche</text>
+
+                <!-- Cutting edge / tool wedge (driven by sliders in module_1.js) -->
+                <circle id="cutting-edge" cx="300" cy="210" r="3.5" fill="#0f172a" />
+                <path
+                  id="tool-wedge"
+                  d="M 300 210 L 131 192 L 205 69 Z"
+                  fill="#e2e8f0"
+                  stroke="#0f172a"
+                  stroke-width="2"
+                />
+
+                <!-- Faces (labels are positioned by JS) -->
+                <text id="label-span" x="260" y="128" font-size="12" fill="#0f172a">
+                  Spanfläche
+                </text>
+                <text id="label-frei" x="182" y="198" font-size="12" fill="#0f172a">
+                  Freifläche
+                </text>
+                <text id="label-schneide" x="305" y="208" font-size="12" fill="#0f172a">
+                  Schneide
+                </text>
+
+                <!-- Angle arcs (polyline paths; driven by JS) -->
+                <path id="arc-alpha" d="" fill="none" stroke="#475569" stroke-width="2" />
+                <path id="arc-beta" d="" fill="none" stroke="#475569" stroke-width="2" />
+
+                <text id="text-alpha" x="250" y="192" font-size="12" fill="#0f172a">α</text>
+                <text id="text-beta" x="238" y="140" font-size="12" fill="#0f172a">β</text>
+                <text id="text-gamma" x="320" y="120" font-size="12" fill="#0f172a">γ</text>
+              </svg>
+              <figcaption>Schematische Darstellung (didaktisch, nicht massstäblich).</figcaption>
+
+              <div class="controls" aria-label="Winkel einstellen">
+                <label>
+                  Freiwinkel α:
+                  <input
+                    type="range"
+                    id="slider-alpha"
+                    min="0"
+                    max="20"
+                    value="6"
+                    step="1"
+                  />
+                  <span class="controls-value" id="output-alpha">6</span>°
+                </label>
+                <label>
+                  Keilwinkel β:
+                  <input
+                    type="range"
+                    id="slider-beta"
+                    min="30"
+                    max="80"
+                    value="50"
+                    step="1"
+                  />
+                  <span class="controls-value" id="output-beta">50</span>°
+                </label>
+                <p class="controls-row">
+                  Spanwinkel γ:
+                  <span class="controls-value" id="output-gamma">34</span>°
+                  <span class="hint" style="margin: 0"> (γ = 90° − α − β)</span>
+                </p>
+              </div>
+              <div id="feedback-box" class="angle-feedback" aria-live="polite"></div>
+            </figure>
+          </div>
+
+          <figure style="margin-top: var(--space-4)">
+            <img
+              src="../skript1/img/m1_3.png"
+              alt="Zusammenhang der Winkel: α + β + γ = 90 Grad"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Merksatz (didaktisch): α + β + γ = 90°.</figcaption>
+          </figure>
+        </section>
+
+        <section class="card" id="theorie">
+          <h2 class="card-title">Theorie / Begriffe</h2>
+          <div class="two-col">
+            <div>
+              <h3 style="margin-top: 0">Flächen an der Werkzeugschneide</h3>
+              <ul>
+                <li><strong>Spanfläche</strong>: Fläche, auf der der Span abgleitet.</li>
+                <li><strong>Freifläche</strong>: Fläche, die der Werkstückoberfläche zugewandt ist.</li>
+                <li><strong>Schneide</strong>: Linie, wo Span- und Freifläche zusammentreffen.</li>
+              </ul>
+
+              <h3>Winkel (schematisch)</h3>
+              <ul>
+                <li><strong>Freiwinkel</strong> <span class="hint">(α)</span>: verhindert Reiben an der Oberfläche.</li>
+                <li><strong>Keilwinkel</strong> <span class="hint">(β)</span>: bestimmt „Stabilität“ des Werkzeugkeils.</li>
+                <li><strong>Spanwinkel</strong> <span class="hint">(γ)</span>: beeinflusst Spanbildung und Schnittkräfte.</li>
+              </ul>
+            </div>
+
+            <div class="result-box">
+              <div class="result-line">
+                <span class="result-label">Merksatz (orthogonaler Schnitt):</span>
+              </div>
+              <div data-tex="\\alpha + \\beta + \\gamma = 90^\\circ" data-display="block"></div>
+              <p class="hint" style="margin: 0">
+                In dieser MVP-Übung nutzen wir die Beziehung als Rechenhilfe (didaktisch vereinfacht).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="interaktiv">
+          <h2 class="card-title">Interaktiv: Zuordnung Winkel &amp; Flächen</h2>
+          <p class="source-note">
+            Wähle pro Zeile den passenden Begriff und klicke <strong>Prüfen</strong>. „Alles prüfen“ zählt die
+            korrekten Zuordnungen.
+          </p>
+
+          <h3 style="margin-top: 0">1) Winkel</h3>
+          <div style="overflow-x: auto">
+            <table class="table" aria-label="Zuordnung Winkel">
+              <thead>
+                <tr>
+                  <th>Definition</th>
+                  <th>Begriff</th>
+                  <th>Prüfen</th>
+                  <th>Feedback</th>
+                </tr>
+              </thead>
+              <tbody id="angle-quiz"></tbody>
+            </table>
+          </div>
+          <div class="exercise-actions">
+            <button class="btn btn-secondary" id="angle-check-all" type="button">Alles prüfen</button>
+            <span class="hint" id="angle-summary">—</span>
+          </div>
+
+          <h3 style="margin-top: 18px">2) Flächen</h3>
+          <div style="overflow-x: auto">
+            <table class="table" aria-label="Zuordnung Flächen">
+              <thead>
+                <tr>
+                  <th>Definition</th>
+                  <th>Begriff</th>
+                  <th>Prüfen</th>
+                  <th>Feedback</th>
+                </tr>
+              </thead>
+              <tbody id="surface-quiz"></tbody>
+            </table>
+          </div>
+          <div class="exercise-actions">
+            <button class="btn btn-secondary" id="surface-check-all" type="button">Alles prüfen</button>
+            <span class="hint" id="surface-summary">—</span>
+          </div>
+        </section>
+
+        <section class="card" id="selfcheck">
+          <h2 class="card-title">Self-Check</h2>
+          <p class="source-note">
+            Resultat eingeben → „Prüfen“. Bei Bedarf „Lösung anzeigen“ öffnen.
+          </p>
+          <figure>
+            <img
+              src="../skript1/img/m1_2.png"
+              alt="Beispiele: Winkel zu klein oder korrekt eingestellt"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Typische Effekte: zu kleiner α/β/γ vs. korrekt eingestellte Winkel.</figcaption>
+          </figure>
+          <div class="exercise-list" id="exercise-list"></div>
+        </section>
+
+        <figure class="module-outro">
+          <img
+            src="../skript1/img/m1_outro.png"
+            alt="Outrobild Auftrag 1: Prinzip Schneidkeil"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+
+        <footer class="card">
+          <h2 class="card-title">Quelle</h2>
+          <p class="source-note" style="margin: 0">
+            Quelle: Lernziele 5 &amp; 10 (Trennen Basis). TODO: Skript-Kapitel/Seiten ergänzen.
+          </p>
+        </footer>
+      </main>
+    </div>
+
+    <script defer src="shared.js"></script>
+    <!-- Optional (lokal): KaTeX -->
+    <script defer src="vendor/katex/katex.min.js"></script>
+    <script defer src="app.js"></script>
+    <script defer src="module_1.js"></script>
+  </body>
+</html>

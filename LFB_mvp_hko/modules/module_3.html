@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Auftrag 3 – Trennen mit Energie (thermisch/Strahl) &amp; Sonderfälle</title>
+
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="module_3.css" />
+    <!-- Optional (lokal): KaTeX für schöne Formel-Darstellung -->
+    <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+  </head>
+
+  <body data-module-id="3">
+    <div class="container">
+      <main id="main">
+        <figure class="module-hero">
+          <img
+            src="../skript1/img/m3_intro.png"
+            alt="Introbild Auftrag 3: Thermisch, Strahl und Erosion"
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+
+        <section class="card" id="skript">
+          <h2 class="card-title">Skript-Bezug</h2>
+          <p class="source-note">
+            TODO: Lege passende Bilder/Beispiele in <code>LFB_mvp_hko/skript1/</code> ab (z.B. Schnittfugen,
+            Wärmeeinflusszone, Wasserstrahlkante, Erosion) und verlinke sie hier.
+          </p>
+          <div class="grid">
+            <figure>
+              <img
+                src="../skript1/img/m3_1.png"
+                alt="Vergleich: Autogen/Plasma, Laser und Wasserstrahl (WEZ)"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>Vergleich: thermische Verfahren vs. Wasserstrahl (WEZ).</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="card" id="theorie">
+          <h2 class="card-title">Theorie / Überblick</h2>
+          <div class="two-col">
+            <div>
+              <h3 style="margin-top: 0">Kurzüberblick</h3>
+              <ul>
+                <li><strong>Thermisch</strong>: Material wird erwärmt (Schmelzen/Brennen) → oft <em>Wärmeeinflusszone (WEZ)</em>.</li>
+                <li><strong>Strahl</strong>: z.B. Wasserstrahl (mit/ohne Abrasiv) → „kalt“ schneiden, kaum WEZ.</li>
+                <li><strong>Erosion</strong>: Materialabtrag durch elektrische Entladung (nur leitfähige Werkstoffe).</li>
+              </ul>
+              <p class="hint">
+                Merke: Auswahl hängt u.a. von Werkstoff, Dicke, Genauigkeit, Oberfläche, Kosten und Maschinenpark ab.
+              </p>
+            </div>
+
+            <div class="result-box">
+              <div class="result-line">
+                <span class="result-label">Symbol-Beispiel (Energie):</span>
+              </div>
+              <div data-tex="E = P\\cdot t" data-display="block"></div>
+              <p class="hint" style="margin: 0">Auch hier: Symbolik als Beispiel (nicht als Rechenaufgabe im MVP).</p>
+            </div>
+          </div>
+
+          <figure style="margin-top: var(--space-4)">
+            <img
+              src="../skript1/img/m3_2.png"
+              alt="Materialkompatibilität: EDM, Laser und Wasserstrahl (Übersicht)"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Material-/Verfahrens-Eignung (vereinfachte Übersicht).</figcaption>
+          </figure>
+        </section>
+
+        <section class="card" id="interaktiv">
+          <h2 class="card-title">Interaktiv: Verfahren zuordnen</h2>
+          <p class="source-note">
+            Wähle pro Verfahren das <strong>Prinzip</strong> und eine <strong>typische Anwendung</strong>.
+          </p>
+
+          <figure>
+            <img
+              src="../skript1/img/m3_3.png"
+              alt="Prinzipbilder: Laser, Wasserstrahl und EDM"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Prinzipbilder zur schnellen Einordnung.</figcaption>
+          </figure>
+
+          <div style="overflow-x: auto">
+            <table class="table" aria-label="Zuordnung Trennverfahren">
+              <thead>
+                <tr>
+                  <th>Verfahren</th>
+                  <th>Prinzip</th>
+                  <th>Typische Anwendung (Stichwort)</th>
+                  <th>Prüfen</th>
+                  <th>Feedback</th>
+                </tr>
+              </thead>
+              <tbody id="process-rows"></tbody>
+            </table>
+          </div>
+          <div class="exercise-actions">
+            <button class="btn btn-secondary" id="process-check-all" type="button">Alles prüfen</button>
+            <span class="hint" id="process-summary">—</span>
+          </div>
+        </section>
+
+        <section class="card" id="selfcheck">
+          <h2 class="card-title">Self-Check: Klassifikation</h2>
+          <p class="source-note">
+            Ordne die Verfahren einer Kategorie zu: <em>thermisch</em>, <em>Strahl</em> oder <em>Erosion</em>.
+          </p>
+
+          <div style="overflow-x: auto">
+            <table class="table" aria-label="Klassifikation Trennverfahren">
+              <thead>
+                <tr>
+                  <th>Verfahren</th>
+                  <th>Kategorie</th>
+                  <th>Prüfen</th>
+                  <th>Feedback</th>
+                </tr>
+              </thead>
+              <tbody id="class-rows"></tbody>
+            </table>
+          </div>
+          <div class="exercise-actions">
+            <button class="btn btn-secondary" id="class-check-all" type="button">Alles prüfen</button>
+            <span class="hint" id="class-summary">—</span>
+          </div>
+        </section>
+
+        <figure class="module-outro">
+          <img
+            src="../skript1/img/m3_outro.png"
+            alt="Outrobild Auftrag 3: Auswahl eines passenden Trennverfahrens"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+
+        <footer class="card">
+          <h2 class="card-title">Quelle</h2>
+          <p class="source-note" style="margin: 0">
+            Quelle: Lernziele 8 &amp; 11 (Trennen Basis). TODO: Skript-Kapitel/Seiten ergänzen.
+          </p>
+        </footer>
+      </main>
+    </div>
+
+    <script defer src="shared.js"></script>
+    <!-- Optional (lokal): KaTeX -->
+    <script defer src="vendor/katex/katex.min.js"></script>
+    <script defer src="app.js"></script>
+    <script defer src="module_3.js"></script>
+  </body>
+</html>
