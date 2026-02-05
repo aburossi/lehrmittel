@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Modul 4 – Schleifen &amp; Kühlschmierung</title>
+
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="module_4.css" />
+    <!-- Optional (lokal): KaTeX für schöne Formel-Darstellung -->
+    <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+  </head>
+
+  <body data-module-id="4">
+    <div class="container">
+      <main id="main">
+        <section class="card" id="skript">
+          <h2 class="card-title">Skript-Bezug</h2>
+          <p class="source-note">
+            TODO: Lege passende Bilder/Beispiele in <code>LFB_mvp_hko/skript1/</code> ab (Schleifbild,
+            Kühlmittelzufuhr, Oberflächen) und verlinke sie hier.
+          </p>
+          <div class="grid">
+            <figure>
+              <div class="placeholder-box" role="img" aria-label="Platzhalter: Schleifen und Kühlschmierung">
+                Bildplatzhalter: Schleifen / Kühlschmierung
+              </div>
+              <figcaption>Platzhalter – später echte Beispiele aus dem Skript.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="card" id="theorie">
+          <h2 class="card-title">Theorie / Begriffe</h2>
+          <div class="two-col">
+            <div>
+              <h3 style="margin-top: 0">Schleifen (Feinstbearbeitung)</h3>
+              <ul>
+                <li>Viele kleine Schneiden (Schleifkörner) → <em>geometrisch unbestimmt</em>.</li>
+                <li>Hohe Oberflächenqualität möglich, aber Wärme kann kritisch sein.</li>
+                <li>Typische Ziele: Masshaltigkeit, Formgenauigkeit, geringe Rauheit.</li>
+              </ul>
+
+              <h3>Kühlschmierstoffe (KSS)</h3>
+              <ul>
+                <li><strong>Kühlen</strong>: Temperatur senken, Anlauffarben/Brand vermeiden.</li>
+                <li><strong>Schmieren</strong>: Reibung senken, Oberfläche verbessern.</li>
+                <li><strong>Reinigen</strong>: Späne/Schleifstaub abführen, Scheibe frei halten.</li>
+                <li><strong>Schützen</strong>: Korrosionsschutz für Werkstück/Maschine.</li>
+              </ul>
+            </div>
+
+            <div class="result-box">
+              <div class="result-line">
+                <span class="result-label">Merksatz:</span>
+              </div>
+              <div
+                data-tex="\\text{KSS} \\Rightarrow \\{\\text{kühlen},\\;\\text{schmieren},\\;\\text{reinigen},\\;\\text{schützen}\\}"
+                data-display="block"
+              ></div>
+              <p class="hint" style="margin: 0">In der Praxis sind oft mehrere Funktionen gleichzeitig wichtig.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="interaktiv">
+          <h2 class="card-title">Interaktiv: KSS-Funktionen zuordnen</h2>
+          <p class="source-note">Ordne jeder Funktion die passende Wirkung zu.</p>
+
+          <div style="overflow-x: auto">
+            <table class="table" aria-label="Zuordnung Kühlschmierstoff-Funktionen">
+              <thead>
+                <tr>
+                  <th>Funktion</th>
+                  <th>Wirkung/Beispiel</th>
+                  <th>Prüfen</th>
+                  <th>Feedback</th>
+                </tr>
+              </thead>
+              <tbody id="kss-rows"></tbody>
+            </table>
+          </div>
+          <div class="exercise-actions">
+            <button class="btn btn-secondary" id="kss-check-all" type="button">Alles prüfen</button>
+            <span class="hint" id="kss-summary">—</span>
+          </div>
+        </section>
+
+        <section class="card" id="selfcheck">
+          <h2 class="card-title">Self-Check: Welche Maßnahme passt?</h2>
+          <p class="source-note">
+            Wähle pro Situation die wichtigste KSS-Funktion (didaktisch vereinfacht).
+          </p>
+          <div class="exercise-list" id="scenario-list"></div>
+        </section>
+
+        <footer class="card">
+          <h2 class="card-title">Quelle</h2>
+          <p class="source-note" style="margin: 0">
+            Quelle: Lernziele 9 &amp; 13 (Trennen Basis). TODO: Skript-Kapitel/Seiten ergänzen.
+          </p>
+        </footer>
+      </main>
+    </div>
+
+    <script defer src="shared.js"></script>
+    <!-- Optional (lokal): KaTeX -->
+    <script defer src="vendor/katex/katex.min.js"></script>
+    <script defer src="app.js"></script>
+    <script defer src="module_4.js"></script>
+  </body>
+</html>
+

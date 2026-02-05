@@ -1,0 +1,26 @@
+.placeholder-box {
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: #ffffff;
+  padding: var(--space-5);
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-weight: 900;
+  text-align: center;
+}
+
+.tool-svg {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: #ffffff;
+}
+
+.tool-svg text {
+  font-family: inherit;
+}
+

@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Modul 1 – Werkzeuggeometrie</title>
+
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="module_1.css" />
+    <!-- Optional (lokal): KaTeX für schöne Formel-Darstellung -->
+    <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+  </head>
+
+  <body data-module-id="1">
+    <div class="container">
+      <main id="main">
+        <section class="card" id="skript">
+          <h2 class="card-title">Skript-Bezug</h2>
+          <p class="source-note">
+            TODO: Lege passende Skizzen/Bilder in <code>LFB_mvp_hko/skript1/</code> ab und verlinke sie
+            hier (Pfad aus diesem Modul: <code>../skript1/...</code>).
+          </p>
+
+          <div class="grid">
+            <figure>
+              <div class="placeholder-box" role="img" aria-label="Platzhalter: Werkzeugschneide">
+                Bildplatzhalter: Werkzeugschneide / Winkel
+              </div>
+              <figcaption>Platzhalter – später echte Skizze oder Foto.</figcaption>
+            </figure>
+
+            <figure>
+              <svg
+                class="tool-svg"
+                viewBox="0 0 420 260"
+                role="img"
+                aria-label="Schematische Werkzeuggeometrie mit α, β, γ"
+              >
+                <defs>
+                  <marker
+                    id="arrow"
+                    viewBox="0 0 10 10"
+                    refX="9"
+                    refY="5"
+                    markerWidth="7"
+                    markerHeight="7"
+                    orient="auto-start-reverse"
+                  >
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"></path>
+                  </marker>
+                </defs>
+
+                <!-- Work surface -->
+                <line x1="20" y1="210" x2="400" y2="210" stroke="#0f172a" stroke-width="2" />
+                <text x="24" y="236" font-size="12" fill="#475569">Werkstückoberfläche</text>
+
+                <!-- Tool wedge (simplified) -->
+                <path
+                  d="M 230 60 L 160 210 L 300 210 Z"
+                  fill="#e2e8f0"
+                  stroke="#0f172a"
+                  stroke-width="2"
+                />
+
+                <!-- Faces -->
+                <text x="250" y="110" font-size="12" fill="#0f172a">Spanfläche</text>
+                <text x="168" y="145" font-size="12" fill="#0f172a">Freifläche</text>
+                <text x="218" y="208" font-size="12" fill="#0f172a">Schneide</text>
+
+                <!-- Angle arcs (very schematic) -->
+                <path d="M 300 210 A 60 60 0 0 0 260 158" fill="none" stroke="#475569" stroke-width="2" />
+                <text x="284" y="174" font-size="14" fill="#0f172a">γ</text>
+
+                <path d="M 160 210 A 60 60 0 0 1 190 150" fill="none" stroke="#475569" stroke-width="2" />
+                <text x="168" y="176" font-size="14" fill="#0f172a">α</text>
+
+                <path d="M 210 126 A 54 54 0 0 0 190 150" fill="none" stroke="#475569" stroke-width="2" />
+                <text x="198" y="144" font-size="14" fill="#0f172a">β</text>
+
+                <!-- Callout -->
+                <line
+                  x1="330"
+                  y1="76"
+                  x2="290"
+                  y2="98"
+                  stroke="#475569"
+                  stroke-width="2"
+                  marker-end="url(#arrow)"
+                />
+                <text x="332" y="72" font-size="12" fill="#475569">didaktisch</text>
+              </svg>
+              <figcaption>Schematische Darstellung (didaktisch, nicht massstäblich).</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="card" id="theorie">
+          <h2 class="card-title">Theorie / Begriffe</h2>
+          <div class="two-col">
+            <div>
+              <h3 style="margin-top: 0">Flächen an der Werkzeugschneide</h3>
+              <ul>
+                <li><strong>Spanfläche</strong>: Fläche, auf der der Span abgleitet.</li>
+                <li><strong>Freifläche</strong>: Fläche, die der Werkstückoberfläche zugewandt ist.</li>
+                <li><strong>Schneide</strong>: Linie, wo Span- und Freifläche zusammentreffen.</li>
+              </ul>
+
+              <h3>Winkel (schematisch)</h3>
+              <ul>
+                <li><strong>Freiwinkel</strong> <span class="hint">(α)</span>: verhindert Reiben an der Oberfläche.</li>
+                <li><strong>Keilwinkel</strong> <span class="hint">(β)</span>: bestimmt „Stabilität“ des Werkzeugkeils.</li>
+                <li><strong>Spanwinkel</strong> <span class="hint">(γ)</span>: beeinflusst Spanbildung und Schnittkräfte.</li>
+              </ul>
+            </div>
+
+            <div class="result-box">
+              <div class="result-line">
+                <span class="result-label">Merksatz (orthogonaler Schnitt):</span>
+              </div>
+              <div data-tex="\\alpha + \\beta + \\gamma = 90^\\circ" data-display="block"></div>
+              <p class="hint" style="margin: 0">
+                In dieser MVP-Übung nutzen wir die Beziehung als Rechenhilfe (didaktisch vereinfacht).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="interaktiv">
+          <h2 class="card-title">Interaktiv: Zuordnung Winkel &amp; Flächen</h2>
+          <p class="source-note">
+            Wähle pro Zeile den passenden Begriff und klicke <strong>Prüfen</strong>. „Alles prüfen“ zählt die
+            korrekten Zuordnungen.
+          </p>
+
+          <h3 style="margin-top: 0">1) Winkel</h3>
+          <div style="overflow-x: auto">
+            <table class="table" aria-label="Zuordnung Winkel">
+              <thead>
+                <tr>
+                  <th>Definition</th>
+                  <th>Begriff</th>
+                  <th>Prüfen</th>
+                  <th>Feedback</th>
+                </tr>
+              </thead>
+              <tbody id="angle-quiz"></tbody>
+            </table>
+          </div>
+          <div class="exercise-actions">
+            <button class="btn btn-secondary" id="angle-check-all" type="button">Alles prüfen</button>
+            <span class="hint" id="angle-summary">—</span>
+          </div>
+
+          <h3 style="margin-top: 18px">2) Flächen</h3>
+          <div style="overflow-x: auto">
+            <table class="table" aria-label="Zuordnung Flächen">
+              <thead>
+                <tr>
+                  <th>Definition</th>
+                  <th>Begriff</th>
+                  <th>Prüfen</th>
+                  <th>Feedback</th>
+                </tr>
+              </thead>
+              <tbody id="surface-quiz"></tbody>
+            </table>
+          </div>
+          <div class="exercise-actions">
+            <button class="btn btn-secondary" id="surface-check-all" type="button">Alles prüfen</button>
+            <span class="hint" id="surface-summary">—</span>
+          </div>
+        </section>
+
+        <section class="card" id="selfcheck">
+          <h2 class="card-title">Self-Check</h2>
+          <p class="source-note">
+            Resultat eingeben → „Prüfen“. Bei Bedarf „Lösung anzeigen“ öffnen.
+          </p>
+          <div class="exercise-list" id="exercise-list"></div>
+        </section>
+
+        <footer class="card">
+          <h2 class="card-title">Quelle</h2>
+          <p class="source-note" style="margin: 0">
+            Quelle: Lernziele 5 &amp; 10 (Trennen Basis). TODO: Skript-Kapitel/Seiten ergänzen.
+          </p>
+        </footer>
+      </main>
+    </div>
+
+    <script defer src="shared.js"></script>
+    <!-- Optional (lokal): KaTeX -->
+    <script defer src="vendor/katex/katex.min.js"></script>
+    <script defer src="app.js"></script>
+    <script defer src="module_1.js"></script>
+  </body>
+</html>
+

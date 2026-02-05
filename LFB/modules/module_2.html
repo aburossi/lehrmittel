@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Modul 2 – Trennverfahren (mechanisch)</title>
+
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="module_2.css" />
+    <!-- Optional (lokal): KaTeX für schöne Formel-Darstellung -->
+    <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+  </head>
+
+  <body data-module-id="2">
+    <div class="container">
+      <main id="main">
+        <section class="card" id="skript">
+          <h2 class="card-title">Skript-Bezug</h2>
+          <p class="source-note">
+            TODO: Lege passende Bilder/Beispiele in <code>LFB_mvp_hko/skript1/</code> ab (z.B. Schnittkante,
+            Grat, Stanzen/Nibbeln) und verlinke sie hier.
+          </p>
+          <div class="grid">
+            <figure>
+              <div class="placeholder-box" role="img" aria-label="Platzhalter: Scheren/Stanzen/Nibbeln">
+                Bildplatzhalter: Scheren / Stanzen / Nibbeln
+              </div>
+              <figcaption>Platzhalter – später echte Beispiele aus dem Skript.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="card" id="theorie">
+          <h2 class="card-title">Theorie / Begriffe</h2>
+          <div class="two-col">
+            <div>
+              <h3 style="margin-top: 0">Mechanische Trennverfahren</h3>
+              <ul>
+                <li><strong>Scheren</strong>: gerader Schnitt, typisch bei Blech/Profilen; geringe Werkzeugkosten.</li>
+                <li><strong>Stanzen</strong>: Formen/Lochbilder mit Stempel &amp; Matrize; sehr gut für Serien.</li>
+                <li><strong>Nibbeln</strong>: Kontur wird durch viele kleine Hübe „abgenibbelt“; gut für kleine Serien.</li>
+              </ul>
+
+              <h3>Wahl des Verfahrens (Auswahl)</h3>
+              <ul>
+                <li>Werkstoff &amp; Dicke</li>
+                <li>Kontur/Geometrie (gerade, innen/außen, enge Radien)</li>
+                <li>Stückzahl/Rüstaufwand</li>
+                <li>Genauigkeit, Nacharbeit (Grat/Entgraten)</li>
+                <li>Sicherheit, Maschinenpark, Kosten</li>
+              </ul>
+            </div>
+
+            <div class="result-box">
+              <div class="result-line">
+                <span class="result-label">Symbol-Beispiel (Technik):</span>
+              </div>
+              <div data-tex="\\tau = \\frac{F}{A}" data-display="block"></div>
+              <p class="hint" style="margin: 0">
+                Diese Formel ist hier nur ein Beispiel für Symbol-/Einheiten-Notation (nicht Prüfungsstoff dieses Moduls).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="interaktiv">
+          <h2 class="card-title">Interaktiv: Szenarien – Verfahren auswählen</h2>
+          <p class="source-note">
+            Wähle das passende Verfahren und prüfe. Die Hinweise sind bewusst kurz – begründe deine Wahl mündlich im Team.
+          </p>
+          <div class="exercise-list" id="scenario-list"></div>
+        </section>
+
+        <section class="card" id="selfcheck">
+          <h2 class="card-title">Self-Check: Kurz-Quiz</h2>
+          <p class="source-note">
+            Wähle pro Frage die beste Antwort und prüfe. „Lösung anzeigen“ zeigt eine kurze Begründung.
+          </p>
+          <div class="exercise-list" id="quiz-list"></div>
+        </section>
+
+        <footer class="card">
+          <h2 class="card-title">Quelle</h2>
+          <p class="source-note" style="margin: 0">
+            Quelle: Lernziele 6 &amp; 7 (Trennen Basis). TODO: Skript-Kapitel/Seiten ergänzen.
+          </p>
+        </footer>
+      </main>
+    </div>
+
+    <script defer src="shared.js"></script>
+    <!-- Optional (lokal): KaTeX -->
+    <script defer src="vendor/katex/katex.min.js"></script>
+    <script defer src="app.js"></script>
+    <script defer src="module_2.js"></script>
+  </body>
+</html>
+
