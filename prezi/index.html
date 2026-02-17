@@ -308,11 +308,11 @@
       <header class="topbar">
         <strong>Vibe Coding Showcase</strong>
         <nav class="quick-links" aria-label="Direktlinks">
+          <a href="../mvp_gasgesetze/reform2/index.html" target="_blank" rel="noreferrer">Reform2</a>
+          <a href="../mvp_gasgesetze/reform2/index.html?id=LP" target="_blank" rel="noreferrer">Reform2 LP</a>
           <a href="../modules/index.html" target="_blank" rel="noreferrer">MAPH Index</a>
           <a href="../LFB/modules/index.html" target="_blank" rel="noreferrer">HKO Index</a>
           <a href="../LFB_mvp_hko/modules/index.html" target="_blank" rel="noreferrer">HKO Story Index</a>
-          <a href="../mvp_gasgesetze/index.html" target="_blank" rel="noreferrer">Gasgesetze Index</a>
-          <a href="../mvp_gasgesetze/reform2/index.html" target="_blank" rel="noreferrer">Gasgesetze Reform2</a>
         </nav>
       </header>
 
@@ -320,7 +320,7 @@
         <section class="slide is-active" data-title="Start">
           <article class="card spaced">
             <p class="kicker">20 Minuten Präsentation + 10 Minuten Fragen</p>
-            <h1>Von Lernzielen zu interaktiven Modulen</h1>
+            <h1>Von HKO-Einstieg zu interaktiven Modulen</h1>
             <p>
               Ausgangspunkt: <code>skript1/Lernziele 1 bis 4 und 15 bis 21.md</code><br />
               Ziel: schnell lokale, klickbare Lernseiten für Polymechaniker bauen.
@@ -337,9 +337,10 @@
               <div class="box">
                 <h3>Ablauf</h3>
                 <div class="timeline">
-                  <div>Zielbild und Vorgehen</div>
+                  <div>HKO-Einstieg mit Gasgesetze Reform2</div>
                   <div>Module 1-5</div>
                   <div>Vergleich Gemini/Codex/Claude</div>
+                  <div>LFB vs LFB_mvp_hko</div>
                   <div>Fazit</div>
                 </div>
               </div>
@@ -347,35 +348,44 @@
           </article>
         </section>
 
-        <section class="slide" data-title="Methode">
+        <section class="slide" data-title="HKO Start">
           <article class="card spaced">
-            <p class="kicker">Arbeitsweise</p>
-            <h2>Pipeline und wichtige Grenze</h2>
+            <p class="kicker">Unterrichtseinstieg</p>
+            <h2>Start mit <code>mvp_gasgesetze/reform2</code> als HKO-Unterricht</h2>
             <div class="grid-2">
               <div class="box">
-                <h3>Workflow</h3>
+                <h3>Was diese Seite didaktisch macht</h3>
                 <ul>
-                  <li>Lernzieltext strukturieren</li>
-                  <li>Prompt auf Modulumfang begrenzen</li>
-                  <li>HTML/CSS/JS lokal generieren</li>
-                  <li>didaktisch und fachlich gegenlesen</li>
-                  <li>iterieren, bis Unterrichtstauglichkeit passt</li>
+                  <li>realistische Auftragslage statt trockener Formelstart</li>
+                  <li>Warm-up zu Einheiten und Grössen als Diagnose</li>
+                  <li>Übergang in Wissensteil, Tool und Reflexion</li>
+                  <li>klarer Praxisbezug über Pneumatik-Szenario</li>
                 </ul>
               </div>
               <div class="box">
-                <h3>Garbage in -> Garbage out</h3>
-                <div class="danger">
-                  Vage oder fehlerhafte Inputs erzeugen plausible, aber falsche Lerninhalte.
-                </div>
-                <div class="warn" style="margin-top: 10px">
-                  Besonders kritisch bei Fachthemen, die man selbst nicht tief beherrscht:
-                  fachliche Freigabe braucht immer einen Experten-Check.
+                <h3>Wie du live präsentierst</h3>
+                <ul>
+                  <li>kurz Problemstory erklären</li>
+                  <li>Warm-up/Matching zeigen</li>
+                  <li>direkt ins Engineering-Tool springen</li>
+                  <li>Lehrpersonenmodus für Methodik öffnen</li>
+                </ul>
+                <div class="links-row">
+                  <a class="btn secondary" href="../mvp_gasgesetze/reform2/index.html" target="_blank" rel="noreferrer">Reform2 öffnen</a>
+                  <a class="btn secondary" href="../mvp_gasgesetze/reform2/index.html?id=LP" target="_blank" rel="noreferrer">Lehrpersonenmodus</a>
                 </div>
               </div>
             </div>
-            <p>
-              Leitsatz für das Team: AI ist ein Beschleuniger für die Umsetzung, nicht die letzte Instanz für Richtigkeit.
-            </p>
+            <div class="box spaced">
+              <h3>Lehrpersonenansicht (eingebettet)</h3>
+              <p>Einbettung von Reform2 mit <code>?id=LP</code> für den didaktischen Kommentar.</p>
+              <iframe
+                class="embed-frame"
+                src="../mvp_gasgesetze/reform2/index.html?id=LP"
+                title="Reform2 Lehrpersonenansicht"
+                loading="lazy"
+              ></iframe>
+            </div>
           </article>
         </section>
 
@@ -529,56 +539,35 @@
           </article>
         </section>
 
-        <section class="slide" data-title="Weitere MVPs">
+        <section class="slide" data-title="Methode">
           <article class="card spaced">
-            <p class="kicker">Weitere MVPs im Repo</p>
-            <h2>Direktzugriff auf die anderen HTML-Umsetzungen</h2>
-            <div class="grid-3">
-              <div class="box spaced">
-                <h3>Gasgesetze MVP</h3>
-                <p>
-                  Thermodynamik/Pneumatik mit Einstieg, Wissensbasis, Engineering-Tool,
-                  Self-Test und Reflexion.
-                </p>
-                <div class="links-row">
-                  <a class="btn secondary" href="../mvp_gasgesetze/index.html" target="_blank" rel="noreferrer">Index</a>
-                  <a class="btn secondary" href="../mvp_gasgesetze/reform2/index.html" target="_blank" rel="noreferrer">Reform2</a>
-                  <a class="btn secondary" href="../mvp_gasgesetze/reform2/index.html?id=LP" target="_blank" rel="noreferrer">Reform2 Lehrpersonenmodus</a>
-                </div>
+            <p class="kicker">Arbeitsweise</p>
+            <h2>Pipeline und wichtige Grenze</h2>
+            <div class="grid-2">
+              <div class="box">
+                <h3>Workflow</h3>
+                <ul>
+                  <li>Lernzieltext strukturieren</li>
+                  <li>Prompt auf Modulumfang begrenzen</li>
+                  <li>HTML/CSS/JS lokal generieren</li>
+                  <li>didaktisch und fachlich gegenlesen</li>
+                  <li>iterieren, bis Unterrichtstauglichkeit passt</li>
+                </ul>
               </div>
-              <div class="box spaced">
-                <h3>HKO Module</h3>
-                <p>
-                  Lernziele 5-14: Werkzeuggeometrie, Trennverfahren, Schleifen/KSS,
-                  Standzeit und Werkzeugmaschinen.
-                </p>
-                <div class="links-row">
-                  <a class="btn secondary" href="../LFB/modules/index.html" target="_blank" rel="noreferrer">Index</a>
+              <div class="box">
+                <h3>Garbage in -> Garbage out</h3>
+                <div class="danger">
+                  Vage oder fehlerhafte Inputs erzeugen plausible, aber falsche Lerninhalte.
                 </div>
-              </div>
-              <div class="box spaced">
-                <h3>HKO Story MVP</h3>
-                <p>
-                  Storyline-Version mit Warm-up (Auftrag 0) plus Aufträge 1-5 für
-                  denselben Themenblock.
-                </p>
-                <div class="links-row">
-                  <a class="btn secondary" href="../LFB_mvp_hko/modules/index.html" target="_blank" rel="noreferrer">Index</a>
+                <div class="warn" style="margin-top: 10px">
+                  Besonders kritisch bei Fachthemen, die man selbst nicht tief beherrscht:
+                  fachliche Freigabe braucht immer einen Experten-Check.
                 </div>
               </div>
             </div>
-            <div class="box spaced">
-              <h3>Reform2 Lehrpersonenansicht (eingebettet)</h3>
-              <p>
-                Diese Ansicht nutzt den Parameter <code>?id=LP</code> und blendet den didaktischen Kommentar ein.
-              </p>
-              <iframe
-                class="embed-frame"
-                src="../mvp_gasgesetze/reform2/index.html?id=LP"
-                title="Reform2 Lehrpersonenansicht"
-                loading="lazy"
-              ></iframe>
-            </div>
+            <p>
+              Leitsatz für das Team: AI ist ein Beschleuniger für die Umsetzung, nicht die letzte Instanz für Richtigkeit.
+            </p>
           </article>
         </section>
 
@@ -615,6 +604,43 @@
           </article>
         </section>
 
+        <section class="slide" data-title="LFB Vergleich">
+          <article class="card spaced">
+            <p class="kicker">Schlussvergleich</p>
+            <h2>LFB vs LFB_mvp_hko (dein LFB_kvp_hko)</h2>
+            <div class="grid-2">
+              <div class="box">
+                <h3><code>LFB/modules</code></h3>
+                <ul>
+                  <li>klassische Modulstruktur 1-5</li>
+                  <li>direkter Fachfokus pro Thema</li>
+                  <li>gut für linearen Unterrichtsablauf</li>
+                  <li>weniger Story, mehr kompakte Fachbausteine</li>
+                </ul>
+                <div class="links-row">
+                  <a class="btn secondary" href="../LFB/modules/index.html" target="_blank" rel="noreferrer">LFB öffnen</a>
+                </div>
+              </div>
+              <div class="box">
+                <h3><code>LFB_mvp_hko/modules</code></h3>
+                <ul>
+                  <li>Storyline mit Auftrag 0 als Einstieg</li>
+                  <li>stärkerer Lernpfad und Kontextführung</li>
+                  <li>hilfreich für heterogene Klassen</li>
+                  <li>mehr didaktischer Rahmen bei gleichem Themenkern</li>
+                </ul>
+                <div class="links-row">
+                  <a class="btn secondary" href="../LFB_mvp_hko/modules/index.html" target="_blank" rel="noreferrer">LFB_mvp_hko öffnen</a>
+                </div>
+              </div>
+            </div>
+            <div class="warn">
+              Empfehlung für die Präsentation: erst <code>LFB/modules</code> zeigen, danach
+              <code>LFB_mvp_hko/modules</code> als didaktische Erweiterung.
+            </div>
+          </article>
+        </section>
+
         <section class="slide" data-title="Fazit">
           <article class="card spaced">
             <p class="kicker">Abschluss</p>
@@ -639,8 +665,9 @@
             </div>
             <div class="links-row">
               <a class="btn secondary nowrap" href="../modules/index.html" target="_blank" rel="noreferrer">MAPH zeigen</a>
-              <a class="btn secondary nowrap" href="../LFB/modules/index.html" target="_blank" rel="noreferrer">HKO zeigen</a>
-              <a class="btn secondary nowrap" href="../mvp_gasgesetze/reform2/index.html" target="_blank" rel="noreferrer">Gasgesetze zeigen</a>
+              <a class="btn secondary nowrap" href="../mvp_gasgesetze/reform2/index.html" target="_blank" rel="noreferrer">Reform2 zeigen</a>
+              <a class="btn secondary nowrap" href="../LFB/modules/index.html" target="_blank" rel="noreferrer">LFB zeigen</a>
+              <a class="btn secondary nowrap" href="../LFB_mvp_hko/modules/index.html" target="_blank" rel="noreferrer">LFB_mvp_hko zeigen</a>
             </div>
           </article>
         </section>
@@ -649,7 +676,7 @@
 
     <footer class="footer-nav">
       <button type="button" id="prevBtn">Zurück</button>
-      <div class="progress" id="progressText">1 / 10</div>
+      <div class="progress" id="progressText">1 / 11</div>
       <button type="button" id="nextBtn">Weiter</button>
     </footer>
 
