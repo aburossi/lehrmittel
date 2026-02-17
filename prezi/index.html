@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prezi: Vibe Coding fuer Polymechaniker</title>
+    <style>
+      :root {
+        --bg-1: #f4efe4;
+        --bg-2: #d8e6ef;
+        --ink: #18222d;
+        --muted: #4a5a6a;
+        --card: #fffefb;
+        --line: #cad7e2;
+        --brand: #0a6b8f;
+        --brand-2: #0f9d84;
+        --warn: #8a4f00;
+        --danger: #9f2f2f;
+        --shadow: 0 14px 34px rgba(18, 38, 58, 0.15);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--ink);
+        font-family: "Segoe UI", "Trebuchet MS", Tahoma, sans-serif;
+        background:
+          radial-gradient(circle at 7% 10%, #fff8dc 0%, transparent 30%),
+          radial-gradient(circle at 92% 85%, #cce8ea 0%, transparent 30%),
+          linear-gradient(140deg, var(--bg-1), var(--bg-2));
+      }
+
+      .shell {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 18px;
+        border-bottom: 1px solid rgba(24, 34, 45, 0.15);
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(6px);
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+
+      .topbar strong {
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .quick-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .quick-links a {
+        text-decoration: none;
+        border: 1px solid var(--line);
+        color: var(--ink);
+        background: #fff;
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+
+      .quick-links a:hover,
+      .quick-links a:focus-visible {
+        border-color: var(--brand);
+        outline: none;
+      }
+
+      .deck {
+        flex: 1;
+        display: grid;
+        place-items: center;
+        padding: 24px 18px 84px;
+      }
+
+      .slide {
+        width: min(1080px, 100%);
+        display: none;
+      }
+
+      .slide.is-active {
+        display: block;
+        animation: slideIn 240ms ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(10px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid rgba(24, 34, 45, 0.13);
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+        padding: clamp(16px, 3.2vw, 36px);
+      }
+
+      .kicker {
+        margin: 0 0 10px;
+        color: var(--brand);
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0 0 10px;
+        line-height: 1.15;
+      }
+
+      h1 {
+        font-size: clamp(30px, 5vw, 56px);
+      }
+
+      h2 {
+        font-size: clamp(26px, 4.4vw, 40px);
+      }
+
+      h3 {
+        font-size: clamp(17px, 2vw, 22px);
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .spaced > * + * {
+        margin-top: 14px;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .box {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 14px;
+        background: #fff;
+      }
+
+      .box h3 {
+        margin-bottom: 6px;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--ink);
+      }
+
+      li + li {
+        margin-top: 6px;
+      }
+
+      .links-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .btn {
+        text-decoration: none;
+        border-radius: 10px;
+        padding: 10px 14px;
+        border: 1px solid var(--brand);
+        color: #fff;
+        background: var(--brand);
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .btn.secondary {
+        background: #fff;
+        color: var(--brand);
+      }
+
+      .timeline {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .timeline div {
+        border-left: 4px solid var(--brand);
+        padding: 8px 10px;
+        background: #f6fbfe;
+      }
+
+      .warn {
+        border-left: 4px solid var(--warn);
+        background: #fff8ef;
+        padding: 12px;
+        border-radius: 10px;
+      }
+
+      .danger {
+        border-left: 4px solid var(--danger);
+        background: #fff4f4;
+        padding: 12px;
+        border-radius: 10px;
+      }
+
+      .footer-nav {
+        position: fixed;
+        left: 14px;
+        right: 14px;
+        bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.86);
+        border: 1px solid rgba(24, 34, 45, 0.15);
+        border-radius: 12px;
+        padding: 8px 10px;
+        backdrop-filter: blur(6px);
+      }
+
+      .footer-nav button {
+        border: 1px solid var(--line);
+        background: #fff;
+        color: var(--ink);
+        border-radius: 10px;
+        padding: 8px 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .footer-nav button:hover,
+      .footer-nav button:focus-visible {
+        border-color: var(--brand);
+        outline: none;
+      }
+
+      .progress {
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .nowrap {
+        white-space: nowrap;
+      }
+
+      @media (max-width: 860px) {
+        .grid-2,
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+
+        .quick-links {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <strong>Vibe Coding Showcase</strong>
+        <nav class="quick-links" aria-label="Direktlinks">
+          <a href="../modules/index.html" target="_blank" rel="noreferrer">MAPH Index</a>
+          <a href="../LFB/modules/index.html" target="_blank" rel="noreferrer">HKO Index</a>
+          <a href="../LFB_mvp_hko/modules/index.html" target="_blank" rel="noreferrer">HKO Story Index</a>
+          <a href="../mvp_gasgesetze/index.html" target="_blank" rel="noreferrer">Gasgesetze Index</a>
+          <a href="../mvp_gasgesetze/reform2/index.html" target="_blank" rel="noreferrer">Gasgesetze Reform2</a>
+        </nav>
+      </header>
+
+      <main class="deck" id="deck">
+        <section class="slide is-active" data-title="Start">
+          <article class="card spaced">
+            <p class="kicker">20 Minuten Präsentation + 10 Minuten Fragen</p>
+            <h1>Von Lernzielen zu interaktiven Modulen</h1>
+            <p>
+              Ausgangspunkt: <code>skript1/Lernziele 1 bis 4 und 15 bis 21.md</code><br />
+              Ziel: schnell lokale, klickbare Lernseiten fuer Polymechaniker bauen.
+            </p>
+            <div class="grid-2">
+              <div class="box">
+                <h3>Was ich zeige</h3>
+                <ul>
+                  <li>Inhalt pro Modul (1 bis 5)</li>
+                  <li>Direktlink in die jeweilige HTML-Seite</li>
+                  <li>Grenzen: Garbage in -> Garbage out</li>
+                </ul>
+              </div>
+              <div class="box">
+                <h3>Ablauf</h3>
+                <div class="timeline">
+                  <div>2 min: Zielbild und Vorgehen</div>
+                  <div>12 min: Module 1-5 (je ~2.5 min)</div>
+                  <div>4 min: Vergleich Gemini/Codex/Claude</div>
+                  <div>2 min: Fazit</div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="slide" data-title="Methode">
+          <article class="card spaced">
+            <p class="kicker">Arbeitsweise</p>
+            <h2>Pipeline und wichtige Grenze</h2>
+            <div class="grid-2">
+              <div class="box">
+                <h3>Workflow</h3>
+                <ul>
+                  <li>Lernzieltext strukturieren</li>
+                  <li>Prompt auf Modulumfang begrenzen</li>
+                  <li>HTML/CSS/JS lokal generieren</li>
+                  <li>didaktisch und fachlich gegenlesen</li>
+                  <li>iterieren, bis Unterrichtstauglichkeit passt</li>
+                </ul>
+              </div>
+              <div class="box">
+                <h3>Garbage in -> Garbage out</h3>
+                <div class="danger">
+                  Vage oder fehlerhafte Inputs erzeugen plausible, aber falsche Lerninhalte.
+                </div>
+                <div class="warn" style="margin-top: 10px">
+                  Besonders kritisch bei Fachthemen, die man selbst nicht tief beherrscht:
+                  fachliche Freigabe braucht immer einen Experten-Check.
+                </div>
+              </div>
+            </div>
+            <p>
+              Leitsatz fuer das Team: AI ist ein Beschleuniger fuer die Umsetzung, nicht die letzte Instanz fuer Richtigkeit.
+            </p>
+          </article>
+        </section>
+
+        <section class="slide" data-title="Modul 1">
+          <article class="card spaced">
+            <p class="kicker">Modul 1 (Lernziel 1)</p>
+            <h2>Interaktive Rechenlogik und Taschenrechner</h2>
+            <div class="grid-2">
+              <div class="box">
+                <h3>Content</h3>
+                <ul>
+                  <li>Zahlendarstellung und Rechenhierarchie</li>
+                  <li>Rundungsregeln mit Uebungen</li>
+                  <li>Taschenrechner-Syntax: Klammern, Potenzen, EE</li>
+                  <li>Self-Check Aufgaben aus Kapitel 1.4.1</li>
+                </ul>
+              </div>
+              <div class="box">
+                <h3>Didaktischer Nutzen</h3>
+                <ul>
+                  <li>gleiches Rechenfundament fuer alle Lernenden</li>
+                  <li>schneller Check auf Bedienfehler statt Formelwissen</li>
+                  <li>gute Einstiegsstufe vor Physik-Modulen</li>
+                </ul>
+              </div>
+            </div>
+            <div class="links-row">
+              <a class="btn" href="../modules/module_1.html" target="_blank" rel="noreferrer">Modul 1 direkt oeffnen</a>
+              <a class="btn secondary" href="../modules/index.html" target="_blank" rel="noreferrer">MAPH Index</a>
+            </div>
+          </article>
+        </section>
+
+        <section class="slide" data-title="Modul 2">
+          <article class="card spaced">
+            <p class="kicker">Modul 2 (Lernziele 2, 3, 18)</p>
+            <h2>Einheiten-Management und SI-System</h2>
+            <div class="grid-2">
+              <div class="box">
+                <h3>Content</h3>
+                <ul>
+                  <li>SI-Basiseinheiten und abgeleitete Einheiten</li>
+                  <li>Zuordnen: Groesse -> Formelzeichen -> Einheit</li>
+                  <li>Einheitsvorsatz-Referenz plus Mini-Check</li>
+                  <li>Prefix-Konverter und Self-Check aus Kapitel 4.1.3</li>
+                </ul>
+              </div>
+              <div class="box">
+                <h3>Didaktischer Nutzen</h3>
+                <ul>
+                  <li>reduziert Fehler bei Umrechnungen</li>
+                  <li>macht Input-Output-Einheiten sichtbar</li>
+                  <li>bereitet Dreisatz und Kinematik sauber vor</li>
+                </ul>
+              </div>
+            </div>
+            <div class="links-row">
+              <a class="btn" href="../modules/module_2.html" target="_blank" rel="noreferrer">Modul 2 direkt oeffnen</a>
+              <a class="btn secondary" href="../modules/index.html" target="_blank" rel="noreferrer">MAPH Index</a>
+            </div>
+          </article>
+        </section>
+
+        <section class="slide" data-title="Modul 3">
+          <article class="card spaced">
+            <p class="kicker">Modul 3 (Lernziele 17, 19)</p>
+            <h2>Dreisatz: proportional und umgekehrt proportional</h2>
+            <div class="grid-2">
+              <div class="box">
+                <h3>Content</h3>
+                <ul>
+                  <li>Fall erkennen: proportional vs. umgekehrt proportional</li>
+                  <li>Dreisatz-Maschine mit Schrittlogik</li>
+                  <li>Slider-Szenarien fuer schnelle Varianten</li>
+                  <li>Self-Check Aufgaben 1 bis 24 aus Kapitel 3.3</li>
+                </ul>
+              </div>
+              <div class="box">
+                <h3>Didaktischer Nutzen</h3>
+                <ul>
+                  <li>klarer Transfer von Textaufgabe zu Struktur</li>
+                  <li>weniger mechanisches Rechnen ohne Verstaendnis</li>
+                  <li>foerdert Erkennen von Verhaeltnissen</li>
+                </ul>
+              </div>
+            </div>
+            <div class="links-row">
+              <a class="btn" href="../modules/module_3.html" target="_blank" rel="noreferrer">Modul 3 direkt oeffnen</a>
+              <a class="btn secondary" href="../modules/index.html" target="_blank" rel="noreferrer">MAPH Index</a>
+            </div>
+          </article>
+        </section>
+
+        <section class="slide" data-title="Modul 4">
+          <article class="card spaced">
+            <p class="kicker">Modul 4 (Lernziele 16, 20)</p>
+            <h2>Kinematik-Dashboard</h2>
+            <div class="grid-2">
+              <div class="box">
+                <h3>Content</h3>
+                <ul>
+                  <li>Formeln: v = s/t, s = v*t, t = s/v</li>
+                  <li>Einheitenumrechnung m, km, s, min, h</li>
+                  <li>Diagramm-Labor fuer s-t und v-t</li>
+                  <li>Self-Checks zu Diagrammlesen und Rechenweg</li>
+                </ul>
+              </div>
+              <div class="box">
+                <h3>Didaktischer Nutzen</h3>
+                <ul>
+                  <li>sichtbarer Zusammenhang zwischen Formel und Graph</li>
+                  <li>trainiert Groessenordnung vor Endresultat</li>
+                  <li>ideal fuer Fehleranalyse in Echtzeit</li>
+                </ul>
+              </div>
+            </div>
+            <div class="links-row">
+              <a class="btn" href="../modules/module_4.html" target="_blank" rel="noreferrer">Modul 4 direkt oeffnen</a>
+              <a class="btn secondary" href="../modules/index.html" target="_blank" rel="noreferrer">MAPH Index</a>
+            </div>
+          </article>
+        </section>
+
+        <section class="slide" data-title="Modul 5">
+          <article class="card spaced">
+            <p class="kicker">Modul 5 (Lernziele 4, 15, 21)</p>
+            <h2>Schnittdaten, Rotation und Uebersetzung</h2>
+            <div class="grid-2">
+              <div class="box">
+                <h3>Content</h3>
+                <ul>
+                  <li>Drehzahl n, Umfangsgeschwindigkeit vu, Schnittgeschwindigkeit vc</li>
+                  <li>Riemen/Riemenscheiben-Uebersetzung (d1*n1 = d2*n2)</li>
+                  <li>Schnittdaten-Rechner fuer Drehen</li>
+                  <li>ausgewaehlte Uebungen plus Rotations-Vertiefung</li>
+                </ul>
+              </div>
+              <div class="box">
+                <h3>Didaktischer Nutzen</h3>
+                <ul>
+                  <li>direkte Naehe zur Werkstattpraxis</li>
+                  <li>reduziert Fehler bei Parametereinstellung</li>
+                  <li>zeigt Grenzwerte und Maschinenrealitaet</li>
+                </ul>
+              </div>
+            </div>
+            <div class="links-row">
+              <a class="btn" href="../modules/module_5.html" target="_blank" rel="noreferrer">Modul 5 direkt oeffnen</a>
+              <a class="btn secondary" href="../modules/index.html" target="_blank" rel="noreferrer">MAPH Index</a>
+            </div>
+          </article>
+        </section>
+
+        <section class="slide" data-title="Weitere MVPs">
+          <article class="card spaced">
+            <p class="kicker">Weitere MVPs im Repo</p>
+            <h2>Direktzugriff auf die anderen HTML-Umsetzungen</h2>
+            <div class="grid-3">
+              <div class="box spaced">
+                <h3>Gasgesetze MVP</h3>
+                <p>
+                  Thermodynamik/Pneumatik mit Einstieg, Wissensbasis, Engineering-Tool,
+                  Self-Test und Reflexion.
+                </p>
+                <div class="links-row">
+                  <a class="btn secondary" href="../mvp_gasgesetze/index.html" target="_blank" rel="noreferrer">Index</a>
+                  <a class="btn secondary" href="../mvp_gasgesetze/reform2/index.html" target="_blank" rel="noreferrer">Reform2</a>
+                </div>
+              </div>
+              <div class="box spaced">
+                <h3>HKO Module</h3>
+                <p>
+                  Lernziele 5-14: Werkzeuggeometrie, Trennverfahren, Schleifen/KSS,
+                  Standzeit und Werkzeugmaschinen.
+                </p>
+                <div class="links-row">
+                  <a class="btn secondary" href="../LFB/modules/index.html" target="_blank" rel="noreferrer">Index</a>
+                </div>
+              </div>
+              <div class="box spaced">
+                <h3>HKO Story MVP</h3>
+                <p>
+                  Storyline-Version mit Warm-up (Auftrag 0) plus Auftraege 1-5 fuer
+                  denselben Themenblock.
+                </p>
+                <div class="links-row">
+                  <a class="btn secondary" href="../LFB_mvp_hko/modules/index.html" target="_blank" rel="noreferrer">Index</a>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="slide" data-title="Toolvergleich">
+          <article class="card spaced">
+            <p class="kicker">Vergleich ohne Overload</p>
+            <h2>Gemini vs OpenAI Codex vs Claude Code</h2>
+            <div class="grid-3">
+              <div class="box spaced">
+                <h3>Gemini</h3>
+                <ul>
+                  <li>stark bei visuell-kreativen Ideen</li>
+                  <li>braucht klare Constraints fuer stabile Struktur</li>
+                  <li>ideal fuer erste Layout-/Interaktionsideen</li>
+                </ul>
+              </div>
+              <div class="box spaced">
+                <h3>OpenAI Codex</h3>
+                <ul>
+                  <li>stark im Repo-Kontext und bei Refactorings</li>
+                  <li>gut bei strukturierten, iterativen Aenderungen</li>
+                  <li>ideal fuer "mach es lauffaehig und wartbar"</li>
+                </ul>
+              </div>
+              <div class="box spaced">
+                <h3>Claude Code</h3>
+                <ul>
+                  <li>stark im langen, koharenten Codefluss</li>
+                  <li>gut fuer schnelle End-to-End Prototypen</li>
+                  <li>ideal bei grossen Prompt-Kontexten</li>
+                </ul>
+              </div>
+            </div>
+            <div class="warn">
+              Kernaussage fuer Kollegium: Toolwahl ist sekundar. Entscheidend sind Input-Qualitaet,
+              Review-Prozess und didaktische Abnahme.
+            </div>
+          </article>
+        </section>
+
+        <section class="slide" data-title="Fazit">
+          <article class="card spaced">
+            <p class="kicker">Abschluss</p>
+            <h2>Fazit und Q&A Leitfragen</h2>
+            <div class="grid-2">
+              <div class="box">
+                <h3>Takeaways</h3>
+                <ul>
+                  <li>Vibe coding liefert sehr schnell vorzeigbare Lernmodule.</li>
+                  <li>Fachliche Qualitaet braucht immer menschliche Kontrolle.</li>
+                  <li>Ein klarer Prompt- und Review-Standard skaliert im Team.</li>
+                </ul>
+              </div>
+              <div class="box">
+                <h3>Fragen, die sicher kommen</h3>
+                <ul>
+                  <li>Welches Tool ist "am besten"?</li>
+                  <li>Kann man das ohne Coding-Hintergrund betreiben?</li>
+                  <li>Was ist noetig fuer produktiven Einsatz im Unterricht?</li>
+                </ul>
+              </div>
+            </div>
+            <div class="links-row">
+              <a class="btn secondary nowrap" href="../modules/index.html" target="_blank" rel="noreferrer">MAPH zeigen</a>
+              <a class="btn secondary nowrap" href="../LFB/modules/index.html" target="_blank" rel="noreferrer">HKO zeigen</a>
+              <a class="btn secondary nowrap" href="../mvp_gasgesetze/reform2/index.html" target="_blank" rel="noreferrer">Gasgesetze zeigen</a>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <footer class="footer-nav">
+      <button type="button" id="prevBtn">Zurueck</button>
+      <div class="progress" id="progressText">1 / 10</div>
+      <button type="button" id="nextBtn">Weiter</button>
+    </footer>
+
+    <script>
+      (function () {
+        "use strict";
+
+        const slides = Array.from(document.querySelectorAll(".slide"));
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const progressText = document.getElementById("progressText");
+        let index = 0;
+
+        function hashToIndex() {
+          const match = window.location.hash.match(/^#s(\d+)$/i);
+          if (!match) return 0;
+          const i = Number(match[1]) - 1;
+          if (!Number.isInteger(i)) return 0;
+          return Math.max(0, Math.min(slides.length - 1, i));
+        }
+
+        function render() {
+          slides.forEach((slide, i) => {
+            slide.classList.toggle("is-active", i === index);
+          });
+
+          const current = index + 1;
+          progressText.textContent = current + " / " + slides.length;
+          prevBtn.disabled = index === 0;
+          nextBtn.disabled = index === slides.length - 1;
+          window.location.hash = "s" + current;
+        }
+
+        function go(step) {
+          index = Math.max(0, Math.min(slides.length - 1, index + step));
+          render();
+        }
+
+        prevBtn.addEventListener("click", function () {
+          go(-1);
+        });
+
+        nextBtn.addEventListener("click", function () {
+          go(1);
+        });
+
+        window.addEventListener("keydown", function (event) {
+          if (
+            event.target &&
+            (event.target.tagName === "INPUT" ||
+              event.target.tagName === "TEXTAREA" ||
+              event.target.tagName === "SELECT")
+          ) {
+            return;
+          }
+          if (event.key === "ArrowLeft") go(-1);
+          if (event.key === "ArrowRight" || event.key === " ") go(1);
+        });
+
+        window.addEventListener("hashchange", function () {
+          index = hashToIndex();
+          render();
+        });
+
+        index = hashToIndex();
+        render();
+      })();
+    </script>
+  </body>
+</html>
